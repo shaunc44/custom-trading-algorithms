@@ -1,13 +1,50 @@
-/*body { 
-	background: url(../images/background.svg) no-repeat center center fixed; 
+body { 
+	background: url(../images/background4.svg) no-repeat center center; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
-	background-size: contain;
-	widows: 100%;
-	height: auto;
-}*/
-
-body {
-	background-image: url(../images/background.svg);
+	background-size: cover;
+	min-height: 100vh;
 }
+
+li {
+	color: #560997;
+}
+
+#bootstrap-override .container {
+	min-width: 90%;
+	/*margin-right: 10%*/
+	/*margin-left: 10%;*/
+}
+
+#bootstrap-override .header {
+	margin-top: 30px;
+	padding-bottom: 5px;
+}
+
+#bootstrap-override .text-muted {
+	font-family: 'Diplomata SC', cursive;
+	color: #560997;
+	margin-bottom: 0px;
+}
+
+a {
+	color: #560997;
+	bottom: 10px;
+}
+
+#bootstrap-override #jumbotron {
+	background-color: transparent;
+}
+
+#bootstrap-override #algo-title {
+	font-family: "Bookman Old Style";
+	color: #560997;
+}
+
+#bootstrap-override .footer {
+	text-align: center;
+}
+
+
+

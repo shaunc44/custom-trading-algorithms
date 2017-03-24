@@ -1,1 +1,14 @@
 {% extends "index.html" %}
+{% block title %}
+<h1>Login</h1>
+<p>Please enter your login information</p>
+<ul>
+	<li><a href="/"><p>Home</p></a></li>
+	<li><a href="login"><p>Log in</p></a></li>
+	<li><a href="register"><p>Register</p></a></li>
+ </ul>
+ <form action="/check-login" method="post">
+	<input id="username" name="username" type="text" placeholder="Username" required autofocus>
+	<input id="password" name="password" type="password" placeholder="Password" required>
+	<button class="button" type="submit">Login</button>
+{% endblock %}

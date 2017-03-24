@@ -25,7 +25,7 @@
                     <li role="presentation"><a href="about">About</a></li>
                     <li role="presentation" class="active"><a href="screen">Screen</a></li>
                     <li role="presentation" class="active"><a href="results">Results</a></li>
-                   <li role="presentation" class="active"><a href="logout">Logout
+                    <li role="presentation" class="active"><a href="logout">Logout</a><li>
                 </ul>
             </nav>
             <h4 class="text-muted">CTA</h4>
@@ -33,6 +33,7 @@
 
         <div id="jumbotron" class="jumbotron">
             <h1 id="algo-title">Custom Trading Algorithms</h1>
+            {% block title %}
             <p class="lead"></p>
             <p id="login"></p>
             <form class="form-signin" action="/signUp" method="post" role="form">
@@ -44,10 +45,11 @@
                 <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
                 <button id="login-register" class="btn btn-primary" type="submit">Login / Register</button>
             </form>
+            {% endblock %}
         </div>
 
         <footer class="footer">
-            <p>&copy; Shaun N. Cox, LLC 2017</p>
+            <p>&copy; Shaun N. Cox 2017</p>
         </footer>
 
     </div>

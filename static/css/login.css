@@ -14,27 +14,26 @@ li {
 #bootstrap-override .container {
 	min-width: 90%;
 	min-height: 100%;
-	/*margin-right: 10%*/
-	/*margin-left: 10%;*/
 }
 
 #bootstrap-override .header {
 	margin-top: 30px;
 	padding-bottom: 5px;
 	border-bottom: none;
-	/*margin-bottom: -1px;*/
 }
 
 #bootstrap-override .text-muted {
 	font-family: 'Diplomata SC', cursive;
 	color: #560997;
 	margin-bottom: 0px;
+	font-size: 1.75em;
 }
 
-a {
+#bootstrap-override a {
+	background-color: transparent;
 	color: #560997;
 	bottom: 10px;
-	font-size: 18px;
+	font-size: 1.75em;
 }
 
 #bootstrap-override #jumbotron {

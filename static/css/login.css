@@ -20,6 +20,8 @@ li {
 #bootstrap-override .header {
 	margin-top: 30px;
 	padding-bottom: 5px;
+	border-bottom: none;
+	/*margin-bottom: -1px;*/
 }
 
 #bootstrap-override .text-muted {
@@ -35,6 +37,9 @@ a {
 
 #bootstrap-override #jumbotron {
 	background-color: transparent;
+	/*border-color: transparent;*/
+	/*box-shadow: none;*/
+	/*overflow: hidden;*/
 }
 
 #bootstrap-override #algo-title {
@@ -44,6 +49,7 @@ a {
 
 #bootstrap-override .footer {
 	text-align: center;
+	border-top: none;
 }
 
 

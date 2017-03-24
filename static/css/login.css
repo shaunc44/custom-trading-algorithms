@@ -13,6 +13,7 @@ li {
 
 #bootstrap-override .container {
 	min-width: 90%;
+	min-height: 100%;
 	/*margin-right: 10%*/
 	/*margin-left: 10%;*/
 }
@@ -33,23 +34,43 @@ li {
 a {
 	color: #560997;
 	bottom: 10px;
+	font-size: 18px;
 }
 
 #bootstrap-override #jumbotron {
 	background-color: transparent;
-	/*border-color: transparent;*/
-	/*box-shadow: none;*/
-	/*overflow: hidden;*/
+	padding-top: 8.5%;
 }
 
 #bootstrap-override #algo-title {
 	font-family: "Bookman Old Style";
 	color: #560997;
+	margin-bottom: 7.5%; 
+}
+
+#bootstrap-override .form-control {
+	width: 20%;
+	margin-top: 2%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 2%;
+	text-align: center;
+}
+
+#bootstrap-override #login-register {
+	font-family: "Bookman Old Style";
+	padding: 5px;
+	background-color: #560997;
 }
 
 #bootstrap-override .footer {
 	text-align: center;
 	border-top: none;
+	color: #560997;
+	position: absolute;
+	right: 0;
+	bottom: 1%;
+	left: 0;
 }
 
 

@@ -1,14 +1,4 @@
-{% extends "index.html" %}
+{% extends "login.html" %}
 {% block title %}
-<h1>Login</h1>
-<p>Please enter your login information</p>
-<ul>
-	<li><a href="/"><p>Home</p></a></li>
-	<li><a href="login"><p>Log in</p></a></li>
-	<li><a href="register"><p>Register</p></a></li>
- </ul>
- <form action="/check-login" method="post">
-	<input id="username" name="username" type="text" placeholder="Username" required autofocus>
-	<input id="password" name="password" type="password" placeholder="Password" required>
-	<button class="button" type="submit">Login</button>
+<p id="about">This application will allow the user to enter a range of fundamental data to screen the stocks on a daily, historical basis.  After the algorthim finds a suitable list of stocks it will apply your buy-sell signals and begin trading those stocks during the chosen time period</p>
 {% endblock %}

@@ -1,3 +1,7 @@
+/********************************************************************/
+/**************************   LOGIN.HTML   **************************/
+/********************************************************************/
+
 body { 
 	background: url(../images/background4.svg) no-repeat center center; 
 	-webkit-background-size: cover;
@@ -31,9 +35,10 @@ li {
 
 #bootstrap-override a {
 	background-color: transparent;
+	font-family: "Bookman Old Style";
 	color: #560997;
 	bottom: 10px;
-	font-size: 1.75em;
+	font-size: 1.5em;
 }
 
 #bootstrap-override #jumbotron {
@@ -63,6 +68,7 @@ li {
 }
 
 #bootstrap-override .footer {
+	font-family: cursive;
 	text-align: center;
 	border-top: none;
 	color: #560997;
@@ -70,6 +76,15 @@ li {
 	right: 0;
 	bottom: 1%;
 	left: 0;
+}
+
+
+/********************************************************************/
+/**************************   ABOUT.HTML   **************************/
+/********************************************************************/
+
+#bootstrap-override #about {
+	font-family: "Bookman Old Style";
 }
 
 

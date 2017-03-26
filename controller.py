@@ -13,13 +13,25 @@ app.config['SECRET_KEY'] = open('secret_key', 'rb').read()
 # 	events = models.Events.all_events()
 # 	return render_template("index.html", event=events)
 
-@app.route('/', methods = ['GET'])
+@app.route("/", methods = ["GET"])
 def main():
-	return render_template('login.html')
+	return render_template("login.html")
 
-# @app.route("/login")
-# def login():
-# 	return render_template("login.html")
+@app.route("/about")
+def about():
+	return render_template("about.html")
+
+# @app.route("/register")
+# def register():
+# 	return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+	return render_template("login.html")
+#add code here to enable secure logout
+
+
+
 
 # @app.route("/check-login", methods=["POST"])
 # def check_login():

@@ -5,9 +5,10 @@
 
 	<div class="container">
 
-		<div class="col-lg-6">
-			<h4 class="criteria-label">Screening Criteria</h4>
-			<form class="parameters" action="/runAlgo" method="post" role="form">
+		<form class="parameters" action="/runAlgo" method="post" role="form">
+
+			<div class="col-lg-6">
+				<h4 class="criteria-label">Screening Criteria</h4>
 				<ul class="flex-outer">
 					<li>
 						<label for="lastPrice">Last Price</label>
@@ -60,45 +61,70 @@
 						<input type="betaHigh" name="inputBetaHigh" id="inputBetaHigh" placeholder="High">
 					</li>
 				</ul>
-			</form>
-		</div>
+			</div>
 
-		<div class="col-lg-6">
-			<h4 class="criteria-label">Buy/Sell Criteria</h4>
-			<form>
+			<div class="col-lg-6">
+				<h4 class="criteria-label">Buy/Sell Criteria</h4>
 				<ul class="flex-outer">
-				<li>
-				<label for="first-name">First Name</label>
-				<input type="text" id="first-name" placeholder="Enter your first name here">
-				</li>
-				<li>
-				<label for="last-name">Last Name</label>
-				<input type="text" id="last-name" placeholder="Enter your last name here">
-				</li>
-				<li>
-				<label for="email">Email</label>
-				<input type="email" id="email" placeholder="Enter your email here">
-				</li>
-				<li>
-				<label for="phone">Phone</label>
-				<input type="tel" id="phone" placeholder="Enter your phone here">
-				</li>
-				<li>
-				<label for="message">Message</label>
-				<textarea rows="6" id="message" placeholder="Enter your message here"></textarea>
-				</li>
-				<li>
-				<p>Age</p>
-				<ul class="flex-inner">
-				<!-- list items here -->
+					<li>
+						<label for="crossover">50-200 Day SMA Crossover</label>
+						<input type="crossover" name="inputcrossover" id="inputcrossover" placeholder="Create check box here to turn on">
+					</li>
+					<li>
+						<label for="volumeChange">Volume Change</label>
+						<input type="volumeChangeBuy" name="inputVolumeChangeBuy" id="inputVolumeChangeBuy" placeholder="Buy">
+						<input type="volumeChangeSell" name="inputVolumeChangeSell" id="inputVolumeChangeSell" class="Sell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="priceChange">Price Change</label>
+						<input type="priceChangeBuy" name="inputPriceChangeBuy" id="inputPriceChangeBuy" placeholder="Buy">
+						<input type="priceChangeSell" name="inputPriceChangeSell" id="inputPriceChangeSell" class="Sell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="divergence">Divergence</label>
+						<input type="divergenceBuy" name="inputDivergenceBuy" id="inputDivergenceBuy" placeholder="Buy">
+						<input type="divergenceSell" name="inputDivergenceSell" id="inputDivergenceSell" class="Sell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="macd">MACD</label>
+						<input type="macdBuy" name="inputMacdBuy" id="inputMacdBuy" placeholder="Buy">
+						<input type="macdSell" name="inputMacdSell" id="inputMacdSell" class="Sell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="rsi">RSI</label>
+						<input type="rsiBuy" name="inputRsiBuy" id="inputRsiBuy" placeholder="Buy">
+						<input type="rsiSell" name="inputRsiSell" id="inputRsiSell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="stoploss">Trailing Stop-Loss</label>
+						<input type="stoplossBuy" name="inputStoplossBuy" id="inputStoplossBuy" placeholder="Buy">
+						<input type="stoplossSell" name="inputStoplossSell" id="inputStoplossSell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="divYield">Other Stuff Here</label>
+						<input type="divYieldBuy" name="inputDivYieldBuy" id="inputDivYieldBuy" placeholder="Buy">
+						<input type="divYieldSell" name="inputDivYieldSell" id="inputDivYieldSell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="debtEquity">Other Stuff Here</label>
+						<input type="debtEquityBuy" name="inputDebtEquityBuy" id="inputDebtEquityBuy" placeholder="Buy">
+						<input type="debtEquitySell" name="inputDebtEquitySell" id="inputDebtEquitySell" placeholder="Sell">
+					</li>
+					<li>
+						<label for="beta">Other Stuff Here</label>
+						<input type="betaBuy" name="inputBetaBuy" id="inputBetaBuy" placeholder="Buy">
+						<input type="betaSell" name="inputBetaSell" id="inputBetaSell" placeholder="Sell">
+					</li>
+					<li>
+						<button type="submit">Submit</button>
+					</li>
 				</ul>
-				</li>
-				<li>
-				<button type="submit">Submit</button>
-				</li>
-				</ul>
-			</form>
+			</div>
 
+		</form>
+
+		<div class="col-lg-12">
+			
 		</div>
 
 	</div>

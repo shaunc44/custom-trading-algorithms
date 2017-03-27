@@ -116,7 +116,7 @@ li {
 #bootstrap-override .flex-outer label {
 	font-family: "Bookman Old Style";
 	float: left;
-	font-size: 1em;
+	font-size: 1.1em;
 	text-align: left;
 	width: 25%;
 }
@@ -124,7 +124,8 @@ li {
 #bootstrap-override .flex-outer input {
 	display: inline-block;
 	width: 25%;
-	margin-right: 5%;
+	margin-left: 7.5%;
+	/*margin-right: 5%;*/
 }
 
 #bootstrap-override .flex-outer input .high {

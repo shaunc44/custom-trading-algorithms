@@ -1,0 +1,37 @@
+{% extends "login.html" %}
+
+{% block title %}
+
+	<div class="container">
+
+		<div class="col-lg-6">
+			<h4>Screening Criteria</h4>
+		</div>
+		<div class="col-lg-6">
+			<h4>Buy-Sell Criteria</h4>
+		</div>
+
+
+		<form class="parameters" action="/runAlgo" method="post" role="form">
+			<div class="col-lg-3">
+				<label for="lastPrice" class="sr-only">Last Price</label>
+				<input type="lastPriceLow" name="inputLastPriceLow" id="inputLastPriceLow" placeholder="Low">
+			</div>
+			<div class="col-lg-3">
+				<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" placeholder="High">
+			<div class="col-lg-3">
+				<input type="username" name="inputUsername" id="inputUsername" placeholder="Username" required>
+			</div>
+			<div class="col-lg-3">
+				<h4>Buy-Sell Criteria</h4>
+			</div>
+
+		</form>
+
+
+
+
+
+	</div>
+
+{% endblock %}

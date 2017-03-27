@@ -21,9 +21,9 @@ def main():
 def about():
 	return render_template("about.html")
 
-# @app.route("/register")
-# def register():
-# 	return render_template("register.html")
+@app.route("/create-algo")
+def create_algo():
+	return render_template("create_algo.html")
 
 @app.route("/logout")
 def logout():

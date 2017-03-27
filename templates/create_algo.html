@@ -1,37 +1,111 @@
 {% extends "login.html" %}
 
+
 {% block title %}
 
 	<div class="container">
 
 		<div class="col-lg-6">
 			<h4>Screening Criteria</h4>
+			<form class="parameters" action="/runAlgo" method="post" role="form">
+				<ul class="flex-outer">
+					<li>
+						<label for="lastPrice">Last Price</label>
+						<input type="lastPriceLow" name="inputLastPriceLow" id="inputLastPriceLow" placeholder="Low">
+						<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="currentRatio">Current Ratio</label>
+						<input type="currentRatioLow" name="inputcurrentRatioLow" id="inputcurrentRatioLow" placeholder="Low">
+						<input type="currentRatioHigh" name="inputcurrentRatioHigh" id="inputcurrentRatioHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="priceChange">52-Wk Price Chng</label>
+						<input type="priceChangeLow" name="inputPriceChangeLow" id="inputPriceChangeLow" placeholder="Low">
+						<input type="priceChangeHigh" name="inputPriceChangeHigh" id="inputPriceChangeHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="pe">Price / Earnings</label>
+						<input type="peLow" name="inputPeLow" id="inputPeLow" placeholder="Low">
+						<input type="peHigh" name="inputPeHigh" id="inputPeHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="eps">Earnings / Share</label>
+						<input type="epsLow" name="inputEpsLow" id="inputEpsLow" placeholder="Low">
+						<input type="epsHigh" name="inputEpsHigh" id="inputEpsHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="roe">Return on Equity</label>
+						<input type="roeLow" name="inputRoeLow" id="inputRoeLow" placeholder="Low">
+						<input type="roeHigh" name="inputRoeHigh" id="inputRoeHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="roi">Return on Invested Cap</label>
+						<input type="roiLow" name="inputRoiLow" id="inputRoiLow" placeholder="Low">
+						<input type="roiHigh" name="inputRoiHigh" id="inputRoiHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="divYield">Dividend Yield</label>
+						<input type="divYieldLow" name="inputDivYieldLow" id="inputDivYieldLow" placeholder="Low">
+						<input type="divYieldHigh" name="inputDivYieldHigh" id="inputDivYieldHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="debtEquity">Debt / Equity</label>
+						<input type="debtEquityLow" name="inputDebtEquityLow" id="inputDebtEquityLow" placeholder="Low">
+						<input type="debtEquityHigh" name="inputDebtEquityHigh" id="inputDebtEquityHigh" placeholder="High">
+					</li>
+					<li>
+						<label for="beta">Beta</label>
+						<input type="betaLow" name="inputBetaLow" id="inputBetaLow" placeholder="Low">
+						<input type="betaHigh" name="inputBetaHigh" id="inputBetaHigh" placeholder="High">
+					</li>
+				</ul>
+			</form>
 		</div>
+
 		<div class="col-lg-6">
-			<h4>Buy-Sell Criteria</h4>
+			<h4>Buy/Sell Criteria</h4>
+			<form>
+				<ul class="flex-outer">
+				<li>
+				<label for="first-name">First Name</label>
+				<input type="text" id="first-name" placeholder="Enter your first name here">
+				</li>
+				<li>
+				<label for="last-name">Last Name</label>
+				<input type="text" id="last-name" placeholder="Enter your last name here">
+				</li>
+				<li>
+				<label for="email">Email</label>
+				<input type="email" id="email" placeholder="Enter your email here">
+				</li>
+				<li>
+				<label for="phone">Phone</label>
+				<input type="tel" id="phone" placeholder="Enter your phone here">
+				</li>
+				<li>
+				<label for="message">Message</label>
+				<textarea rows="6" id="message" placeholder="Enter your message here"></textarea>
+				</li>
+				<li>
+				<p>Age</p>
+				<ul class="flex-inner">
+				<!-- list items here -->
+				</ul>
+				</li>
+				<li>
+				<button type="submit">Submit</button>
+				</li>
+				</ul>
+			</form>
+
 		</div>
-
-
-		<form class="parameters" action="/runAlgo" method="post" role="form">
-			<div class="col-lg-3">
-				<label for="lastPrice" class="sr-only">Last Price</label>
-				<input type="lastPriceLow" name="inputLastPriceLow" id="inputLastPriceLow" placeholder="Low">
-			</div>
-			<div class="col-lg-3">
-				<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" placeholder="High">
-			<div class="col-lg-3">
-				<input type="username" name="inputUsername" id="inputUsername" placeholder="Username" required>
-			</div>
-			<div class="col-lg-3">
-				<h4>Buy-Sell Criteria</h4>
-			</div>
-
-		</form>
-
-
-
-
 
 	</div>
 
 {% endblock %}
+
+
+
+
+

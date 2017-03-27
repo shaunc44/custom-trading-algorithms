@@ -6,33 +6,33 @@
 	<div class="container">
 
 		<div class="col-lg-6">
-			<h4>Screening Criteria</h4>
+			<h4 class="criteria-label">Screening Criteria</h4>
 			<form class="parameters" action="/runAlgo" method="post" role="form">
 				<ul class="flex-outer">
 					<li>
 						<label for="lastPrice">Last Price</label>
 						<input type="lastPriceLow" name="inputLastPriceLow" id="inputLastPriceLow" placeholder="Low">
-						<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" placeholder="High">
+						<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" class="high" placeholder="High">
 					</li>
 					<li>
 						<label for="currentRatio">Current Ratio</label>
 						<input type="currentRatioLow" name="inputcurrentRatioLow" id="inputcurrentRatioLow" placeholder="Low">
-						<input type="currentRatioHigh" name="inputcurrentRatioHigh" id="inputcurrentRatioHigh" placeholder="High">
+						<input type="currentRatioHigh" name="inputcurrentRatioHigh" id="inputcurrentRatioHigh" class="high" placeholder="High">
 					</li>
 					<li>
-						<label for="priceChange">52-Wk Price Chng</label>
+						<label for="priceChange">52-Wk Price Chg</label>
 						<input type="priceChangeLow" name="inputPriceChangeLow" id="inputPriceChangeLow" placeholder="Low">
-						<input type="priceChangeHigh" name="inputPriceChangeHigh" id="inputPriceChangeHigh" placeholder="High">
+						<input type="priceChangeHigh" name="inputPriceChangeHigh" id="inputPriceChangeHigh" class="high" placeholder="High">
 					</li>
 					<li>
 						<label for="pe">Price / Earnings</label>
 						<input type="peLow" name="inputPeLow" id="inputPeLow" placeholder="Low">
-						<input type="peHigh" name="inputPeHigh" id="inputPeHigh" placeholder="High">
+						<input type="peHigh" name="inputPeHigh" id="inputPeHigh" class="high" placeholder="High">
 					</li>
 					<li>
 						<label for="eps">Earnings / Share</label>
 						<input type="epsLow" name="inputEpsLow" id="inputEpsLow" placeholder="Low">
-						<input type="epsHigh" name="inputEpsHigh" id="inputEpsHigh" placeholder="High">
+						<input type="epsHigh" name="inputEpsHigh" id="inputEpsHigh" class="high" placeholder="High">
 					</li>
 					<li>
 						<label for="roe">Return on Equity</label>
@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="col-lg-6">
-			<h4>Buy/Sell Criteria</h4>
+			<h4 class="criteria-label">Buy/Sell Criteria</h4>
 			<form>
 				<ul class="flex-outer">
 				<li>

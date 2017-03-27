@@ -100,7 +100,36 @@ li {
 
 #bootstrap-override .flex-outer {
 	list-style-type: none;
+	padding-left: 0;
 }
 
+#bootstrap-override .criteria-label {
+	font-family: "Bookman Old Style";
+	font-size: 3em;
+	color: #560997;
+	margin-bottom: 0.6em;
+}
+#bootstrap-override .flex-outer li {
+	margin-bottom: 1%;
+}
 
+#bootstrap-override .flex-outer label {
+	font-family: "Bookman Old Style";
+	float: left;
+	font-size: 1em;
+	text-align: left;
+	width: 25%;
+}
+
+#bootstrap-override .flex-outer input {
+	display: inline-block;
+	width: 25%;
+	margin-right: 5%;
+}
+
+#bootstrap-override .flex-outer input .high {
+	display: inline-block;
+	float: right;
+	width: 25%;
+}
 

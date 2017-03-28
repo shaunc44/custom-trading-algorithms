@@ -1,11 +1,17 @@
 import flask
-import mysql
+import pymysql.cursors
 import wrapper
 #use pandas in here, not createdb
 #use data from Quandl, Xignite
 
 
-conn = mysql.connect("stock_algo.db")
+conn = pymysql.connect(host='localhost',
+	user='scox',
+	password='scox',
+	db='bigdump',
+	charset='utf8mb4',
+	cursorclass=pymysql.cursors.DictCursor
+	)
 cursor = conn.cursor
 
 

@@ -9,7 +9,8 @@ import mysql
 
 start = timeit.default_timer()
 
-df = pd.read_csv("data/stocks_eod_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
+df = pd.read_csv("data/historical_stock_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
+# df = pd.read_csv("data/historical_stock_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
 
 #CREATE DF WITH DATES GREATER THAN 2006
 df2007 = df[ (df['date']) > '2006-12-31' ]
@@ -48,29 +49,21 @@ print ("Seconds to run: ", (stop - start) )
 #Schema goes here *********
 # def createDB(conn):
 # 	pass
-	# conn.execute('''
-	# 	DROP TABLE 'users'
-	# ''')
 
-	# conn.execute('''
-	# 	DROP TABLE 'phone_numbers'
-	# ''')
+# conn.execute('''
+# 	DROP TABLE IF EXISTS `bigdump`.`dump`;
+# 	CREATE TABLE `bigdump`.`dump` (
+# 		`id` INT NOT NULL AUTO_INCREMENT,
+# 		`ticker` VARCHAR(128),
+# 		`date` VARCHAR(128),
+# 		`adj_close` FLOAT,
+# 		`adj_volume` FLOAT,
+# 		PRIMARY KEY (`id`)
+# 	);
+# ''')
 
-	# conn.execute('''
-	# 	DROP TABLE 'addresses'
-	# ''')
 
-	# conn.execute('''
-	# 	CREATE TABLE 'users' (
-	# 	'user_id' INTEGER PRIMARY KEY AUTOINCREMENT,
-	# 	'username' TEXT,
-	# 	'password' TEXT,
-	# 	'firstname' TEXT,
-	# 	'lastname' TEXT,
-	# 	'dob' TEXT,
-	# 	'permission' TEXT
-	# 	);
-	# ''')
+
 
 	# conn.execute('''
 	# 	CREATE TABLE 'phone_numbers' (

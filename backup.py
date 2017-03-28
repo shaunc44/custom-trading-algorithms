@@ -14,18 +14,76 @@ conn = pymysql.connect(host='localhost',
 	cursorclass=pymysql.cursors.DictCursor
 	)
 
-# conn = pymysql.connect("stock_algo.db")
 cursor = conn.cursor()
-# df.to_sql("stock_algo", conn)
 
 
-with open("data/stocks_eod_prices.csv", "rb") as file:
-	# prices = file.read()
-	for _ in file:
-		print (_)
-		time.sleep(1)
+df = pd.read_csv("data/historical_stock_prices2.csv")
+ticker_df = df['ticker'].tolist()
+ticker_set = set(ticker_df)
+ticker_list = list(ticker_set)
+# print ("Tickers List: ", ticker_list)
+# print ("Number of Tickers: ", len(ticker_list))
+# ldf = list(df)
+# sdf = set(ldf)
+# xdf = list(sdf)
+
+for symbol in ticker_list:
+	os.system("'{}' >> set_symbols.csv".format(symbol))
+	print (symbol)
+# 	cursor.execute('''
+# create table {} (
+# `id` INT AUTO_INCREMENT,
+# `date` VARCHAR(128),
+# `open`  FLOAT,
+# `high` FLOAT,
+# `low` FLOAT,
+# `close` FLOAT,
+# `volume` FLOAT,
+# `ex-dividend` FLOAT,
+# `split_ratio` FLOAT,
+# `adj_open` FLOAT,
+# `adj_high` FLOAT,
+# `adj_low` FLOAT,
+# `adj_close` FLOAT,
+# `adj_volume` FLOAT,
+# PRIMARY KEY (`id`)
+# );'''.format(symbol)
+# 	)
+
+# for symbol in ticker_list:
+# 	cursor.execute('''
+# DROP TABLE IF EXISTS `bigdump`.`{}`;
+# create table {} (
+# `id` INT AUTO_INCREMENT,
+# `date` VARCHAR(128),
+# `open`  FLOAT,
+# `high` FLOAT,
+# `low` FLOAT,
+# `close` FLOAT,
+# `volume` FLOAT,
+# `ex-dividend` FLOAT,
+# `split_ratio` FLOAT,
+# `adj_open` FLOAT,
+# `adj_high` FLOAT,
+# `adj_low` FLOAT,
+# `adj_close` FLOAT,
+# `adj_volume` FLOAT,
+# PRIMARY KEY (`id`)
+# );'''.format(symbol)
+# 	)
+
+# for _ in xdf:
+# 	print (type(_))
+
+
+# with open("data/historical_stock_prices2.csv") as file:
+# 	# prices = file.read()
+# 	for _ in file:
+# 		print (_)
+# 		# print (type(_))
+# 		time.sleep(1)
 		# print ("All okay")
-		print (_[0])
+		# print (_[0])
 		# print (_[1])
 		# print (_[2])
 		# print (_[3])

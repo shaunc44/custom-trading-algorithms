@@ -9,6 +9,28 @@ conn = mysql.connect("stock_algo.db")
 cursor = conn.cursor
 
 
+class Users():
+	pass
+
+
+
+
+#Pull data from fundamentals csv
+class Screening():
+	pass
+
+
+
+
+#Pull data from historical prices csv
+class BuySell():
+	pass
+
+
+
+
+
+
 class Model():
 
 	def initialize(context):
@@ -33,5 +55,8 @@ class Model():
 		pass
 
 
-class ModelWrapper:
-	pass
+
+
+
+
+

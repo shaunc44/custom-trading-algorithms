@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session
-# import models
+import model
 
 
 app = Flask(__name__)
@@ -17,13 +17,16 @@ app.config['SECRET_KEY'] = open('secret_key', 'rb').read()
 def main():
 	return render_template("login.html")
 
+
 @app.route("/about")
 def about():
 	return render_template("about.html")
 
+
 @app.route("/create-algo")
 def create_algo():
 	return render_template("create_algo.html")
+
 
 @app.route("/logout")
 def logout():

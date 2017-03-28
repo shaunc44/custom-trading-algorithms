@@ -105,6 +105,7 @@ li {
 
 #bootstrap-override .criteria-label {
 	font-family: "Bookman Old Style";
+	font-weight: bold;
 	font-size: 3em;
 	color: #560997;
 	margin-bottom: 0.6em;
@@ -125,12 +126,17 @@ li {
 	display: inline-block;
 	width: 25%;
 	margin-left: 7.5%;
-	/*margin-right: 5%;*/
 }
 
 #bootstrap-override .flex-outer input .high {
 	display: inline-block;
 	float: right;
 	width: 25%;
+}
+
+#bootstrap-override .flex-outer button {
+	background-color: #560997;
+	color: white;
+	font-weight: bold;
 }
 

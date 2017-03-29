@@ -27,9 +27,42 @@ ticker_list = list(ticker_set)
 # sdf = set(ldf)
 # xdf = list(sdf)
 
+
 for symbol in ticker_list:
-	os.system("'{}' >> set_symbols.csv".format(symbol))
-	print (symbol)
+	cursor.execute('''
+DROP TABLE IF EXISTS `bigdump`.`{}`;
+'''.format(symbol)
+	)
+
+
+for symbol in ticker_list:
+	cursor.execute('''
+create table {} (
+`id` INT AUTO_INCREMENT,
+`date` VARCHAR(128),
+`open`  FLOAT,
+`high` FLOAT,
+`low` FLOAT,
+`close` FLOAT,
+`volume` FLOAT,
+`ex-dividend` FLOAT,
+`split_ratio` FLOAT,
+`adj_open` FLOAT,
+`adj_high` FLOAT,
+`adj_low` FLOAT,
+`adj_close` FLOAT,
+`adj_volume` FLOAT,
+PRIMARY KEY (`id`)
+);'''.format(symbol)
+	)
+
+
+
+
+
+# for symbol in ticker_list:
+# 	os.system("'{}' >> set_symbols.csv".format(symbol))
+# 	print (symbol)
 # 	cursor.execute('''
 # create table {} (
 # `id` INT AUTO_INCREMENT,
@@ -50,30 +83,11 @@ for symbol in ticker_list:
 # );'''.format(symbol)
 # 	)
 
-# for symbol in ticker_list:
-# 	cursor.execute('''
-# DROP TABLE IF EXISTS `bigdump`.`{}`;
-# create table {} (
-# `id` INT AUTO_INCREMENT,
-# `date` VARCHAR(128),
-# `open`  FLOAT,
-# `high` FLOAT,
-# `low` FLOAT,
-# `close` FLOAT,
-# `volume` FLOAT,
-# `ex-dividend` FLOAT,
-# `split_ratio` FLOAT,
-# `adj_open` FLOAT,
-# `adj_high` FLOAT,
-# `adj_low` FLOAT,
-# `adj_close` FLOAT,
-# `adj_volume` FLOAT,
-# PRIMARY KEY (`id`)
-# );'''.format(symbol)
-# 	)
+
 
 # for _ in xdf:
 # 	print (type(_))
+
 
 
 # with open("data/historical_stock_prices2.csv") as file:

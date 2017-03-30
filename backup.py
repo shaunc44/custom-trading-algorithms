@@ -3,6 +3,7 @@ import csv
 import pandas as pd
 import time
 import os
+# import xlrd
 
 # secret_pw = os.system("cat pwf")
 
@@ -16,11 +17,11 @@ conn = pymysql.connect(host='localhost',
 
 cursor = conn.cursor()
 
-
-df = pd.read_csv("data/historical_stock_prices2.csv")
-ticker_df = df['ticker'].tolist()
-ticker_set = set(ticker_df)
-ticker_list = list(ticker_set)
+#READ PRICE FILE AND CREATE DATAFRAME
+# df = pd.read_csv("data/historical_stock_prices2.csv")
+# ticker_df = df['ticker'].tolist()
+# ticker_set = set(ticker_df)
+# ticker_list = list(ticker_set)
 # print ("Tickers List: ", ticker_list)
 # print ("Number of Tickers: ", len(ticker_list))
 # ldf = list(df)
@@ -28,33 +29,86 @@ ticker_list = list(ticker_set)
 # xdf = list(sdf)
 
 
-for symbol in ticker_list:
-	cursor.execute('''
-DROP TABLE IF EXISTS `bigdump`.`{}`;
-'''.format(symbol)
-	)
+#CONVERT TICKER LIST TO TICKER_LIST CSV FILE
+# pd_list = pd.DataFrame(ticker_list)
+# pd_list.to_csv("ticker_list.csv")
 
 
-for symbol in ticker_list:
-	cursor.execute('''
-create table {} (
-`id` INT AUTO_INCREMENT,
-`date` VARCHAR(128),
-`open`  FLOAT,
-`high` FLOAT,
-`low` FLOAT,
-`close` FLOAT,
-`volume` FLOAT,
-`ex-dividend` FLOAT,
-`split_ratio` FLOAT,
-`adj_open` FLOAT,
-`adj_high` FLOAT,
-`adj_low` FLOAT,
-`adj_close` FLOAT,
-`adj_volume` FLOAT,
-PRIMARY KEY (`id`)
-);'''.format(symbol)
-	)
+#CONVERT EXCEL TO PANDAS DF
+# excel1 = pd.ExcelFile("ticker_list2.xlsx")
+# ticker_df = excel1.parse("ticker_list2")
+# print (ticker_df)
+
+# ticker_df = pd.read_excel('ticker_list3.xlsx', sheetname="ticker_list3")
+# print (ticker_df[1])
+# ticker_df = ticker_df[1].tolist()
+# ticker_set = set(ticker_df)
+# ticker_list = list(ticker_set)
+# print ("Tickers List: ", ticker_list)
+# print ("Number of Tickers: ", len(ticker_list))
+
+with open("ticker_list3.csv") as file:
+	# file.read()
+	for ticker in file:
+		print (ticker)
+
+
+# for symbol in ticker_list:
+# 	cursor.execute('''
+# DROP TABLE IF EXISTS {};
+# '''.format(symbol)
+# 	)
+
+
+# for symbol in ticker_list:
+# 	cursor.execute('''
+# create table {} (
+# id INT AUTO_INCREMENT,
+# date VARCHAR(128),
+# open FLOAT,
+# high FLOAT,
+# low FLOAT,
+# close FLOAT,
+# volume FLOAT,
+# ex-dividend FLOAT,
+# split_ratio FLOAT,
+# adj_open FLOAT,
+# adj_high FLOAT,
+# adj_low FLOAT,
+# adj_close FLOAT,
+# adj_volume FLOAT,
+# PRIMARY KEY (id)
+# );'''.format(symbol)
+# 	)
+
+
+# for symbol in ticker_list:
+# 	cursor.execute('''
+# DROP TABLE IF EXISTS `bigdump`.`{}`;
+# '''.format(symbol)
+# 	)
+
+
+# for symbol in ticker_list:
+# 	cursor.execute('''
+# create table {} (
+# `id` INT AUTO_INCREMENT,
+# `date` VARCHAR(128),
+# `open` FLOAT,
+# `high` FLOAT,
+# `low` FLOAT,
+# `close` FLOAT,
+# `volume` FLOAT,
+# `ex-dividend` FLOAT,
+# `split_ratio` FLOAT,
+# `adj_open` FLOAT,
+# `adj_high` FLOAT,
+# `adj_low` FLOAT,
+# `adj_close` FLOAT,
+# `adj_volume` FLOAT,
+# PRIMARY KEY (`id`)
+# );'''.format(symbol)
+# 	)
 
 
 

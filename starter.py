@@ -9,7 +9,7 @@ import mysql
 
 start = timeit.default_timer()
 
-df = pd.read_csv("data/historical_stock_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
+df = pd.read_csv("data/prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
 # df = pd.read_csv("data/historical_stock_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
 
 #CREATE DF WITH DATES GREATER THAN 2006
@@ -18,7 +18,7 @@ df2007 = df[ (df['date']) > '2006-12-31' ]
 
 #COLUMN HEADINGS
 # print (list(df.columns.values))
-#ticker date open high low close volume ex-dividend  split_ratio  adj_open  adj_high  adj_low  adj_close, adj_volume
+ticker date open high low close volume ex_dividend  split_ratio  adj_open  adj_high  adj_low  adj_close adj_volume
 
 
 #EARLIEST PRICE DATE

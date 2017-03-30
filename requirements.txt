@@ -1,1 +1,107 @@
-#Use this file to list modules and versions
+#Use this file to list modules and versions-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'user'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `user`;
+		
+CREATE TABLE `user` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT DEFAULT NOT NULL,
+  `username` VARCHAR(128) NULL DEFAULT 'NOT NULL',
+  `password` VARCHAR(128) NOT NULL DEFAULT 'NOT NULL',
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'price'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `price`;
+		
+CREATE TABLE `price` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT DEFAULT NULL,
+  `ticker_id` INTEGER NOT NULL DEFAULT NOT NULL,
+  `ticker` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  `date` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  `open` FLOAT NULL DEFAULT NULL,
+  `high` FLOAT NULL DEFAULT NULL,
+  `low` FLOAT NULL DEFAULT NULL,
+  `close` FLOAT NULL DEFAULT NULL,
+  `volume` FLOAT NULL DEFAULT NULL,
+  `ex_dividend` FLOAT NULL DEFAULT NULL,
+  `split_ratio` FLOAT NULL DEFAULT NULL,
+  `adj_open` FLOAT NULL DEFAULT NULL,
+  `adj_high` INTEGER NULL DEFAULT NULL,
+  `adj_low` INTEGER NULL DEFAULT NULL,
+  `adj_close` FLOAT NULL DEFAULT NULL,
+  `adj_volume` FLOAT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'ticker'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `ticker`;
+		
+CREATE TABLE `ticker` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT DEFAULT NULL,
+  `symbol` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'fundamental'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `fundamental`;
+		
+CREATE TABLE `fundamental` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `ticker_id` INTEGER NOT NULL DEFAULT NULL,
+  `ticker` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  `date` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  `value` DECIMAL NULL DEFAULT NULL,
+  `indicator` VARCHAR(128) NOT NULL DEFAULT 'NULL',
+  `dimension` VARCHAR(128) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+ALTER TABLE `price` ADD FOREIGN KEY (ticker_id) REFERENCES `ticker` (`id`);
+ALTER TABLE `fundamental` ADD FOREIGN KEY (ticker_id) REFERENCES `ticker` (`id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `user` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `price` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `ticker` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `fundamental` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `user` (`id`,`username`,`password`) VALUES
+-- ('','','');
+-- INSERT INTO `price` (`id`,`ticker_id`,`ticker`,`date`,`open`,`high`,`low`,`close`,`volume`,`ex_dividend`,`split_ratio`,`adj_open`,`adj_high`,`adj_low`,`adj_close`,`adj_volume`) VALUES
+-- ('','','','','','','','','','','','','','','','');
+-- INSERT INTO `ticker` (`id`,`symbol`) VALUES
+-- ('','');
+-- INSERT INTO `fundamental` (`id`,`ticker_id`,`ticker`,`date`,`value`,`indicator`,`dimension`) VALUES
+-- ('','','','','','','');

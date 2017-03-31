@@ -15,7 +15,9 @@ cursor = conn.cursor()
 
 
 cursor.execute('''
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS user;
+SET foreign_key_checks = 1;
 CREATE TABLE user (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 username VARCHAR(128) NOT NULL, 
@@ -24,7 +26,9 @@ password VARCHAR(128) NOT NULL
 
 
 cursor.execute('''
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS price;
+SET foreign_key_checks = 1;
 CREATE TABLE price (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
@@ -46,7 +50,9 @@ adj_volume FLOAT NULL
 
 
 cursor.execute('''
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS ticker;
+SET foreign_key_checks = 1;
 CREATE TABLE ticker (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 symbol VARCHAR(128) NOT NULL
@@ -54,7 +60,9 @@ symbol VARCHAR(128) NOT NULL
 
 
 cursor.execute('''
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS fundamental;
+SET foreign_key_checks = 1;
 CREATE TABLE fundamental (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,

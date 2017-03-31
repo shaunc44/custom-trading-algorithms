@@ -1,3 +1,4 @@
+import pymysql.cursors
 import pandas as pd
 import timeit
 import csv
@@ -7,47 +8,50 @@ import csv
 start = timeit.default_timer()
 
 
-#Fundamentals.csv file is so large that we have to break into 10000 line chunks
-#Overloads 8gb memory of my MacbookAir
-df_reader = pd.read_csv(
-	"data/fundamentals.csv",
-	names = ['ticker', 'date', 'value'],
-	chunksize=10000,
-	low_memory=True,
-	engine='c'
-)
+#Create connection to db
+conn = pymysql.connect(host='localhost',
+	user='scox',
+	password='scox',
+	db='trading_algo',
+	charset='utf8mb4',
+	cursorclass=pymysql.cursors.DictCursor
+	)
+
+cursor = conn.cursor()
 
 
-#Create function to split quandl code (AAPL_REVENUE_MRQ) into 3 columns
-def parse_code(value): 
-	code = value.split("_")
-	if len(code) == 3: return code
-	return code + [""]
-
-
-#Split 1st column of csv into 3 columns (ticker, indicator, dimension)
-#Convert each chunk to a unique list
-counter = 0
-tickers = []
-for chunk in df_reader:
-	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
-	ticker_chunk_df = chunk['ticker'].tolist()
-	ticker_chunk_list = list(set(ticker_chunk_df))
-	counter += 1
-	print ("Counter = ", counter)
-	for i in ticker_chunk_list:
-		tickers.append(i)
-		tickers = list(set(tickers))
-		print (tickers)
-
-
-#Store unique ticker list in a csv file
-pd_tickers_list = pd.DataFrame(tickers)
-pd_tickers_list.to_csv("ticker_list4.csv")
+#Iterate through ticker symbol file
+#Insert symbol into ticker table
+with open("data/ticker_list_fundamentals.csv") as file:
+	for _ in file:
+		# print ("Type = ", type(ticker)," ", ticker)
+		cursor.execute('INSERT INTO ticker (symbol) VALUE ("{}");'.format(_))
+		conn.commit()
+	conn.close()
 
 
 stop = timeit.default_timer()
 
 print ("Seconds to run: ", (stop - start) )
-#Seconds to run:  473.1752427579995
+# Seconds to run:  1.868534772998828
 
+
+
+
+# #Iterate through ticker symbol file
+# #Insert symbol into ticker table
+# with open("data/ticker_list_fundamentals.csv") as file:
+# 	# for ticker in file:
+# 	# 	# print ("Type = ", type(ticker)," ", ticker)
+# 	# 	cursor.execute('''
+# 	# 		INSERT INTO ticker (symbol) VALUES (?);
+# 	# 	''', [ticker])
+# 	)
+
+# with open("data/ticker_list_fundamentals.csv") as file:
+# 	cursor.executemany(
+# 		'''
+# 			INSERT INTO ticker (symbol) VALUES (?);
+# 		''', 
+# 		((ticker,) for ticker in file)
+# 	)

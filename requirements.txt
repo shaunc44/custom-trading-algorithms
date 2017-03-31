@@ -5,10 +5,70 @@
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- SET FOREIGN_KEY_CHECKS=0;
 
--- ---
--- Table 'user'
--- 
--- ---
+
+*********************************************************************
+********************   CREATE TABLES (SCHEMAS)  *********************
+*********************************************************************
+cursor.execute('''
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+username VARCHAR(128), 
+password VARCHAR(128)
+);''')
+
+
+cursor.execute('''
+DROP TABLE IF EXISTS price;
+CREATE TABLE price (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ticker_id INTEGER NOT NULL,
+ticker VARCHAR(128) NOT NULL,
+date VARCHAR(128) NOT NULL,
+open FLOAT NULL,
+high FLOAT NULL,
+low FLOAT NULL,
+close FLOAT NULL,
+volume FLOAT NULL,
+ex_dividend FLOAT NULL,
+split_ratio FLOAT NULL,
+adj_open FLOAT NULL,
+adj_high FLOAT NULL,
+adj_low FLOAT NULL,
+adj_close FLOAT NULL,
+adj_volume FLOAT NULL
+);''')
+
+
+cursor.execute('''
+DROP TABLE IF EXISTS ticker;
+CREATE TABLE ticker (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+symbol VARCHAR(128) NOT NULL
+);''')
+
+
+cursor.execute('''
+DROP TABLE IF EXISTS fundamental;
+CREATE TABLE fundamental (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ticker_id INTEGER NOT NULL,
+ticker VARCHAR(128) NOT NULL,
+date VARCHAR(128) NOT NULL,
+value FLOAT NULL,
+indicator VARCHAR(128) NOT NULL,
+dimension VARCHAR(128) NULL
+);''')
+
+
+cursor.execute('''
+ALTER TABLE price ADD FOREIGN KEY (ticker_id) REFERENCES ticker (id);
+ALTER TABLE fundamental ADD FOREIGN KEY (ticker_id) REFERENCES ticker (id);
+ALTER TABLE user ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE price ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE ticker ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+ALTER TABLE fundamental ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+''')
 
 DROP TABLE IF EXISTS `user`;
 		

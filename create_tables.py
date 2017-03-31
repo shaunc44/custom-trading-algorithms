@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import pymysql.cursors
 import csv
-# import pandas as pd
 
 
 conn = pymysql.connect(host='localhost',
@@ -18,17 +17,16 @@ cursor = conn.cursor()
 cursor.execute('''
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
-id INTEGER NOT NULL AUTO_INCREMENT,
-username VARCHAR(128) NOT NULL,
-password VARCHAR(128) NOT NULL,
-PRIMARY KEY (id) NOT NULL
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+username VARCHAR(128) NOT NULL, 
+password VARCHAR(128) NOT NULL
 );''')
 
 
 cursor.execute('''
 DROP TABLE IF EXISTS price;
 CREATE TABLE price (
-id INTEGER NOT NULL AUTO_INCREMENT,
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
 ticker VARCHAR(128) NOT NULL,
 date VARCHAR(128) NOT NULL,
@@ -43,52 +41,28 @@ adj_open FLOAT NULL,
 adj_high FLOAT NULL,
 adj_low FLOAT NULL,
 adj_close FLOAT NULL,
-adj_volume FLOAT NULL,
-PRIMARY KEY (id) NOT NULL
+adj_volume FLOAT NULL
 );''')
 
-
-# for symbol in ticker_list:
-# 	cursor.execute('''
-# create table {} (
-# `id` INT AUTO_INCREMENT,
-# `date` VARCHAR(128),
-# `open` FLOAT,
-# `high` FLOAT,
-# `low` FLOAT,
-# `close` FLOAT,
-# `volume` FLOAT,
-# `ex-dividend` FLOAT,
-# `split_ratio` FLOAT,
-# `adj_open` FLOAT,
-# `adj_high` FLOAT,
-# `adj_low` FLOAT,
-# `adj_close` FLOAT,
-# `adj_volume` FLOAT,
-# PRIMARY KEY (`id`)
-# );'''.format(symbol)
-# 	)
 
 cursor.execute('''
 DROP TABLE IF EXISTS ticker;
 CREATE TABLE ticker (
-id INTEGER NOT NULL AUTO_INCREMENT,
-symbol VARCHAR(128) NOT NULL,
-PRIMARY KEY (id) NOT NULL
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+symbol VARCHAR(128) NOT NULL
 );''')
 
 
 cursor.execute('''
 DROP TABLE IF EXISTS fundamental;
 CREATE TABLE fundamental (
-id INTEGER NULL AUTO_INCREMENT,
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
 ticker VARCHAR(128) NOT NULL,
 date VARCHAR(128) NOT NULL,
 value FLOAT NULL,
 indicator VARCHAR(128) NOT NULL,
-dimension VARCHAR(128) NULL,
-PRIMARY KEY (id) NOT NULL
+dimension VARCHAR(128) NULL
 );''')
 
 
@@ -100,6 +74,11 @@ ALTER TABLE price ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ALTER TABLE ticker ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ALTER TABLE fundamental ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ''')
+
+
+
+
+
 
 
 

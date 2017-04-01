@@ -49,7 +49,7 @@ for chunk in df_price_reader:
 	# chunk_list = list(set(ticker_chunk_df))
 	# chunk_transposed = chunk.transpose()
 
-	print (chunk.ix[0, 0])
+	print (chunk.ix[0])
 
 	# for row in chunk_transposed:
 	# for row in chunk:

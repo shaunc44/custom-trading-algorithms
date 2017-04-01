@@ -47,9 +47,13 @@ for chunk in df_price_reader:
 	print ("Counter = ", counter)
 	# chunk_df = list(chunk)
 	# chunk_list = list(set(ticker_chunk_df))
-	chunk_transposed = chunk.transpose()
-	for row in chunk_transposed:
-		print (row)
+	# chunk_transposed = chunk.transpose()
+
+	print (chunk.ix[0, 0])
+
+	# for row in chunk_transposed:
+	# for row in chunk:
+	# 	print (row[5])
 		# print (row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15])
 		# print ("Type = ", type(ticker)," ", ticker)
 		# cursor.execute('''
@@ -90,8 +94,6 @@ for chunk in df_price_reader:
 #Store unique ticker list in a csv file
 # pd_tickers_list = pd.DataFrame(tickers)
 # pd_tickers_list.to_csv("ticker_list4.csv")
-
-
 
 stop = timeit.default_timer()
 

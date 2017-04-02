@@ -49,10 +49,62 @@ for chunk in df_price_reader:
 	# chunk_list = list(set(ticker_chunk_df))
 	# chunk_transposed = chunk.transpose()
 
-	for col in chunk:
-		col_transposed = chunk[col].transpose()
-		print (col_transposed)
+	for row in chunk.itertuples():
+		# col_transposed = chunk[col].transpose()
+		print (row[7]) #this prints the specific values of column 7
+		# print (col_transposed) #this prints values of each columns 10000 by 10000
 		# print (chunk.ix[0])
+
+
+		cursor.execute('''
+			INSERT INTO price (
+			ticker,
+			date,
+			open,
+			high,
+			low,
+			close,
+			volume,
+			ex_dividend,
+			split_ratio,
+			adj_open,
+			adj_high,
+			adj_low,
+			adj_close,
+			adj_volume) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}","{12}","{13}");'''.format(row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15])
+		)
+		conn.commit()
+	conn.close()
+
+
+
+
+	# for col in chunk:
+	# 	col_transposed = chunk[col].transpose()
+	# 	# print (col) #this prints the column headings over and over
+	# 	print (col_transposed) #this prints values of each columns 10000 by 10000
+	# 	# print (chunk.ix[0])
+
+	# 	cursor.execute('''
+	# 		INSERT INTO price (
+	# 		ticker,
+	# 		date,
+	# 		open,
+	# 		high,
+	# 		low,
+	# 		close,
+	# 		volume,
+	# 		ex_dividend,
+	# 		split_ratio,
+	# 		adj_open,
+	# 		adj_high,
+	# 		adj_low,
+	# 		adj_close,
+	# 		adj_volume) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}","{12}","{13}");'''.format(row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15])
+	# 	)
+	# 	conn.commit()
+	# conn.close()
+
 
 	# for row in chunk_transposed:
 	# for row in chunk:

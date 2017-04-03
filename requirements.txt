@@ -70,6 +70,13 @@ ALTER TABLE ticker ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ALTER TABLE fundamental ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ''')
 
+
+
+
+*********************************************************************
+***************   DON'T USE THESE TABLES (SCHEMAS)  *****************
+*********************************************************************
+
 DROP TABLE IF EXISTS `user`;
 		
 CREATE TABLE `user` (

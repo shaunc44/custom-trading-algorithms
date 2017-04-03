@@ -31,7 +31,7 @@ cursor = conn.cursor()
 
 #CONVERT TICKER LIST TO TICKER_LIST CSV FILE
 # pd_list = pd.DataFrame(ticker_list)
-# pd_list.to_csv("ticker_list.csv")
+# pd_list.to_csv("ticker_list4.csv")
 
 
 #CONVERT EXCEL TO PANDAS DF

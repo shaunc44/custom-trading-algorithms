@@ -21,13 +21,28 @@ cursor = conn.cursor()
 
 #Fundamentals.csv file is so large that we have to break into 10000 line chunks
 #Overloads 8gb memory of my MacbookAir
+
+
 df_price_reader = pd.read_csv(
 	"data/prices.csv",
-	# names = ['ticker', 'date', 'value'],
-	chunksize=1000,
+	usecols=['ticker', 'date', 'adj_close', 'adj_volume'],
+	chunksize=10000,
 	low_memory=True,
 	engine='c'
 )
+
+# df_prices_2005 = df_price_reader[ (df_price_reader['date']) > '2004-12-31' ]
+
+# df_price_reader = pd.read_csv(
+# 	"data/prices.csv",
+# 	usecols=['ticker', 'date', 'adj_close', 'adj_volume'],
+# 	chunksize=10000,
+# 	low_memory=True,
+# 	engine='c'
+# )
+
+# df_prices_2005 = df_price_reader[ (df_price_reader['date']) > '2004-12-31' ]
+
 
 def parse_val(val):
 	if isinstance(val, np.float64):
@@ -40,49 +55,71 @@ def parse_val(val):
 #Split 1st column of csv into 3 columns (ticker, indicator, dimension)
 #Convert each chunk to a unique list
 counter = 0
-# tickers = []
-# counterx = 0
-for chunk in df_price_reader:
 
-	counter += 1
-	print ("Counter = ", counter)
-	# # chunk_df = list(chunk)
-	# # chunk_list = list(set(ticker_chunk_df))
-	# # chunk_transposed = chunk.transpose()
+for chunk in df_price_reader:
 	cursor.executemany('''
 		INSERT INTO price (
 		ticker_id,
 		ticker,
 		date,
-		open,
-		high,
-		low,
-		close,
-		volume,
-		ex_dividend,
-		split_ratio,
-		adj_open,
-		adj_high,
-		adj_low,
 		adj_close,
 		adj_volume) 
-		VALUES (1,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
+		VALUES (1,%s,%s,%s,%s);''',
 		(
 			[str(parse_val(row[idx])) for idx in range(1,len(row))]
 			for row in chunk.itertuples()
 		)
 	)
 	conn.commit()
+
+	counter += 1
+	print ("Counter = ", counter)
+
 conn.close()
 
 
-stop = timeit.default_timer()
 
+
+stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
 
 
 
 
+
+
+# counter = 0
+
+# for chunk in df_prices_2005:
+# 	cursor.executemany('''
+# 		INSERT INTO price (
+# 		ticker_id,
+# 		ticker,
+# 		date,
+# 		open,
+# 		high,
+# 		low,
+# 		close,
+# 		volume,
+# 		ex_dividend,
+# 		split_ratio,
+# 		adj_open,
+# 		adj_high,
+# 		adj_low,
+# 		adj_close,
+# 		adj_volume) 
+# 		VALUES (1,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
+# 		(
+# 			[str(parse_val(row[idx])) for idx in range(1,len(row))]
+# 			for row in chunk.itertuples()
+# 		)
+# 	)
+# 	conn.commit()
+
+# 	counter += 1
+# 	print ("Counter = ", counter)
+
+# conn.close()
 
 
 

@@ -34,19 +34,33 @@ id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
 ticker VARCHAR(128) NOT NULL,
 date VARCHAR(128) NOT NULL,
-open FLOAT NULL,
-high FLOAT NULL,
-low FLOAT NULL,
-close FLOAT NULL,
-volume FLOAT NULL,
-ex_dividend FLOAT NULL,
-split_ratio FLOAT NULL,
-adj_open FLOAT NULL,
-adj_high FLOAT NULL,
-adj_low FLOAT NULL,
 adj_close FLOAT NULL,
 adj_volume FLOAT NULL
 );''')
+
+
+# cursor.execute('''
+# SET foreign_key_checks = 0;
+# DROP TABLE IF EXISTS price;
+# SET foreign_key_checks = 1;
+# CREATE TABLE price (
+# id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+# ticker_id INTEGER NOT NULL,
+# ticker VARCHAR(128) NOT NULL,
+# date VARCHAR(128) NOT NULL,
+# open FLOAT NULL,
+# high FLOAT NULL,
+# low FLOAT NULL,
+# close FLOAT NULL,
+# volume FLOAT NULL,
+# ex_dividend FLOAT NULL,
+# split_ratio FLOAT NULL,
+# adj_open FLOAT NULL,
+# adj_high FLOAT NULL,
+# adj_low FLOAT NULL,
+# adj_close FLOAT NULL,
+# adj_volume FLOAT NULL
+# );''')
 
 
 cursor.execute('''

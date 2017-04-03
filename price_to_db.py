@@ -79,10 +79,9 @@ conn.close()
 
 
 
-
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-
+# Seconds to run:  4928.409679741992
 
 
 

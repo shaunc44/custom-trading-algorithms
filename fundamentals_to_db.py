@@ -23,7 +23,7 @@ cursor = conn.cursor()
 df_fundamental_reader = pd.read_csv(
 	"data/fundamentals.csv",
 	names=['ticker', 'date', 'value'],
-	chunksize=10000,
+	chunksize=100,
 	low_memory=True,
 	engine='c'
 )
@@ -52,6 +52,8 @@ counter = 0
 for chunk in df_fundamental_reader:
 	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
 	# print (chunk)
+	# print (chunk['value'])
+	# break
 	cursor.executemany('''
 		INSERT INTO fundamental (
 		ticker_id,
@@ -68,8 +70,8 @@ for chunk in df_fundamental_reader:
 	)
 	conn.commit()
 
-	counter += 1
-	print ("Counter = ", counter)
+	counter += 10000
+	print ("Percent Complete = ", (counter/94575000)*100, "%")
 
 conn.close()
 

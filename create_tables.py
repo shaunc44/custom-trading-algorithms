@@ -84,7 +84,7 @@ ticker VARCHAR(128) NOT NULL,
 indicator VARCHAR(128) NOT NULL,
 dimension VARCHAR(128) NULL,
 date VARCHAR(128) NOT NULL,
-value FLOAT NULL
+value DOUBLE NULL
 );''')
 
 

@@ -1,8 +1,11 @@
 import pymysql.cursors
 import pandas as pd
 import numpy as np
+# import decimal
 import timeit
 import csv
+
+# decimal.getcontext().prec = 12
 
 
 #Begin timer
@@ -23,7 +26,7 @@ cursor = conn.cursor()
 df_fundamental_reader = pd.read_csv(
 	"data/fundamentals.csv",
 	names=['ticker', 'date', 'value'],
-	chunksize=100,
+	chunksize=10000,
 	low_memory=True,
 	engine='c'
 )
@@ -52,16 +55,16 @@ counter = 0
 for chunk in df_fundamental_reader:
 	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
 	# print (chunk)
-	# print (chunk['value'])
+	# print (type(chunk['value']), chunk['value'])
 	# break
 	cursor.executemany('''
 		INSERT INTO fundamental (
 		ticker_id,
 		ticker,
-		indicator,
-		dimension,
 		date,
-		value) 
+		value,
+		indicator,
+		dimension) 
 		VALUES (1,%s,%s,%s,%s,%s);''',
 		(
 			[str(parse_val(row[idx])) for idx in range(1,len(row))]

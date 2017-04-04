@@ -38,40 +38,40 @@ def parse_code(value):
 	return code + [""]
 
 
-# def parse_val(val):
-# 	if isinstance(val, np.float64):
-# 		return 0.0 if np.isnan(val) else float(val)
-# 	elif isinstance(val,np.int64):
-# 		return int(val)
-# 	else:
-# 		return val
+def parse_val(val):
+	if isinstance(val, np.float64):
+		return 0.0 if np.isnan(val) else float(val)
+	elif isinstance(val,np.int64):
+		return int(val)
+	else:
+		return val
 
 
 counter = 0
 
 for chunk in df_fundamental_reader:
 	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
-	print (chunk)
-# 	cursor.executemany('''
-# 		INSERT INTO fundamental (
-# 		ticker_id,
-# 		ticker,
-# 		indicator,
-# 		dimension,
-# 		date,
-# 		value) 
-# 		VALUES (1,%s,%s,%s,%s,%s);''',
-# 		(
-# 			[str(parse_val(row[idx])) for idx in range(1,len(row))]
-# 			for row in chunk.itertuples()
-# 		)
-# 	)
-# 	conn.commit()
+	# print (chunk)
+	cursor.executemany('''
+		INSERT INTO fundamental (
+		ticker_id,
+		ticker,
+		indicator,
+		dimension,
+		date,
+		value) 
+		VALUES (1,%s,%s,%s,%s,%s);''',
+		(
+			[str(parse_val(row[idx])) for idx in range(1,len(row))]
+			for row in chunk.itertuples()
+		)
+	)
+	conn.commit()
 
-# 	counter += 1
-# 	print ("Counter = ", counter)
+	counter += 1
+	print ("Counter = ", counter)
 
-# conn.close()
+conn.close()
 
 
 stop = timeit.default_timer()

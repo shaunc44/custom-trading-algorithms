@@ -1,9 +1,24 @@
+import pymysql.cursors
 import pandas as pd
+import numpy as np
 import timeit
+import csv
+
 
 start = timeit.default_timer()
 
-# df = pd.read_csv( "test.csv", names = ['ticker', 'date', 'value'] )
+
+#Create connection to db
+conn = pymysql.connect(host='localhost',
+	user='scox',
+	password='scox',
+	db='trading_algo',
+	charset='utf8mb4',
+	cursorclass=pymysql.cursors.DictCursor
+	)
+
+cursor = conn.cursor()
+
 
 df_reader = pd.read_csv(
 	"data/fundamentals.csv",
@@ -15,11 +30,9 @@ df_reader = pd.read_csv(
 
 # df = pd.read_csv("data/historical_stock_prices.csv", usecols=['ticker', 'date', 'adj_close', 'adj_volume'])
 
-
 #COLUMN HEADINGS
 # print (list(df.columns.values))
 # ['AAAP_ACCOCI_ARQ', '2016-04-29', '0.0']
-
 
 # SEPARATE 1ST COLUMN INTO 3 COLUMNS
 # df = pd.DataFrame(df)
@@ -39,16 +52,6 @@ for chunk in df_reader:
 # df2007 = df[ (df['date']) > '2006-12-31' ]
 
 
-#EARLIEST PRICE DATE
-#print (df['date'].min())
-#1962-01-02
-
-
-#LATEST PRICE DATE
-#print (df['date'].max())
-#2017-03-07
-
-
 #LENGTH OF FILE
 # print (len(df.index)) # 94,575,737
 
@@ -62,3 +65,7 @@ for chunk in df_reader:
 stop = timeit.default_timer()
 
 print ("Seconds to run: ", (stop - start) )
+
+
+
+

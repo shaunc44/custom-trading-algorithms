@@ -174,10 +174,64 @@ ALTER TABLE `fundamental` ADD FOREIGN KEY (ticker_id) REFERENCES `ticker` (`id`)
 -- ('','','','','','','');
 
 
----------------------------------------------------------------------------------
-------------------------    GET LIST OF TRADING DATES    ------------------------
----------------------------------------------------------------------------------
+***************************************************************************
+*********************    GET LIST OF TRADING DATES    *********************
+***************************************************************************
 select distinct date from price where date > 2007-01-01;
+
+
+***************************************************************************
+********************    GET SYMBOL BASED ON CURRENT RATIO    **************
+***************************************************************************
+#select fundamental.ticker from fundamental where fundamental.indicator = 'CURRENTRATIO' and fundamental.value > 2.0 and date > '2017-01-01';
+
+
+***************************************************************************
+**********************    GET DISTINCT INDICATORS    **********************
+***************************************************************************
+#select fundamental.ticker from fundamental where fundamental.indicator = 'CURRENTRATIO' and fundamental.value > 2.0 and date > '2017-01-01';
+
+
+***************************************************************************
+************  STORED PROCEDURE TO GET TICKER BY CURRENT RATIO  ************
+***************************************************************************
+
+USE `trading_algo`;
+DROP procedure IF EXISTS `sp_getTickerWithCR`;
+
+DELIMITER $$
+USE `trading_algo`$$
+CREATE PROCEDURE `sp_getTickerWithCR` ()
+BEGIN
+	select distinct fundamental.ticker from fundamental where fundamental.indicator = 'CURRENTRATIO' and fundamental.value > 2.0 and date > '2017-01-01';
+END$$
+
+DELIMITER ;
+
+
+
+***************************************************************************
+***********  Sample from twitter file  ***********
+***************************************************************************
+
+USE `trading_algo`;
+DROP procedure IF EXISTS `sp_getTickerCR`;
+ 
+DELIMITER $$
+USE `trading_algo`$$
+CREATE PROCEDURE `sp_getTickerCR` (
+IN p_user_id BIGINT
+)
+BEGIN
+    select * from posts where user_id = p_user_id;
+END$$
+
+DELIMITER ;
+
+
+
+
+
 
 
 

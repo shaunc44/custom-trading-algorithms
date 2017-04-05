@@ -1,11 +1,8 @@
 import pymysql.cursors
 import pandas as pd
 import numpy as np
-# import decimal
 import timeit
 import csv
-
-# decimal.getcontext().prec = 12
 
 
 #Begin timer

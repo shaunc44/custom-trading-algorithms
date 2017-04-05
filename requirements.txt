@@ -172,3 +172,15 @@ ALTER TABLE `fundamental` ADD FOREIGN KEY (ticker_id) REFERENCES `ticker` (`id`)
 -- ('','');
 -- INSERT INTO `fundamental` (`id`,`ticker_id`,`ticker`,`date`,`value`,`indicator`,`dimension`) VALUES
 -- ('','','','','','','');
+
+
+---------------------------------------------------------------------------------
+------------------------    GET LIST OF TRADING DATES    ------------------------
+---------------------------------------------------------------------------------
+select distinct date from price where date > 2007-01-01;
+
+
+
+
+
+

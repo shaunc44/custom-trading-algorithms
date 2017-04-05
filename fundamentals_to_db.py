@@ -81,7 +81,7 @@ conn.close()
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-
+#Seconds to run:  29157.777773102018 = 485 min = 8 hrs 6 min
 
 
 

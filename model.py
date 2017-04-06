@@ -69,7 +69,6 @@ class CurrentRatioFilter(Filter):
 		return c.fetchall()
 
 
-
 class PriceChange52WeekFilter(Filter):
 	def screen(self):
 		c.execute('''SELECT price.ticker FROM price WHERE ((price.adj_close - old_adj_close)/old_adj_close)*100) > ? AND ((price.adj_close - old_adj_close)/old_adj_close)*100) < ?;''', (low, high))
@@ -78,25 +77,37 @@ class PriceChange52WeekFilter(Filter):
 
 class PriceEarningsFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = PE1 AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'PE1' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		return c.fetchall()
+
+
+class EarningsPerShareFilter(Filter):
+	def screen(self):
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'EPS' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
 		return c.fetchall()
 
 
 class ReturnOnEquity(Filter):
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = ROE AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'ROE' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
 		return c.fetchall()
 
 
 class ReturnOnInvestedCapitalFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = ROIC AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'ROIC' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		return c.fetchall()
+
+
+class DividendYieldFilter(Filter):
+	def screen(self):
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'DIVYIELD' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
 		return c.fetchall()
 
 
 class DebtToEquityFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = DE AND vfundamental.alue > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'DE' AND vfundamental.alue > ? AND fundamental.value < ?;''', (low, high))
 		return c.fetchall()
 
 

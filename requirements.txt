@@ -155,10 +155,12 @@ ALTER TABLE `fundamental` ADD FOREIGN KEY (ticker_id) REFERENCES `ticker` (`id`)
 -- Table Properties
 -- ---
 
+
 -- ALTER TABLE `user` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `price` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `ticker` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `fundamental` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 
 -- ---
 -- Test Data
@@ -190,6 +192,38 @@ select distinct date from price where date > 2007-01-01;
 **********************    GET DISTINCT INDICATORS    **********************
 ***************************************************************************
 #select fundamental.ticker from fundamental where fundamental.indicator = 'CURRENTRATIO' and fundamental.value > 2.0 and date > '2017-01-01';
+
+***************************************************************************
+***************************    CREATE INDEX    ****************************
+***************************************************************************
+CREATE FULLTEXT INDEX indicator_idx ON fundamental(indicator);
+
+
+***************************************************************************
+**************************    ADD PARTITIONS    ***************************
+***************************************************************************
+USE trading_algo;
+ALTER TABLE fundamental 
+PARTITION BY LIST(indicator) (
+  PARTITION pCURRENTRATIO VALUES IN ('CURRENTRATIO'),
+  PARTITION pDE VALUES IN ('DE'),
+  PARTITION pBVPS VALUES IN ('BVPS'),
+  PARTITION pEPS VALUES IN ('EPS'),
+  PARTITION pDIVYIELD VALUES IN ('DIVYIELD'),
+  PARTITION pPE1 VALUES IN ('PE1'),
+  PARTITION pPB VALUES IN ('PB'),
+  PARTITION pROIC VALUES IN ('ROIC'),
+  PARTITION pROE VALUES IN ('ROE),
+  PARTITION pNETMARGIN VALUES IN ('NETMARGIN'),
+  PARTITION pFCF VALUES IN ('FCF'),
+  PARTITION pPS VALUES IN ('PS'),
+  PARTITION pROA VALUES IN ('ROA'),
+  PARTITION pTANGIBLES VALUES IN ('TANGIBLES'),
+  PARTITION pROS VALUES IN ('ROS'),
+  PARTITION pWORKINGCAPITAL VALUES IN ('WORKINGCAPITAL'),
+  PARTITION pMARKETCAP VALUES IN ('MARKETCAP'),
+  PARTITION pFCFPS VALUES IN ('FCFPS'),
+);
 
 
 ***************************************************************************

@@ -51,20 +51,26 @@ counter = 0
 
 for chunk in df_fundamental_reader:
 	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
+	columns = chunk.columns.values
 	# print (chunk)
 	# print (type(chunk['value']), chunk['value'])
 	# break
 	cursor.executemany('''
 		INSERT INTO fundamental (
 		ticker_id,
-		ticker,
 		date,
 		value,
 		indicator,
 		dimension) 
-		VALUES (1,%s,%s,%s,%s,%s);''',
+		VALUES (
+			(SELECT ticker.id FROM ticker WHERE ticker.symbol=%(ticker)s),
+			%(date)s,
+			%(value)s,
+			%(indicator)s,
+			%(dimension)s
+		);''',
 		(
-			[str(parse_val(row[idx])) for idx in range(1,len(row))]
+			{columns[idx]: str(parse_val(row[idx])) for idx in range(len(row))}
 			for row in chunk.itertuples()
 		)
 	)

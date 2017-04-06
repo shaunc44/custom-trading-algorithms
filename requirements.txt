@@ -203,8 +203,7 @@ CREATE FULLTEXT INDEX indicator_idx ON fundamental(indicator);
 **************************    ADD PARTITIONS    ***************************
 ***************************************************************************
 USE trading_algo;
-ALTER TABLE fundamental 
-PARTITION BY LIST(indicator) (
+ALTER TABLE fundamental PARTITION BY LIST(indicator) (
   PARTITION pCURRENTRATIO VALUES IN ('CURRENTRATIO'),
   PARTITION pDE VALUES IN ('DE'),
   PARTITION pBVPS VALUES IN ('BVPS'),
@@ -222,7 +221,7 @@ PARTITION BY LIST(indicator) (
   PARTITION pROS VALUES IN ('ROS'),
   PARTITION pWORKINGCAPITAL VALUES IN ('WORKINGCAPITAL'),
   PARTITION pMARKETCAP VALUES IN ('MARKETCAP'),
-  PARTITION pFCFPS VALUES IN ('FCFPS'),
+  PARTITION pFCFPS VALUES IN ('FCFPS')
 );
 
 

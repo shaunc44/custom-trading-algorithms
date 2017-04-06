@@ -38,23 +38,23 @@ def parse_code(value):
 	return code + [""]
 
 
-def parse_val(val):
-	if isinstance(val, np.float64):
-		return 0.0 if np.isnan(val) else float(val)
-	elif isinstance(val,np.int64):
-		return int(val)
-	else:
-		return val
+def parse_row(row):
+	for key in row:
+		val = row[key]
+		if isinstance(val, np.float64):
+			row[key] = 0.0 if np.isnan(val) else float(val)
+		elif isinstance(val,np.int64):
+			row[key] = int(val)
+	return row
 
 
 counter = 0
 
 for chunk in df_fundamental_reader:
 	chunk['ticker'], chunk['indicator'], chunk['dimension'] = zip( *chunk['ticker'].map(parse_code) )
-	columns = chunk.columns.values
 	# print (chunk)
 	# print (type(chunk['value']), chunk['value'])
-	# break
+
 	cursor.executemany('''
 		INSERT INTO fundamental (
 		ticker_id,
@@ -69,10 +69,7 @@ for chunk in df_fundamental_reader:
 			%(indicator)s,
 			%(dimension)s
 		);''',
-		(
-			{columns[idx]: str(parse_val(row[idx])) for idx in range(len(row))}
-			for row in chunk.itertuples()
-		)
+		(parse_row(row) for row in chunk.to_dict(orient="records"))
 	)
 	conn.commit()
 

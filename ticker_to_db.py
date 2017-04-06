@@ -23,9 +23,9 @@ cursor = conn.cursor()
 #Iterate through ticker symbol file
 #Insert symbol into ticker table
 with open("data/ticker_list_fundamentals.csv") as file:
-	for _ in file:
+	for line in file:
 		# print ("Type = ", type(ticker)," ", ticker)
-		cursor.execute('INSERT INTO ticker (symbol) VALUE ("{}");'.format(_))
+		cursor.execute('INSERT INTO ticker (symbol) VALUE ("{}");'.format(line.strip()))
 		conn.commit()
 	conn.close()
 

@@ -4,7 +4,6 @@ import numpy as np
 import timeit
 import csv
 
-
 #Begin timer
 start = timeit.default_timer()
 
@@ -14,9 +13,19 @@ conn = pymysql.connect(host='localhost',
 	password='scox',
 	db='trading_algo',
 	charset='utf8mb4',
-	cursorclass=pymysql.cursors.DictCursor
-	)
+	# cursorclass=pymysql.cursors.DictCursor
+)
 cursor = conn.cursor()
+
+
+cursor.execute("""
+	SELECT symbol, id FROM ticker;
+""")
+
+rows = cursor.fetchall()
+ticker_map = pd.DataFrame.from_records(list(rows), columns=["symbol", "id"]) 
+ticker_map = ticker_map.set_index("symbol")
+
 
 #Fundamentals.csv file is so large that we have to break into 10000 line chunks
 #Overloads 8gb memory of my MacbookAir
@@ -40,11 +49,13 @@ def parse_code(value):
 
 def parse_row(row):
 	for key in row:
-		val = row[key]
+		val = row[key] if key != "ticker" else ticker_map.ix[row[key]].id
 		if isinstance(val, np.float64):
 			row[key] = 0.0 if np.isnan(val) else float(val)
 		elif isinstance(val,np.int64):
 			row[key] = int(val)
+		else: 
+			row[key] = val
 	return row
 
 
@@ -63,7 +74,7 @@ for chunk in df_fundamental_reader:
 		indicator,
 		dimension) 
 		VALUES (
-			(SELECT ticker.id FROM ticker WHERE ticker.symbol=%(ticker)s),
+			%(ticker)s,
 			%(date)s,
 			%(value)s,
 			%(indicator)s,

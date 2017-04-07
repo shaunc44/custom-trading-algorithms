@@ -144,9 +144,9 @@ CREATE TABLE fundamental (
 	indicator VARCHAR(128) NOT NULL,
 	dimension VARCHAR(128) NULL
 )
-PARTITION BY HASH(ticker_id) (
-PARTITIONS 150
-);''')
+PARTITION BY HASH(ticker_id)
+PARTITIONS 150;
+''')
 
 
 

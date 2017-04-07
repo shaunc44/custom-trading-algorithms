@@ -57,7 +57,7 @@ class Filter:
 #takes 7 sec to run
 class LastPriceFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT price.ticker FROM price WHERE price.adj_close > ? AND price.adj_close < ? and price.date = '?';''', (low, high, date)) #how to deal with no high or no low?
+		c.execute('''SELECT DISTINCT price.ticker FROM price WHERE price.adj_close > ? AND price.adj_close < ? and price.date = '?';''', (low, high, date)) #how to deal with no high or no low?
 		return c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 
 
@@ -65,7 +65,7 @@ class LastPriceFilter(Filter):
 #takes 56 sec to run ????
 class CurrentRatioFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT DISTINCT fundamental.ticker FROM fundamental WHERE fundamental.indicator = 'CURRENTRATIO' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental WHERE fundamental.indicator = 'CURRENTRATIO' AND fundamental.value > ? AND fundamental.value < ?;''', (low, high))
 		return c.fetchall()
 
 

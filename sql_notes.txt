@@ -262,6 +262,16 @@ END$$
 DELIMITER ;
 
 
+***************************************************************************
+***********************  BACKUP MYSQL DB WITH GZIP  ***********************
+***************************************************************************
+mysqldump -h localhost -u scox -p trading_algo | gzip -9 > backup-20170407-trading_algo.sql.gz
+
+
+***************************************************************************
+**********************  RESTORE MYSQL DB WITH GZIP  ***********************
+***************************************************************************
+`zcat $PATH/backup-%DATETIME%-%DATABASE_NAME%.sql.gz | mysql -h $HOSTNAME -u $EXISTING_USERNAME_NAME  -p $EXISTING_DATABASE_NAME`
 
 
 

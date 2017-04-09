@@ -73,31 +73,6 @@ symbol VARCHAR(128) NOT NULL
 );''')
 
 
-# cursor.execute('''
-# SET foreign_key_checks = 0;
-# DROP TABLE IF EXISTS fundamental;
-# SET foreign_key_checks = 1;
-# CREATE TABLE fundamental (
-# 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-# 	ticker_id INTEGER NOT NULL,
-# 	ticker VARCHAR(128) NOT NULL,
-# 	date VARCHAR(128) NOT NULL,
-# 	value FLOAT NULL,
-# 	indicator VARCHAR(128) NOT NULL,
-# 	dimension VARCHAR(128) NULL
-# )
-# PARTITION BY LIST(indicator) (
-# 	PARTITION pCURRENTRATIO VALUES IN ('CURRENTRATIO'),
-# 	PARTITION pDE VALUES IN ('DE'),
-# 	PARTITION pEPS VALUES IN ('EPS'),
-# 	PARTITION pDIVYIELD VALUES IN ('DIVYIELD'),
-# 	PARTITION pPE1 VALUES IN ('PE1'),
-# 	PARTITION pPB VALUES IN ('PB'),
-# 	PARTITION pROIC VALUES IN ('ROIC'),
-# 	PARTITION pROE VALUES IN ('ROE')
-# );''')
-
-
 cursor.execute('''
 SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS fundamental;

@@ -65,7 +65,7 @@ class LastPriceFilter(Filter):
 #takes 56 sec to run ????
 class CurrentRatioFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '2016-03-15' and fundamental.date < '2016-06-15';''', (low, high, date))
 		return c.fetchall()
 
 
@@ -77,7 +77,7 @@ class CurrentRatioFilter(Filter):
 
 class PriceEarningsFilter(Filter):
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pPE1) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pPE1) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '2016-03-15' and fundamental.date < '2016-06-15';;''', (low, high))
 		return c.fetchall()
 
 

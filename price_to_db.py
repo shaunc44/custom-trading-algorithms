@@ -14,7 +14,7 @@ conn = pymysql.connect(host='localhost',
 	password='scox',
 	db='trading_algo',
 	charset='utf8mb4',
-	cursorclass=pymysql.cursors.DictCursor
+	# cursorclass=pymysql.cursors.DictCursor #do we need this anymore?
 	)
 
 cursor = conn.cursor()
@@ -27,10 +27,11 @@ cursor.execute("""
 rows = cursor.fetchall()
 ticker_map = pd.DataFrame.from_records(list(rows), columns=["symbol", "id"]) 
 ticker_map = ticker_map.set_index("symbol")
+# print (ticker_map)
 
 
-#Fundamentals.csv file is so large that we have to break into 10000 line chunks
-#Overloads 8gb memory of my MacbookAir
+#prices.csv file is so large that we have to break into 10000 line chunks
+#Overloads 8gb memory on my MacbookAir
 df_price_reader = pd.read_csv(
 	"data/prices.csv",
 	usecols=['ticker', 'date', 'adj_close', 'adj_volume'],
@@ -40,14 +41,27 @@ df_price_reader = pd.read_csv(
 )
 
 
-def parse_val(val):
-	if isinstance(val, np.float64):
-		return 0.0 if np.isnan(val) else float(val)
-	elif isinstance(val,np.int64):
-		return int(val)
-	else:
-		return val
+#ORIGINAL
+# def parse_val(val):
+# 	if isinstance(val, np.float64):
+# 		return 0.0 if np.isnan(val) else float(val)
+# 	elif isinstance(val,np.int64):
+# 		return int(val)
+# 	else:
+# 		return val
 
+
+def parse_row(row):
+	for key in row:
+		# print ("Key: ", key, "Row[key]", row[key])
+		val = row[key] if key != "ticker" else ticker_map.ix[row[key]].id
+		if isinstance(val, np.float64):
+			row[key] = 0.0 if np.isnan(val) else float(val)
+		elif isinstance(val,np.int64):
+			row[key] = int(val)
+		else: 
+			row[key] = val
+	return row
 
 
 counter = 0
@@ -66,10 +80,9 @@ for chunk in df_price_reader:
 			%(adj_volume)s
 		);''',
 		(
-			[str(parse_val(row[idx])) for idx in range(1,len(row))]
-			for row in chunk.itertuples()
-
-			# (parse_row(row) for row in chunk.to_dict(orient="records"))
+			# [str(parse_val(row[idx])) for idx in range(1,len(row))]
+			# for row in chunk.itertuples()
+			(parse_row(row) for row in chunk.to_dict(orient="records"))
 		)
 	)
 	conn.commit()
@@ -81,6 +94,8 @@ for chunk in df_price_reader:
 conn.close()
 
 
+
+#THIS IS THE OLD CODE **********************************************
 # counter = 0
 
 # for chunk in df_price_reader:
@@ -104,7 +119,7 @@ conn.close()
 # 	print ("Percent Complete = ", (counter/14663457)*100, "%")
 
 # conn.close()
-
+#********************************************************************
 
 
 stop = timeit.default_timer()

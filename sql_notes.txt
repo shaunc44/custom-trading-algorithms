@@ -200,7 +200,7 @@ CREATE FULLTEXT INDEX indicator_idx ON fundamental(indicator);
 
 
 ***************************************************************************
-************************    CREATE PARTITIONS    **************************
+*************    CREATE PARTITIONS FOR FUNDAMENTAL TABLE    ***************
 ***************************************************************************
 USE trading_algo;
 CREATE TABLE fundamental (
@@ -339,10 +339,17 @@ PARTITION BY LIST COLUMNS(indicator) (
 
 
 ***************************************************************************
-****************    ALTER PRICE TABLE WITH PARTITIONS    ******************
+****************    CREATE PRICE TABLE WITH PARTITIONS    ******************
 ***************************************************************************
 USE trading_algo;
-ALTER TABLE price PARTITION BY RANGE COLUMNS(date) (
+DROP TABLE IF EXISTS price;
+CREATE TABLE price (
+  ticker_id INTEGER NOT NULL,
+  date VARCHAR(128) NOT NULL,
+  adj_close FLOAT NULL,
+  adj_volume FLOAT NULL
+)
+PARTITION BY RANGE COLUMNS(date) (
   PARTITION pLESSTHAN1990 VALUES LESS THAN ('1989-12-31'),
   PARTITION pLESSTHAN2000 VALUES LESS THAN ('1999-12-31'),
   PARTITION pLESSTHAN2005 VALUES LESS THAN ('2004-12-31'),

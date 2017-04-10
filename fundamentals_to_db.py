@@ -92,8 +92,16 @@ conn.close()
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-#Seconds to run: 50380 = 14 hrs
-#Seconds to run: 49124 =  hrs
+#Seconds to run: 49124 = 13 hrs 39 min
+
+
+
+
+
+
+
+
+
 
 
 

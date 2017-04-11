@@ -44,28 +44,49 @@ class Users():
 
 #How do i tell these filters to focus on a specific date and/or date range?
 class Filter:
-	def __init__(self, high, low, date):
-		self.high = high
-		self.low = low
-		self.date = date
-
 	def run(self):
 		self.screen()
 
 
+#Takes 3.65 seconds for all filters to run
+#15 minutes for 1 year
 #select price.ticker from price where price.adj_close > 5 and price.date = '2017-03-28';
-#takes 7 sec to run
+#takes 0.12 sec to run
 class LastPriceFilter(Filter):
-	def screen(self):
-		c.execute('''SELECT DISTINCT price.ticker FROM price WHERE price.adj_close > ? AND price.adj_close < ? and price.date = '?';''', (low, high, date)) #how to deal with no high or no low?
+	def __init__(self, lp_high, lp_low, end_date):
+		self.lp_high = lp_high
+		self.lp_low = lp_low
+		self.end_date = end_date
+
+	def screen(self, tickers=None):
+		# build query 
+		query= '''
+		SELECT DISTINCT price.ticker_id FROM price WHERE price.adj_close > ? AND price.adj_close < ? and price.date = '?'
+		'''
+		if tickers:
+			query += " and price.ticker_id IN " + str(tickers)
+
+		ticker_ids = c.execute('''SELECT DISTINCT price.ticker_id FROM price WHERE price.adj_close > ? AND price.adj_close < ? and price.date = '?';''', (low, high, end_date)) #how to deal with no high or no low?
+		
+		# c.execute('''SELECT DISTINCT ticker.symbol FROM ticker WHERE ticker.id = ticker_ids;''')
 		return c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 
 
-#select distinct fundamental.ticker from fundamental where fundamental.indicator = 'CURRENTRATIO' and fundamental.value > 2.0 and date > '2017-01-01';
-#takes 56 sec to run ????
+#SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > 2.0 and fundamental.date > '2016-12-22' and fundamental.date < '2017-03-22';
+#takes 0.53 sec to run
 class CurrentRatioFilter(Filter):
+	name = "current-ratio"
+	required = False
+	parameter_names = [""]
+
+	def __init__(self, cr_high, cr_low, begin_date, end_date):
+		self.cr_high = cr_high
+		self.cr_low = cr_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '2016-03-15' and fundamental.date < '2016-06-15';''', (low, high, date))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '2016-03-15' and fundamental.date < '2016-06-15';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
@@ -75,45 +96,94 @@ class CurrentRatioFilter(Filter):
 # 		return c.fetchall() #How do I get the adj_close from one year ago???????
 
 
+#SELECT fundamental.ticker_id FROM fundamental PARTITION (pPE1) WHERE fundamental.value > 1.0 AND fundamental.value < 20.0 and fundamental.date > '2017-03-22';
+#takes 0.38 sec to run
+#This filter returns the fewest results **********
 class PriceEarningsFilter(Filter):
+	def __init__(self, pe_high, pe_low, begin_date, end_date):
+		self.pe_high = pe_high
+		self.pe_low = pe_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pPE1) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '2016-03-15' and fundamental.date < '2016-06-15';;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pPE1) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
+#SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pEPS) WHERE fundamental.value > 0.5 and fundamental.date = '2017-03-22';
+#takes 1.08 sec to run
 class EarningsPerShareFilter(Filter):
+	def __init__(self, eps_high, eps_low, begin_date, end_date):
+		self.eps_high = eps_high
+		self.eps_low = eps_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pEPS) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pEPS) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?' and fundamental.date < '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
+#SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pROE) WHERE fundamental.value > 10.0 and fundamental.date > '2016-05-22' and fundamental.date < '2016-08-22';
+#takes 0.33 sec to run
 class ReturnOnEquity(Filter):
+	def __init__(self, roe_high, roe_low, begin_date, end_date):
+		self.roe_high = roe_high
+		self.roe_low = roe_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pROE) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pROE) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?' and fundamental.date < '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
+#SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pROIC) WHERE fundamental.value > 15.0 and fundamental.date > '2016-05-22' and fundamental.date < '2016-08-22';
+#takes 0.33 sec to run
 class ReturnOnInvestedCapitalFilter(Filter):
+	def __init__(self, roic_high, roic_low, begin_date, end_date):
+		self.roic_high = roic_high
+		self.roic_low = roic_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pROIC) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pROIC) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?' and fundamental.date < '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
+#SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > 0.5 and fundamental.date > '2016-05-22' and fundamental.date < '2016-08-22';
+#takes 0.36 sec to run
 class DividendYieldFilter(Filter):
+	def __init__(self, dy_high, dy_low, begin_date, end_date):
+		self.dy_high = dy_high
+		self.dy_low = dy_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?' and fundamental.date < '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
+#SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDE) WHERE fundamental.value > 0.0 and fundamental.value < 0.25 and fundamental.date > '2016-05-22' and fundamental.date < '2016-08-22';
+#takes 0.49 sec to run
 class DebtToEquityFilter(Filter):
+	def __init__(self, de_high, de_low, begin_date, end_date):
+		self.de_high = de_high
+		self.de_low = de_low
+		self.begin_date = begin_date
+		self.end_date = end_date
+
 	def screen(self):
-		c.execute('''SELECT fundamental.ticker FROM fundamental PARTITION (pDE) WHERE vfundamental.alue > ? AND fundamental.value < ?;''', (low, high))
+		c.execute('''SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pDE) WHERE fundamental.value > ? AND fundamental.value < ? and fundamental.date > '?' and fundamental.date < '?';''', (low, high, begin_date, end_date))
 		return c.fetchall()
 
 
 # @classmethod
 # 	def screen(cls, lp_hi, lp_low, cr_hi, cr_lo, ftwpc_hi, ftwpc_lo, param, param, param, param, param, param, param, param, param, param, param, param, ):
-		
+#		pass
 
 # 	@classmethod
 # 	def last_price(cls, high, low):

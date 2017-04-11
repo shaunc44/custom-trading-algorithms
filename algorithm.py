@@ -1,18 +1,18 @@
 if lp_low is None: return None
 else: return lp_low
-if lp_hi is None: return None
-else: return lp_hi
+if lp_high is None: return None
+else: return lp_high
 
 
 if cr_low is None: return None
 else: return cr_low
-if cr_hi is None: return None
-else: return cr_hi
+if cr_high is None: return None
+else: return cr_high
 
 
 if pe_low is None: return None
 else: return pe_low
-if pe_hi is None: return None
-else: return pe_hi
+if pe_high is None: return None
+else: return pe_high
 
 

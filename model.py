@@ -10,7 +10,7 @@ conn = pymysql.connect(host='localhost',
 	password='scox',
 	db='trading_algo',
 	charset='utf8mb4',
-	cursorclass=pymysql.cursors.DictCursor
+	# cursorclass=pymysql.cursors.DictCursor
 	)
 c = conn.cursor()
 
@@ -45,7 +45,7 @@ class Users():
 #How do i tell these filters to focus on a specific date and/or date range?
 class Filter:
 	def run(self):
-		self.screen()
+		return self.screen()
 
 
 #Takes 3.65 seconds for all filters to run
@@ -82,14 +82,14 @@ class LastPriceFilter(Filter):
 
 		# c.execute('''SELECT DISTINCT ticker.symbol FROM ticker WHERE ticker.id = ticker_ids;''')
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-		for r in rows:
-			print (r)
-		# return rows[1]
+		# for r in rows:
+		# 	print (r)
+		return rows
 
 
 last_price = LastPriceFilter(5, 9999, '2017-03-22')
 # print (last_price.run())
-print (last_price.screen())
+print (last_price.run())
 
 #SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > 2.0 and fundamental.date > '2016-12-22' and fundamental.date < '2017-03-22';
 #takes 0.53 sec to run

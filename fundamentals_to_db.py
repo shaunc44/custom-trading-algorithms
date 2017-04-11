@@ -27,8 +27,8 @@ ticker_map = pd.DataFrame.from_records(list(rows), columns=["symbol", "id"])
 ticker_map = ticker_map.set_index("symbol")
 
 
-#Fundamentals.csv file is so large that we have to break into 10000 line chunks
-#Overloads 8gb memory of my MacbookAir
+#fundamentals.csv file is so large that we have to break into 10000 line chunks
+#Overloads 8gb memory on my MacbookAir
 df_fundamental_reader = pd.read_csv(
 	"data/fundamentals.csv",
 	names=['ticker', 'date', 'value'],

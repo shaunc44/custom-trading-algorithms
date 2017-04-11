@@ -251,36 +251,3 @@ ALTER TABLE fundamental ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 
-
-
-# counter = 0
-# with open("ticker_list3.csv") as file:
-# 	for symbol in file:
-# 		cursor.execute('''
-# insert into prices (
-# id INT AUTO_INCREMENT,
-# ticker VARCHAR(128),
-# date VARCHAR(128),
-# open FLOAT,
-# high FLOAT,
-# low FLOAT,
-# close FLOAT,
-# volume FLOAT,
-# ex_dividend FLOAT,
-# split_ratio FLOAT,
-# adj_open FLOAT,
-# adj_high FLOAT,
-# adj_low FLOAT,
-# adj_close FLOAT,
-# adj_volume FLOAT,
-# PRIMARY KEY (id)
-# );'''.)
-# 		conn.commit()
-# 		counter += 1
-# 		print ("\nCounter = ", counter)
-# 		print ("Symbol = ", symbol)
-# 	conn.close()
-
-
-
-

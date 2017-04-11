@@ -27,7 +27,10 @@ cursor.execute("""
 rows = cursor.fetchall()
 ticker_map = pd.DataFrame.from_records(list(rows), columns=["symbol", "id"]) 
 ticker_map = ticker_map.set_index("symbol")
-# print (ticker_map)
+# ticker_only = ticker_map.ix[:,0]
+# print (ticker_map[ticker_map["symbol"] == "ACE"])
+# print (ticker_only)
+# if "ACE"
 
 
 #prices.csv file is so large that we have to break into 10000 line chunks
@@ -52,14 +55,24 @@ df_price_reader = pd.read_csv(
 
 
 def parse_row(row):
+
+	# if row["ticker"]
+	if row["ticker"] not in ticker_map.index:
+		print("New ticker added: ", row["ticker"])
+		cursor.execute("""
+				INSERT INTO ticker(symbol) VALUES(%s);
+			""", (row["ticker"],))
+		ticker_map.ix[row["ticker"]] = cursor.lastrowid
+
 	for key in row:
 		# print ("Key: ", key, "Row[key]", row[key])
 		val = row[key] if key != "ticker" else ticker_map.ix[row[key]].id
-		if isinstance(val, np.float64):
+
+		if isinstance(val, (np.float64, float)):
 			row[key] = 0.0 if np.isnan(val) else float(val)
 		elif isinstance(val,np.int64):
 			row[key] = int(val)
-		else: 
+		else:
 			row[key] = val
 	return row
 
@@ -124,7 +137,7 @@ conn.close()
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-# Seconds to run: 4928 = 82 min
+# Seconds to run:  8671 = 2 hrs 24 mins
 
 
 

@@ -33,7 +33,7 @@ with open("data/ticker_list_fundamentals.csv") as file:
 stop = timeit.default_timer()
 
 print ("Seconds to run: ", (stop - start) )
-# Seconds to run:  1.868534772998828
+# Seconds to run:  4.538
 
 
 

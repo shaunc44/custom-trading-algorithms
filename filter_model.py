@@ -333,8 +333,8 @@ dy = set(dy)
 de = set(de)
 
 
-class FilteredStocksForTrading():
-	def create_master_list(self):
+class CreateBuyList():
+	def create_buy_list(self):
 		counter = 0
 		master_list = []
 		x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe))))
@@ -349,8 +349,8 @@ class FilteredStocksForTrading():
 		return master_list
 
 
-filtered = FilteredStocksForTrading()
-print (filtered.create_master_list())
+filtered = CreateBuyList()
+print (filtered.create_buy_list())
 
 
 

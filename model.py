@@ -51,7 +51,7 @@ class Filter:
 		return self.screen()
 
 
-#Takes 3.65 seconds for all filters to run
+#Takes 4.33 seconds for all filters to run
 #15 minutes for 1 year
 #select price.ticker from price where price.adj_close > 5 and price.date = '2017-03-28';
 #takes 0.21 sec to run
@@ -84,8 +84,10 @@ class LastPriceFilter(Filter):
 
 		return self.lp_ticker_list
 
-last_price = LastPriceFilter(5, 9999, '2017-03-22')
-print (last_price.run())
+lp = LastPriceFilter(5, 9999, '2017-03-22').run()
+# print (lp.run())
+# print (lp)
+
 
 
 # #SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > 2.0 and fundamental.date > '2016-12-22' and fundamental.date < '2017-03-22';
@@ -118,7 +120,7 @@ class CurrentRatioFilter(Filter):
 
 		return self.cr_ticker_list
 
-# cr = CurrentRatioFilter(2, 9999, '2016-12-22', '2017-03-22')
+cr = CurrentRatioFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (cr.run())
 
 
@@ -156,7 +158,7 @@ class PriceEarningsFilter(Filter):
 
 		return self.pe_ticker_list
 
-# pe = PriceEarningsFilter(0.1, 20.0, '2016-12-22', '2017-03-22')
+pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
 # print (pe.run())
 
 
@@ -188,7 +190,7 @@ class EarningsPerShareFilter(Filter):
 
 		return self.eps_ticker_list
 
-# eps = EarningsPerShareFilter(0.1, 99999, '2016-12-22', '2017-03-22')
+eps = EarningsPerShareFilter(0, 99999, '2016-12-22', '2017-03-22').run()
 # print (eps.run())
 
 
@@ -219,7 +221,7 @@ class ReturnOnEquityFilter(Filter):
 
 		return self.roe_ticker_list
 
-# roe = ReturnOnEquityFilter(15, 9999, '2016-12-22', '2017-03-22')
+roe = ReturnOnEquityFilter(2, 99999, '2016-12-22', '2017-03-22').run()
 # print (roe.run())
 
 
@@ -251,7 +253,7 @@ class ReturnOnInvestedCapitalFilter(Filter):
 
 		return self.roic_ticker_list
 
-# roic = ReturnOnInvestedCapitalFilter(10, 9999, '2016-12-22', '2017-03-22')
+roic = ReturnOnInvestedCapitalFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (roic.run())
 
 
@@ -283,8 +285,8 @@ class DividendYieldFilter(Filter):
 
 		return self.dy_ticker_list
 
-# div_yield = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22')
-# print (div_yield.run())
+dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
+# print (dy.run())
 
 
 
@@ -315,8 +317,40 @@ class DebtToEquityFilter(Filter):
 
 		return self.de_ticker_list
 
-# debt_to_equity = DebtToEquityFilter(0, 0.5, '2016-12-22', '2017-03-22')
-# print (debt_to_equity.run())
+de = DebtToEquityFilter(0, 1, '2016-12-22', '2017-03-22').run()
+# print (de.run())
+
+
+
+lp = set(lp)
+cr = set(cr)
+pe = set(pe)
+eps = set(eps)
+roe = set(roe)
+roic = set(roic)
+dy = set(dy)
+de = set(de)
+# print(lp)
+# print(de)
+
+
+counter = 0
+master_list = []
+x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe))))
+# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
+x = list(x)
+for i in x:
+	master_list.append(i)
+	counter += 1
+	# print (i)
+
+print ("Total Tickers = ", str(counter))
+print (master_list)
+
+
+
+
+
 
 
 

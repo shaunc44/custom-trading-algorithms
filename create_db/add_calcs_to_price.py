@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 # df = pd.read_csv("../data/prices2.csv")
 # df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_6.csv")
+df = pd.read_csv("price_output_5.csv")
 
 
 # VOLUME CHANGE
@@ -28,10 +28,10 @@ df = pd.read_csv("price_output_6.csv")
 # df.to_csv('price_output_3.csv')r
 
 
-these calcs are wrong; need to factor in avg_gain / loss
+# these calcs are wrong; need to factor in avg_gain / loss
 # AVG GAIN / LOSS
-# df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
-# df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['loss'].shift(1) * 13 ) + df['loss'] ) / 14, 0 )
+df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
+df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_loss'].shift(1) * 13 ) + df['loss'] ) / 14, 0 )
 
 
 # TRIM CSV FILE
@@ -40,7 +40,7 @@ these calcs are wrong; need to factor in avg_gain / loss
 # new_df.to_csv('price_output_5.csv', index = False)
 
 
-# df.to_csv('price_output_6.csv', index = False)
+df.to_csv('price_output_6.csv', index = False)
 
 
 # df['rs'] = 
@@ -73,8 +73,9 @@ these calcs are wrong; need to factor in avg_gain / loss
 # # df['rsi'] = df['adj_close']/df['adj_close']
 
 #COLUMN HEADINGS
-print (list(df.columns.values))
-print (df[-5:])
+# print ("This is price_output_5\n")
+# print (list(df.columns.values))
+# print (df[-5:])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
 

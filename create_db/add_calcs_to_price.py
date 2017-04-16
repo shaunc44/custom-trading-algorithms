@@ -51,10 +51,10 @@ for row in df.itertuples():
 	# print (row.ticker, row.gain, row.avg_gain)
 
 	counter += 1
-	if counter == 20:
-		break
-	# if counter % 100 == 0:
-	# 	print ("Percent complete = ", counter / 14663500)
+	# if counter == 20:
+	# 	break
+	if counter % 100 == 0:
+		print ("Percent complete = ", counter / 14663500)
 
 
 # counter = 0

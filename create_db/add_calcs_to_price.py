@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 # df = pd.read_csv("../data/prices2.csv")
 # df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_5.csv")
+df = pd.read_csv("price_output_7.csv")
 
 
 # VOLUME CHANGE
@@ -28,10 +28,86 @@ df = pd.read_csv("price_output_5.csv")
 # df.to_csv('price_output_3.csv')r
 
 
-# these calcs are wrong; need to factor in avg_gain / loss
+# doesnt work bc avg_gain is part of new column
 # AVG GAIN / LOSS
-df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
-df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_loss'].shift(1) * 13 ) + df['loss'] ) / 14, 0 )
+# df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
+
+
+
+counter = 0
+prev_ticker = ''
+last_avg_gain = 0
+
+for row in df.itertuples():
+
+	if row.ticker == prev_ticker:
+		df.loc[row.Index, 'avg_gain'] = ( (last_avg_gain * 13) + row.gain ) / 14
+	else:
+		df.loc[row.Index, 'avg_gain'] = 0
+
+	prev_ticker = row.ticker
+	last_avg_gain = df.loc[row.Index, 'avg_gain']
+
+	# print (row.ticker, row.gain, row.avg_gain)
+
+	counter += 1
+	if counter == 20:
+		break
+	# if counter % 100 == 0:
+	# 	print ("Percent complete = ", counter / 14663500)
+
+
+# counter = 0
+# for row in range(1, len(df):
+# 	if df.loc[row, 'ticker'] == df.loc[row-1, 'ticker']:
+# 		df.loc[row, 'avg_gain'] = ((df.loc[row-1, 'avg_gain'] * 13) + df.loc[row, 'gain']) / 14
+# 	else:
+# 		df.loc[row, 'avg_gain'] = 0
+# 	counter += 1
+# 	if counter % 100 == 0:
+# 		print ("Percent complete = ", counter / 14663500)
+
+
+# counter = 0
+# prev_tick = 0
+# prev_avg_gain = 0
+# for row in list(zip(df['ticker'], df['gain'], df['avg_gain'])):
+# 	if row[0] == prev_tick:
+# 		row[2] = ((prev_avg_gain * 13) + row[1]) / 14
+# 	else:
+# 		row[2] = 0
+# 	prev_tick = row[0]
+# 	prev_avg_gain = row[2]
+# 	counter += 1
+# 	if counter % 100 == 0:
+# 		print ("Percent complete = ", counter / 14663500)
+
+
+# counter = 0
+# for row, group in grouped:
+# 	# if group.loc[symbol, 'ticker'] == group.loc[symbol-1, 'ticker']:
+# 	if group.loc[row-1, 'avg_gain']:
+# 		group.loc[row, 'avg_gain'] = ((group.loc[row-1, 'avg_gain'] * 13) + group.loc[row, 'gain']) / 14
+# 	else:
+# 		group.loc[row, 'avg_gain'] = 0
+# 	counter += 1
+# 	if counter % 100 == 0:
+# 		print ("Percent complete = ", counter / 14663500)
+
+
+# THIS WORKED BUT WAS VERY SLOW !!!
+# counter = 0
+# for row in range(1, len(df)):
+# 	if df.loc[row, 'ticker'] == df.loc[row-1, 'ticker']:
+# 		df.loc[row, 'avg_gain'] = ((df.loc[row-1, 'avg_gain'] * 13) + df.loc[row, 'gain']) / 14
+# 	else:
+# 		df.loc[row, 'avg_gain'] = 0
+# 	counter += 1
+# 	if counter % 100 == 0:
+# 		print ("Percent complete = ", counter / 14663500)
+
+
+# df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_loss'].shift(1) * 13 ) + df['loss'] ) / 14, 0 )
 
 
 # TRIM CSV FILE
@@ -40,7 +116,50 @@ df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_
 # new_df.to_csv('price_output_5.csv', index = False)
 
 
-df.to_csv('price_output_6.csv', index = False)
+# DELETE COLUMNS
+# df = df.drop('avg_gain', 1)
+# df = df.drop('avg_loss', 1)
+
+# ASSIGN EMPTY COLUMNS TO DATAFRAME
+# df['avg_gain'] = 0
+# df['avg_loss'] = 0
+# df.loc[0, 'avg_gain'] = 0
+# df.loc[0, 'avg_loss'] = 0
+
+
+
+
+df.to_csv('price_output_8.csv', index = False)
+
+
+
+#COLUMN HEADINGS
+print ("This is price_output_8\n")
+print (list(df.columns.values))
+print (df[:20])
+#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
+
+
+stop = timeit.default_timer()
+print ("Seconds to run: ", (stop - start) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # df['rs'] = 
@@ -67,23 +186,5 @@ df.to_csv('price_output_6.csv', index = False)
 
 # # df['price_change'] = df['adj_close'] / df['adj_open']
 # df.to_csv('price_output3.csv')
-
-
-
-# # df['rsi'] = df['adj_close']/df['adj_close']
-
-#COLUMN HEADINGS
-# print ("This is price_output_5\n")
-# print (list(df.columns.values))
-# print (df[-5:])
-#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
-
-
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
-
-
-
-
 
 

@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 # df = pd.read_csv("../data/prices2.csv")
 # df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_9.csv")
+df = pd.read_csv("price_output_10.csv")
 
 
 # VOLUME CHANGE
@@ -29,7 +29,11 @@ df = pd.read_csv("price_output_9.csv")
 
 
 # RELATIVE STRENGTH
-df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
+# df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
+
+
+# RELATIVE STRENGTH INDICATOR
+df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 
 
 # DELETE COLUMNS
@@ -57,11 +61,11 @@ df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
 
 
 
-df.to_csv('price_output_10.csv', index = False)
+df.to_csv('price_output_11.csv', index = False)
 
 
 #COLUMN HEADINGS
-print ("This is price_output_9\n")
+print ("This is price_output_11\n")
 print (list(df.columns.values))
 print (df[:30])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']

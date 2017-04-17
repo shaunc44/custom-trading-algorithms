@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 # df = pd.read_csv("../data/prices2.csv")
 # df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_7.csv")
+df = pd.read_csv("price_output_9.csv")
 
 
 # VOLUME CHANGE
@@ -28,26 +28,75 @@ df = pd.read_csv("price_output_7.csv")
 # df.to_csv('price_output_3.csv')r
 
 
+# RELATIVE STRENGTH
+df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
+
+
+# DELETE COLUMNS
+# df = df.drop('avg_gain', 1)
+# df = df.drop('avg_loss', 1)
+
+
+# AVG GAIN / LOSS
+# df['avg_gain'] = df.groupby('ticker')['gain'].rolling(14).mean().reset_index(0, drop=True).fillna(method='bfill')
+# df['avg_loss'] = df.groupby('ticker')['loss'].rolling(14).mean().reset_index(0, drop=True).fillna(method='bfill')
+
+
+# TRIM CSV FILE
+# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss']
+# new_df = df[keep_cols]
+# new_df.to_csv('price_output_5.csv', index = False)
+
+
+# ASSIGN EMPTY COLUMNS TO DATAFRAME
+# df['avg_gain'] = 0
+# df['avg_loss'] = 0
+# df.loc[0, 'avg_gain'] = 0
+# df.loc[0, 'avg_loss'] = 0
+
+
+
+
+df.to_csv('price_output_10.csv', index = False)
+
+
+#COLUMN HEADINGS
+print ("This is price_output_9\n")
+print (list(df.columns.values))
+print (df[:30])
+#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
+
+
+stop = timeit.default_timer()
+print ("Seconds to run: ", (stop - start) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # doesnt work bc avg_gain is part of new column
 # AVG GAIN / LOSS
 # df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
 
 
-# DELETE COLUMNS
-df = df.drop('avg_gain', 1)
-# df = df.drop('avg_loss', 1)
-
-
-#ROLLING MEAN ATTEMPT???
-df['avg_gain'] = df.groupby('ticker')['gain'].rolling(14).mean().reset_index(0, drop=True).fillna(method='bfill')
-
-
-
-
-
-
-
-# THIS WORKS BUT IS VERY SLOW
+# THIS WORKS BUT IS VERY SLOW - MAYBE TRY TO ADD CDEF TO CPYTHON FILE
 # counter = 0
 # prev_ticker = ''
 # last_avg_gain = 0
@@ -126,79 +175,10 @@ df['avg_gain'] = df.groupby('ticker')['gain'].rolling(14).mean().reset_index(0, 
 # df['avg_loss'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_loss'].shift(1) * 13 ) + df['loss'] ) / 14, 0 )
 
 
-# TRIM CSV FILE
-# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss']
-# new_df = df[keep_cols]
-# new_df.to_csv('price_output_5.csv', index = False)
-
-
-
-
-# ASSIGN EMPTY COLUMNS TO DATAFRAME
-# df['avg_gain'] = 0
-# df['avg_loss'] = 0
-# df.loc[0, 'avg_gain'] = 0
-# df.loc[0, 'avg_loss'] = 0
-
-
-
-
-df.to_csv('price_output_8.csv', index = False)
-
-
-
-#COLUMN HEADINGS
-print ("This is price_output_8\n")
-print (list(df.columns.values))
-print (df[:30])
-#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
-
-
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# df['rs'] = 
-# df['rsi'] = 
-
-# df['volume_change'] = [ (((df['adj_volume'] / df['adj_volume'].shift(-1)) - 1) * 100) if df['ticker'] == df['ticker'].shift(-1) else 0 for x in df ]
-
-# counter = 0
-# temp = ''
-# for x in df:
-	# print (x)
-	# print (x['ticker'])
-	# print print
-# 	counter += 1
-# if df['ticker'].any() == temp:
-# if df['ticker'] == df['ticker'].shift(-1):
-# 	df['price_change'] = df['adj_close'] / df['adj_close'].shift(-1)
-# else:
-# 	df['price_change'] = 0
-# if counter % 10000 == 0:
-# 	print ("Percent complete: ", counter * 10000 / 14663457)
-# temp = df['ticker']
-
-
-# # df['price_change'] = df['adj_close'] / df['adj_open']
-# df.to_csv('price_output3.csv')
 
 

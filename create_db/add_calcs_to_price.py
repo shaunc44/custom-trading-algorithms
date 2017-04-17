@@ -33,28 +33,44 @@ df = pd.read_csv("price_output_7.csv")
 # df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
 
 
+# DELETE COLUMNS
+df = df.drop('avg_gain', 1)
+# df = df.drop('avg_loss', 1)
 
-counter = 0
-prev_ticker = ''
-last_avg_gain = 0
 
-for row in df.itertuples():
+#ROLLING MEAN ATTEMPT???
+df['avg_gain'] = df.groupby('ticker')['gain'].rolling(14).mean().reset_index(0, drop=True).fillna(method='bfill')
 
-	if row.ticker == prev_ticker:
-		df.loc[row.Index, 'avg_gain'] = ( (last_avg_gain * 13) + row.gain ) / 14
-	else:
-		df.loc[row.Index, 'avg_gain'] = 0
 
-	prev_ticker = row.ticker
-	last_avg_gain = df.loc[row.Index, 'avg_gain']
 
-	# print (row.ticker, row.gain, row.avg_gain)
 
-	counter += 1
-	# if counter == 20:
-	# 	break
-	if counter % 100 == 0:
-		print ("Percent complete = ", counter / 14663500)
+
+
+
+# THIS WORKS BUT IS VERY SLOW
+# counter = 0
+# prev_ticker = ''
+# last_avg_gain = 0
+
+# for row in df.itertuples():
+
+# 	if row.ticker == prev_ticker:
+# 		df.loc[row.Index, 'avg_gain'] = ( (last_avg_gain * 13) + row.gain ) / 14
+# 	else:
+# 		df.loc[row.Index, 'avg_gain'] = 0
+
+# 	prev_ticker = row.ticker
+# 	last_avg_gain = df.loc[row.Index, 'avg_gain']
+
+# 	# print (row.ticker, row.gain, row.avg_gain)
+
+# 	counter += 1
+# 	# if counter == 20:
+# 	# 	break
+# 	if counter % 100 == 0:
+# 		print ("Percent complete = ", counter / 14663500)
+
+
 
 
 # counter = 0
@@ -116,9 +132,7 @@ for row in df.itertuples():
 # new_df.to_csv('price_output_5.csv', index = False)
 
 
-# DELETE COLUMNS
-# df = df.drop('avg_gain', 1)
-# df = df.drop('avg_loss', 1)
+
 
 # ASSIGN EMPTY COLUMNS TO DATAFRAME
 # df['avg_gain'] = 0
@@ -136,7 +150,7 @@ df.to_csv('price_output_8.csv', index = False)
 #COLUMN HEADINGS
 print ("This is price_output_8\n")
 print (list(df.columns.values))
-print (df[:20])
+print (df[:30])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
 

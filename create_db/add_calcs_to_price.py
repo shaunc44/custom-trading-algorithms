@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 # df = pd.read_csv("../data/prices2.csv")
 # df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_10.csv")
+df = pd.read_csv("price_output_11.csv")
 
 
 # VOLUME CHANGE
@@ -25,11 +25,11 @@ df = pd.read_csv("price_output_10.csv")
 # GAIN / LOSS
 # df['gain'] = np.where( df['price_change'] > 0, df['price_change'], 0 )
 # df['loss'] = np.where( df['price_change'] < 0, df['price_change'], 0 )
-# df.to_csv('price_output_3.csv')r
+# df.to_csv('price_output_3.csv')
 
 
 # RELATIVE STRENGTH
-# df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
+# df['rs'] = df['rsi_avg_gain'] / abs(df['rsi_avg_loss'])
 
 
 # RELATIVE STRENGTH INDICATOR
@@ -46,10 +46,15 @@ df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 # df['avg_loss'] = df.groupby('ticker')['loss'].rolling(14).mean().reset_index(0, drop=True).fillna(method='bfill')
 
 
+# RSI AVG GAIN / LOSS
+# df['rsi_avg_gain'] = np.where( df['ticker'] == df['ticker'].shift(1), ( ((df['avg_gain'].shift(1) * 13) + df['gain']) / 14 ), 0 )
+# df['rsi_avg_loss'] = np.where( df['ticker'] == df['ticker'].shift(1), ( ((df['avg_loss'].shift(1) * 13) + df['loss']) / 14 ), 0 )
+
+
 # TRIM CSV FILE
-# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss']
+# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'rsi']
 # new_df = df[keep_cols]
-# new_df.to_csv('price_output_5.csv', index = False)
+# new_df.to_csv('price_output_final.csv', index = False)
 
 
 # ASSIGN EMPTY COLUMNS TO DATAFRAME
@@ -61,13 +66,13 @@ df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 
 
 
-df.to_csv('price_output_11.csv', index = False)
+df.to_csv('price_output_final.csv', index = False)
 
 
 #COLUMN HEADINGS
-print ("This is price_output_11\n")
+print ("This is price_output_final\n")
 print (list(df.columns.values))
-print (df[:30])
+print (df[-20:])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
 
@@ -98,6 +103,7 @@ print ("Seconds to run: ", (stop - start) )
 # doesnt work bc avg_gain is part of new column
 # AVG GAIN / LOSS
 # df['avg_gain'] = np.where( (df['ticker'] == df['ticker'].shift(1)), ( ( df['avg_gain'].shift(1) * 13 ) + df['gain'] ) / 14, 0 )
+
 
 
 # THIS WORKS BUT IS VERY SLOW - MAYBE TRY TO ADD CDEF TO CPYTHON FILE

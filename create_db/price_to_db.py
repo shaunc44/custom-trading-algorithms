@@ -36,8 +36,8 @@ ticker_map = ticker_map.set_index("symbol")
 #prices.csv file is so large that we have to break into 10000 line chunks
 #Overloads 8gb memory on my MacbookAir
 df_price_reader = pd.read_csv(
-	"data/prices.csv",
-	usecols=['ticker', 'date', 'adj_close', 'adj_volume'],
+	"price_to_db.csv",
+	usecols=['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'rsi'],
 	chunksize=10000,
 	low_memory=True,
 	engine='c'

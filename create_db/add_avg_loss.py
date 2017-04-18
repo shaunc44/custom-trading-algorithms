@@ -9,7 +9,7 @@ start = timeit.default_timer()
 
 
 # df = pd.read_csv("price_output_7.csv")
-df = pd.read_csv("price_output_8.csv")
+df = pd.read_csv("price_output_10.csv")
 groups = df.groupby('ticker')
 
 
@@ -17,28 +17,19 @@ def wrap(initial):
 	prev = {
 		"value": initial
 	}
-	def calc(gain):
-		prev["value"] = ( gain + (prev["value"] * 13) ) / 14
+	def calc(loss):
+		prev["value"] = ( loss + (prev["value"] * 13) ) / 14
 		return prev["value"]
 	return calc
 
 
-my_df = None
+# my_df = None
 print(dt.datetime.now())
 for name, group in groups:
 	calc = wrap(0)
 	print(name, dt.datetime.now())
-	group['avg_gain'] = group['gain'].map(calc)
-	group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
-	# if my_df is None:
-	# 	my_df = group
-	# else:
-	# 	my_df.append(group, ignore_index=True)
-
-
-# final_df = pd.concat(my_df, ignore_index=True)
-
-# final_df.to_csv('price_output_9.csv', index = False)
+	group['avg_loss'] = group['loss'].map(calc)
+	group.to_csv('price_output_11.csv', index=False, header=False, mode='a')
 
 
 #COLUMN HEADINGS
@@ -51,12 +42,6 @@ for name, group in groups:
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-
-
-
-
-
-
 
 
 

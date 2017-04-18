@@ -2,6 +2,7 @@ import pandas as pd
 #import numpy as np
 #import timeit
 import csv
+import os
 
 
 #start = timeit.default_timer()
@@ -24,11 +25,16 @@ for row in df.itertuples():
 		df.loc[row.Index, 'avg_gain'] = 0
 	prev_ticker = row.ticker
 	last_avg_gain = df.loc[row.Index, 'avg_gain']
+	print (last_avg_gain)
 	counter += 1
 	print ("Counter = ", counter)
+	#with open("out1.csv", a, newline='') as f:
+	#	writer = csv.writer(f)
+
+	#os.system('')
 
 
-df.to_csv('price_output_8.csv', index = False)
+#df.to_csv('price_output_8.csv', index = False)
 
 
 #stop = timeit.default_timer()

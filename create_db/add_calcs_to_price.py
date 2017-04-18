@@ -7,9 +7,21 @@ import csv
 start = timeit.default_timer()
 
 
-# df = pd.read_csv("../data/prices2.csv")
-# df = pd.read_csv("price_output_copy.csv")
-df = pd.read_csv("price_output_11.csv")
+
+df = pd.read_csv("price_output_13.csv")
+
+
+# ADD HEADERS TO DATAFRAME
+# df = pd.read_csv("price_output_11.csv")
+# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain', 'avg_loss']
+
+
+# REPLACE ALL INF WITH NANS
+# df2 = df.replace( [np.inf, -np.inf], np.nan )
+
+
+# REPLACE ALL INF WITH NANS
+# df3 = df2.replace( np.nan, 0 )
 
 
 # VOLUME CHANGE
@@ -29,7 +41,7 @@ df = pd.read_csv("price_output_11.csv")
 
 
 # RELATIVE STRENGTH
-# df['rs'] = df['rsi_avg_gain'] / abs(df['rsi_avg_loss'])
+# df['rs'] = df['avg_gain'] / abs(df['avg_loss'])
 
 
 # RELATIVE STRENGTH INDICATOR
@@ -64,17 +76,18 @@ df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 # df.loc[0, 'avg_loss'] = 0
 
 
-
-
-df.to_csv('price_output_final.csv', index = False)
+df.to_csv('price_output_14.csv', index = False)
 
 
 #COLUMN HEADINGS
-print ("This is price_output_final\n")
+# print ("This is price_output_8\n")
 print (list(df.columns.values))
-print (df[-20:])
+# print (df[:20])
+print (df[-30:])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
+#UPDATED
+#['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain', 'avg_loss']
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
@@ -158,6 +171,7 @@ print ("Seconds to run: ", (stop - start) )
 # 		print ("Percent complete = ", counter / 14663500)
 
 
+
 # counter = 0
 # for row, group in grouped:
 # 	# if group.loc[symbol, 'ticker'] == group.loc[symbol-1, 'ticker']:
@@ -187,6 +201,50 @@ print ("Seconds to run: ", (stop - start) )
 
 
 
+
+
+#CYTHON EXAMPLE
+# import pandas as pd
+# #import numpy as np
+# #import timeit
+# import csv
+# import os
+
+
+# #start = timeit.default_timer()
+
+
+# df = pd.read_csv("../price_output_7.csv")
+
+# cdef int counter
+# cdef str prev_ticker
+# cdef double last_avg_gain
+
+# counter = 0
+# prev_ticker = 'sampleticker'
+# last_avg_gain = 0
+
+# for row in df.itertuples():
+# 	if row.ticker == prev_ticker:
+# 		df.loc[row.Index, 'avg_gain'] = ( (last_avg_gain * 13) + row.gain ) / 14
+# 	else:
+# 		df.loc[row.Index, 'avg_gain'] = 0
+# 	prev_ticker = row.ticker
+# 	last_avg_gain = df.loc[row.Index, 'avg_gain']
+# 	print (last_avg_gain)
+# 	counter += 1
+# 	print ("Counter = ", counter)
+	#with open("out1.csv", a, newline='') as f:
+	#	writer = csv.writer(f)
+
+	#os.system('')
+
+
+#df.to_csv('price_output_8.csv', index = False)
+
+
+#stop = timeit.default_timer()
+#print ("Seconds to run: ", (stop - start) )
 
 
 

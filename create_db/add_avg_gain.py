@@ -8,14 +8,13 @@ import csv
 start = timeit.default_timer()
 
 
-# df = pd.read_csv("price_output_7.csv")
 df = pd.read_csv("price_output_8.csv")
 groups = df.groupby('ticker')
 
 
-def wrap(initial):
+def wrap(first_avg_gain):
 	prev = {
-		"value": initial
+		"value": first_avg_gain
 	}
 	def calc(gain):
 		prev["value"] = ( gain + (prev["value"] * 13) ) / 14
@@ -26,27 +25,18 @@ def wrap(initial):
 my_df = None
 print(dt.datetime.now())
 for name, group in groups:
-	calc = wrap(0)
-	print(name, dt.datetime.now())
-	group['avg_gain'] = group['gain'].map(calc)
-	group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
-	# if my_df is None:
-	# 	my_df = group
-	# else:
-	# 	my_df.append(group, ignore_index=True)
-
-
-# final_df = pd.concat(my_df, ignore_index=True)
-
-# final_df.to_csv('price_output_9.csv', index = False)
-
-
-#COLUMN HEADINGS
-# print ("This is price_output_8\n")
-# print (list(df.columns.values))
-# # print (df[-30:])
-# print (df[:30])
-#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
+	avg_gains = group['gain'].rolling(window=14).mean().shift(-13)
+	first_avg_gain = avg_gains.loc[0]
+	# print ("first_avg_gain = ", first_avg_gain)
+	# first_calc = wrap(first_avg_gain)
+	calc = wrap(first_avg_gain)
+	# print(name, dt.datetime.now())
+	group.loc[0, 'avg_gain'] = first_avg_gain
+	# group['avg_gain'].loc[0:1] = group['gain'].loc[0:1].map(first_calc)
+	group.loc[1:, 'avg_gain'] = group.loc[1:, 'gain'].map(calc)
+	# group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
+	print(group)
+	break
 
 
 stop = timeit.default_timer()
@@ -57,12 +47,39 @@ print ("Seconds to run: ", (stop - start) )
 
 
 
+#COLUMN HEADINGS
+# print ("This is price_output_9\n")
+# print (list(df.columns.values))
+# print (df[-30:])
+# print (df[:30])
+#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
 
 
 
+# def wrap(first_avg_gain):
+# 	prev = {
+# 		"value": first_avg_gain
+# 	}
+# 	def calc(gain):
+# 		prev["value"] = ( gain + (prev["value"] * 13) ) / 14
+# 		return prev["value"]
+# 	return calc
 
 
+# my_df = None
+# print(dt.datetime.now())
+# for name, group in groups:
+# 	avg_gains = group['gain'].rolling(window=14).mean().shift(-13)
+# 	first_avg_gain = avg_gains.iloc[0]
+# 	print ("first_avg_gain = ", first_avg_gain)
+# 	calc = wrap(first_avg_gain)
+# 	# calc = wrap(0)
+# 	# print(name, dt.datetime.now())
+# 	group['avg_gain'] = group['gain'].map(calc)
+# 	# group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
+# 	print(group.iloc[1:5])
+# 	break
 
 
 

@@ -8,12 +8,18 @@ start = timeit.default_timer()
 
 
 
-df = pd.read_csv("price_output_13.csv")
+df = pd.read_csv("price_output_7.csv")
+
+
+# DELETE COLUMNS
+# df = df.drop('price_change', 1)
+# df = df.drop('gain', 1)
+# df = df.drop('loss', 1)
 
 
 # ADD HEADERS TO DATAFRAME
 # df = pd.read_csv("price_output_11.csv")
-# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain', 'avg_loss']
+# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain']
 
 
 # REPLACE ALL INF WITH NANS
@@ -30,14 +36,13 @@ df = pd.read_csv("price_output_13.csv")
 
 
 # PRICE CHANGE
-# df['price_change'] = (( df['adj_close'] / df['adj_open'] ) - 1) * 100
-# df.to_csv('price_output_2.csv')
+# df['price_chg_pct'] = np.where( df['ticker'] == df['ticker'].shift(1), ((df['adj_close'] / df['adj_close'].shift(1)) - 1) * 100, 0 )
+# df['price_chg_abs'] = np.where( df['ticker'] == df['ticker'].shift(1), (df['adj_close'] - df['adj_close'].shift(1)), 0 )
 
 
 # GAIN / LOSS
-# df['gain'] = np.where( df['price_change'] > 0, df['price_change'], 0 )
-# df['loss'] = np.where( df['price_change'] < 0, df['price_change'], 0 )
-# df.to_csv('price_output_3.csv')
+# df['gain'] = np.where( df['price_chg_abs'] > 0, df['price_chg_abs'], 0 )
+# df['loss'] = np.where( df['price_chg_abs'] < 0, df['price_chg_abs'], 0 )
 
 
 # RELATIVE STRENGTH
@@ -45,12 +50,7 @@ df = pd.read_csv("price_output_13.csv")
 
 
 # RELATIVE STRENGTH INDICATOR
-df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
-
-
-# DELETE COLUMNS
-# df = df.drop('avg_gain', 1)
-# df = df.drop('avg_loss', 1)
+# df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 
 
 # AVG GAIN / LOSS
@@ -64,9 +64,9 @@ df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 
 
 # TRIM CSV FILE
-# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'rsi']
-# new_df = df[keep_cols]
-# new_df.to_csv('price_output_final.csv', index = False)
+keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss']
+new_df = df[keep_cols]
+new_df.to_csv('price_output_8.csv', index = False)
 
 
 # ASSIGN EMPTY COLUMNS TO DATAFRAME
@@ -76,14 +76,14 @@ df['rsi'] = 100 - ( 100 / ( 1 + df['rs'] ) )
 # df.loc[0, 'avg_loss'] = 0
 
 
-df.to_csv('price_output_14.csv', index = False)
+# df.to_csv('price_output_8.csv', index = False)
 
 
 #COLUMN HEADINGS
 # print ("This is price_output_8\n")
-print (list(df.columns.values))
+print (list(new_df.columns.values))
 # print (df[:20])
-print (df[-30:])
+print (new_df[-30:])
 #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
 
 #UPDATED

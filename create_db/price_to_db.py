@@ -52,6 +52,7 @@ df_price_reader = pd.read_csv(
 
 
 def parse_row(row):
+	# print (row)
 	if row["ticker"] not in ticker_map.index:
 		print("New ticker added: ", row["ticker"])
 		cursor.execute("""
@@ -64,7 +65,7 @@ def parse_row(row):
 		val = row[key] if key != "ticker" else ticker_map.ix[row[key]].id
 
 		if isinstance(val, (np.float64, float)):
-			row[key] = 0.0 if np.isnan(val) else float(val)
+			row[key] = 0.0 if np.isnan(val) or np.isinf(val) else float(val)
 		elif isinstance(val,np.int64):
 			row[key] = int(val)
 		else:
@@ -75,7 +76,7 @@ def parse_row(row):
 counter = 0
 
 for chunk in df_price_reader:
-	cursor.executemany('''
+	cursor.executemany("""
 		INSERT INTO price (
 		ticker_id,
 		date,
@@ -84,7 +85,7 @@ for chunk in df_price_reader:
 		volume_chg_pct,
 		price_chg_pct,
 		rsi) 
-		VALUES (
+		VALUES(
 			%(ticker)s,
 			%(date)s,
 			%(adj_close)s,
@@ -92,7 +93,7 @@ for chunk in df_price_reader:
 			%(volume_chg_pct)s,
 			%(price_chg_pct)s,
 			%(rsi)s
-		);''',
+		);""",
 		(
 			# [str(parse_val(row[idx])) for idx in range(1,len(row))]
 			# for row in chunk.itertuples()
@@ -101,9 +102,9 @@ for chunk in df_price_reader:
 	)
 	conn.commit()
 
-
 	counter += 10000
 	print ("Percent Complete = ", (counter/14663457)*100, "%")
+
 
 conn.close()
 

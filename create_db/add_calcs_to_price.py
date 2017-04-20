@@ -22,7 +22,7 @@ df = pd.read_csv("price_output_final.csv")
 # ADD HEADERS TO DATAFRAME
 # df = pd.read_csv("price_output_9.csv")
 # df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss', 'avg_gain', 'avg_loss']
-df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'rsi']
+# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'rsi']
 
 
 # REPLACE ALL INF WITH NANS
@@ -79,7 +79,7 @@ df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'pr
 # df.loc[0, 'avg_loss'] = 0
 
 
-df.to_csv('price_output_final2.csv', index = False)
+# df.to_csv('price_output_final2.csv', index = False)
 
 
 #COLUMN HEADINGS

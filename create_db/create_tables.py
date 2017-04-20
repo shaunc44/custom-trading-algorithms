@@ -51,7 +51,7 @@ CREATE TABLE price (
   date VARCHAR(128) NOT NULL,
   adj_close FLOAT NULL,
   adj_volume FLOAT NULL,
-  volume_change FLOAT NULL,
+  volume_chg_pct FLOAT NULL,
   price_chg_pct FLOAT NULL,
   rsi FLOAT NULL
 )

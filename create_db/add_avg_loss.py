@@ -8,40 +8,97 @@ import csv
 start = timeit.default_timer()
 
 
-# df = pd.read_csv("price_output_7.csv")
 df = pd.read_csv("price_output_10.csv")
 groups = df.groupby('ticker')
 
 
-def wrap(initial):
+def wrap(first_avg_loss):
 	prev = {
-		"value": initial
+		"value": None
 	}
 	def calc(loss):
-		prev["value"] = ( loss + (prev["value"] * 13) ) / 14
+		if prev["value"] is not None:
+			prev["value"] = ( loss + (prev["value"] * 13) ) / 14
+		else:
+			prev["value"] = first_avg_loss
 		return prev["value"]
 	return calc
 
 
-# my_df = None
+my_df = None
 print(dt.datetime.now())
 for name, group in groups:
-	calc = wrap(0)
+	avg_losses = group['loss'].rolling(window=14).mean().shift(-13)
+	first_avg_loss = avg_losses.iloc[0]
+	calc = wrap(first_avg_loss)
 	print(name, dt.datetime.now())
 	group['avg_loss'] = group['loss'].map(calc)
 	group.to_csv('price_output_11.csv', index=False, header=False, mode='a')
 
 
-#COLUMN HEADINGS
-# print ("This is price_output_8\n")
-# print (list(df.columns.values))
-# # print (df[-30:])
-# print (df[:30])
-#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
-
-
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import pandas as pd
+# import numpy as np
+# import timeit
+# import datetime as dt
+# import csv
+
+# #Begin timer
+# start = timeit.default_timer()
+
+
+# # df = pd.read_csv("price_output_7.csv")
+# df = pd.read_csv("price_output_10.csv")
+# groups = df.groupby('ticker')
+
+
+# def wrap(initial):
+# 	prev = {
+# 		"value": initial
+# 	}
+# 	def calc(loss):
+# 		prev["value"] = ( loss + (prev["value"] * 13) ) / 14
+# 		return prev["value"]
+# 	return calc
+
+
+# # my_df = None
+# print(dt.datetime.now())
+# for name, group in groups:
+# 	calc = wrap(0)
+# 	print(name, dt.datetime.now())
+# 	group['avg_loss'] = group['loss'].map(calc)
+# 	group.to_csv('price_output_11.csv', index=False, header=False, mode='a')
+
+
+# #COLUMN HEADINGS
+# # print ("This is price_output_8\n")
+# # print (list(df.columns.values))
+# # # print (df[-30:])
+# # print (df[:30])
+# #['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
+
+
+# stop = timeit.default_timer()
+# print ("Seconds to run: ", (stop - start) )
 
 
 

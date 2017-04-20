@@ -39,6 +39,9 @@ password VARCHAR(128) NOT NULL
 # );''')
 
 
+# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss', 'avg_gain', 'avg_loss']
+
+
 cursor.execute('''
 SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS price;
@@ -47,7 +50,10 @@ CREATE TABLE price (
   ticker_id INTEGER NOT NULL,
   date VARCHAR(128) NOT NULL,
   adj_close FLOAT NULL,
-  adj_volume FLOAT NULL
+  adj_volume FLOAT NULL,
+  volume_change FLOAT NULL,
+  price_chg_pct FLOAT NULL,
+  rsi FLOAT NULL
 )
 PARTITION BY RANGE COLUMNS(date) (
   PARTITION pLESSTHAN1990 VALUES LESS THAN ('1989-12-31'),

@@ -14,10 +14,13 @@ groups = df.groupby('ticker')
 
 def wrap(first_avg_gain):
 	prev = {
-		"value": first_avg_gain
+		"value": None
 	}
 	def calc(gain):
-		prev["value"] = ( gain + (prev["value"] * 13) ) / 14
+		if prev["value"] is not None:
+			prev["value"] = ( gain + (prev["value"] * 13) ) / 14
+		else:
+			prev["value"] = first_avg_gain
 		return prev["value"]
 	return calc
 
@@ -26,17 +29,16 @@ my_df = None
 print(dt.datetime.now())
 for name, group in groups:
 	avg_gains = group['gain'].rolling(window=14).mean().shift(-13)
-	first_avg_gain = avg_gains.loc[0]
-	# print ("first_avg_gain = ", first_avg_gain)
-	# first_calc = wrap(first_avg_gain)
+	first_avg_gain = avg_gains.iloc[0]
+	# print ("First Avg Gain = ", first_avg_gain)
 	calc = wrap(first_avg_gain)
-	# print(name, dt.datetime.now())
-	group.loc[0, 'avg_gain'] = first_avg_gain
+	print(name, dt.datetime.now())
 	# group['avg_gain'].loc[0:1] = group['gain'].loc[0:1].map(first_calc)
-	group.loc[1:, 'avg_gain'] = group.loc[1:, 'gain'].map(calc)
-	# group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
-	print(group)
-	break
+	group['avg_gain'] = group['gain'].map(calc)
+	# group.loc[1:, 'avg_gain'] = group.loc[1:, 'gain'].map(calc)
+	group.to_csv('price_output_9.csv', index=False, header=False, mode='a')
+	# print(group)
+	# break
 
 
 stop = timeit.default_timer()

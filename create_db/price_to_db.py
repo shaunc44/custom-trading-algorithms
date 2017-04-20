@@ -28,16 +28,13 @@ rows = cursor.fetchall()
 ticker_map = pd.DataFrame.from_records(list(rows), columns=["symbol", "id"]) 
 ticker_map = ticker_map.set_index("symbol")
 # ticker_only = ticker_map.ix[:,0]
-# print (ticker_map[ticker_map["symbol"] == "ACE"])
-# print (ticker_only)
-# if "ACE"
 
 
 #prices.csv file is so large that we have to break into 10000 line chunks
 #Overloads 8gb memory on my MacbookAir
 df_price_reader = pd.read_csv(
-	"price_to_db.csv",
-	usecols=['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'rsi'],
+	"price_output_final.csv",
+	usecols=['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'rsi'],
 	chunksize=10000,
 	low_memory=True,
 	engine='c'
@@ -55,8 +52,6 @@ df_price_reader = pd.read_csv(
 
 
 def parse_row(row):
-
-	# if row["ticker"]
 	if row["ticker"] not in ticker_map.index:
 		print("New ticker added: ", row["ticker"])
 		cursor.execute("""
@@ -85,12 +80,18 @@ for chunk in df_price_reader:
 		ticker_id,
 		date,
 		adj_close,
-		adj_volume) 
+		adj_volume,
+		volume_chg_pct,
+		price_chg_pct,
+		rsi) 
 		VALUES (
 			%(ticker)s,
 			%(date)s,
 			%(adj_close)s,
-			%(adj_volume)s
+			%(adj_volume)s,
+			%(volume_chg_pct)s,
+			%(price_chg_pct)s,
+			%(rsi)s
 		);''',
 		(
 			# [str(parse_val(row[idx])) for idx in range(1,len(row))]
@@ -106,6 +107,10 @@ for chunk in df_price_reader:
 
 conn.close()
 
+
+stop = timeit.default_timer()
+print ("Seconds to run: ", (stop - start) )
+# Seconds to run:  8671 = 2 hrs 24 mins
 
 
 #THIS IS THE OLD CODE **********************************************
@@ -135,46 +140,6 @@ conn.close()
 #********************************************************************
 
 
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
-# Seconds to run:  8671 = 2 hrs 24 mins
-
-
-
-
-
-# counter = 0
-
-# for chunk in df_prices_2005:
-# 	cursor.executemany('''
-# 		INSERT INTO price (
-# 		ticker_id,
-# 		ticker,
-# 		date,
-# 		open,
-# 		high,
-# 		low,
-# 		close,
-# 		volume,
-# 		ex_dividend,
-# 		split_ratio,
-# 		adj_open,
-# 		adj_high,
-# 		adj_low,
-# 		adj_close,
-# 		adj_volume) 
-# 		VALUES (1,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);''',
-# 		(
-# 			[str(parse_val(row[idx])) for idx in range(1,len(row))]
-# 			for row in chunk.itertuples()
-# 		)
-# 	)
-# 	conn.commit()
-
-# 	counter += 1
-# 	print ("Counter = ", counter)
-
-# conn.close()
 
 
 

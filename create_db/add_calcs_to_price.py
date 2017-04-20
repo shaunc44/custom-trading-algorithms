@@ -8,18 +8,21 @@ start = timeit.default_timer()
 
 
 
-df = pd.read_csv("price_output_7.csv")
+df = pd.read_csv("price_output_final.csv")
 
 
 # DELETE COLUMNS
-# df = df.drop('price_change', 1)
 # df = df.drop('gain', 1)
 # df = df.drop('loss', 1)
-
+# df = df.drop('avg_gain', 1)
+# df = df.drop('avg_loss', 1)
+# df = df.drop('price_chg_abs', 1)
+# df = df.drop('rs', 1)
 
 # ADD HEADERS TO DATAFRAME
-# df = pd.read_csv("price_output_11.csv")
-# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain']
+# df = pd.read_csv("price_output_9.csv")
+# df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss', 'avg_gain', 'avg_loss']
+df.columns = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_chg_pct', 'price_chg_pct', 'rsi']
 
 
 # REPLACE ALL INF WITH NANS
@@ -64,9 +67,9 @@ df = pd.read_csv("price_output_7.csv")
 
 
 # TRIM CSV FILE
-keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss']
-new_df = df[keep_cols]
-new_df.to_csv('price_output_8.csv', index = False)
+# keep_cols = ['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_chg_pct', 'price_chg_abs', 'gain', 'loss']
+# new_df = df[keep_cols]
+# new_df.to_csv('price_output_8.csv', index = False)
 
 
 # ASSIGN EMPTY COLUMNS TO DATAFRAME
@@ -76,18 +79,16 @@ new_df.to_csv('price_output_8.csv', index = False)
 # df.loc[0, 'avg_loss'] = 0
 
 
-# df.to_csv('price_output_8.csv', index = False)
+df.to_csv('price_output_final2.csv', index = False)
 
 
 #COLUMN HEADINGS
 # print ("This is price_output_8\n")
-print (list(new_df.columns.values))
+print (list(df.columns.values))
 # print (df[:20])
-print (new_df[-30:])
-#['ticker', 'date', 'open', 'high', 'low', 'close', 'volume', 'ex-dividend', 'split_ratio', 'adj_open', 'adj_high', 'adj_low', 'adj_close', 'adj_volume']
+print (df[-30:])
 
-#UPDATED
-#['ticker', 'date', 'adj_close', 'adj_volume', 'volume_change', 'price_change', 'gain', 'loss', 'avg_gain', 'avg_loss']
+
 
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )

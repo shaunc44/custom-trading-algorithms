@@ -53,6 +53,16 @@ li {
 }
 
 #bootstrap-override .form-control {
+	width: 100%;
+	margin-top: 2%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 2%;
+	text-align: center;
+}
+
+#bootstrap-override #inputUsername,
+#bootstrap-override #inputPassword {
 	width: 20%;
 	margin-top: 2%;
 	margin-right: auto;
@@ -114,6 +124,11 @@ li {
 	margin-bottom: 1%;
 }
 
+#bootstrap-override .flex-outer #button {
+	margin-top: 5%;
+}
+
+#bootstrap-override .flex-outer button,
 #bootstrap-override .flex-outer label {
 	font-family: "Bookman Old Style";
 	float: left;

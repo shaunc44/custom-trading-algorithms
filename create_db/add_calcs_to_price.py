@@ -26,7 +26,7 @@ df = pd.read_csv("price_output_final.csv")
 
 
 # REPLACE ALL INF WITH NANS
-# df2 = df.replace( [np.inf, -np.inf], np.nan )
+df2 = df.replace( [np.inf, -np.inf], 0 )
 
 
 # REPLACE ALL INF WITH NANS

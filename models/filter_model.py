@@ -355,6 +355,10 @@ print (filtered.create_buy_list())
 
 
 
+stop = timeit.default_timer()
+print ("Seconds to run: ", (stop - start) )
+
+
 
 # @classmethod
 # 	def screen(cls, lp_hi, lp_low, cr_hi, cr_lo, ftwpc_hi, ftwpc_lo, param, param, param, param, param, param, param, param, param, param, param, param, ):
@@ -483,8 +487,7 @@ print (filtered.create_buy_list())
 
 
 
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
+
 
 
 

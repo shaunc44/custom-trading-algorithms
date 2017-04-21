@@ -1,4 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import (
+	Flask, render_template, redirect, 
+	url_for, request, session, json
+)
+import forms
 import filter_model
 # import buy_model
 
@@ -58,8 +62,12 @@ def dashboard():
 
 @app.route("/filter", methods=["POST"])
 def filter():
-	daterange = request.form['daterange']
-	print (daterange)
+	print(request.form)
+	my_form = forms.FilterForm(request.form)
+	# daterange = request.form['daterange']
+	print(dir(my_form))
+	print(my_form.validate())
+	return json.jsonify(my_form.errors)
 	# filter_model.Date.add_date_range(daterange)
 	# lp_low = request.form['inputLastPriceLow']
 	# lp_high = request.form['inputLastPriceHigh']
@@ -72,7 +80,7 @@ def filter():
 	# 	return dashboard()
 	# else:
 	# 	return render_template("login.html")
-filter()
+# filter()
 
 
 # @app.route("/logged-in-home")

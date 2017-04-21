@@ -21,7 +21,13 @@ c = conn.cursor()
 #Set Date range somehow (1/1/2007 to 2/28/2017)
 #Iterate through list of trading dates here??? to input into SQL statements
 # start = "2007-01-02"
-# end = "2017-02-28"
+# end = "2017-03-28"
+class Date():
+	start_date = 
+	end_date =
+	current_date =
+	trading_dates = 
+
 
 
 #####################################################################
@@ -56,26 +62,20 @@ class Filter:
 #select price.ticker from price where price.adj_close > 5 and price.date = '2017-03-28';
 #takes 0.21 sec to run
 class LastPriceFilter(Filter):
-	def __init__(self, lp_low, lp_high, end_date):
+	def __init__(self, lp_low, lp_high, date):
 		self.lp_low = lp_low
 		self.lp_high = lp_high
-		self.end_date = end_date
+		self.date = date
 		self.lp_ticker_list = []
 
 	def screen(self, tickers=None):
-		# build query
-		# query = '''SELECT DISTINCT price.ticker_id FROM price WHERE price.adj_close > %s AND price.adj_close < %s AND price.date = %s
-		# ''' #this is a string
-		# if tickers:
-		# 	query += " and price.ticker_id IN " + str(tickers)
-
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
 			FROM price 
 			WHERE price.adj_close > %s 
 			AND price.adj_close < %s 
 			AND price.date = %s;
-		''', (self.lp_low, self.lp_high, self.end_date)) #how to deal with no high or no low?
+		''', (self.lp_low, self.lp_high, self.date)) #how to deal with no high or no low?
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
@@ -122,13 +122,6 @@ class CurrentRatioFilter(Filter):
 
 cr = CurrentRatioFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (cr.run())
-
-
-
-# # class PriceChange52WeekFilter(Filter):
-# # 	def screen(self):
-# # 		c.execute('''SELECT price.ticker FROM price WHERE ((price.adj_close - old_adj_close)/old_adj_close)*100) > %s AND ((price.adj_close - old_adj_close)/old_adj_close)*100) < %s;''', (low, high))
-# # 		return c.fetchall() #How do I get the adj_close from one year ago???????
 
 
 
@@ -337,15 +330,14 @@ class CreateBuyList():
 	def create_buy_list(self):
 		counter = 0
 		master_list = []
-		x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe))))
-		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
+		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe))))
+		x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
 		x = list(x)
 		for i in x:
 			master_list.append(i)
 			counter += 1
 			# print (i)
-
-		print ("Total Tickers = ", str(counter))
+		# print ("Total Tickers = ", str(counter))
 		return master_list
 
 
@@ -353,10 +345,18 @@ filtered = CreateBuyList()
 print (filtered.create_buy_list())
 
 
-
-
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
+
+
+
+
+
+
+# # class PriceChange52WeekFilter(Filter):
+# # 	def screen(self):
+# # 		c.execute('''SELECT price.ticker FROM price WHERE ((price.adj_close - old_adj_close)/old_adj_close)*100) > %s AND ((price.adj_close - old_adj_close)/old_adj_close)*100) < %s;''', (low, high))
+# # 		return c.fetchall() #How do I get the adj_close from one year ago???????
 
 
 

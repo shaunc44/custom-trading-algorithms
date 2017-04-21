@@ -48,7 +48,7 @@ class LastPriceFilter(Filter):
 		self.lp_low = lp_low
 		self.lp_high = lp_high
 		self.end_date = end_date
-		self.lp_ticker_list = []
+		# self.lp_ticker_list = []
 
 	def screen(self, tickers=None):
 		# build query

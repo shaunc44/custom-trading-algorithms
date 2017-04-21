@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session
-from models import filter_model, buy_model
+import filter_model
+# import buy_model
 
 
 app = Flask(__name__)
@@ -57,17 +58,22 @@ def dashboard():
 
 @app.route("/filter", methods=["POST"])
 def filter():
-	lp_low = request.form['inputLastPriceLow']
-	lp_high = request.form['inputLastPriceHigh']
+	daterange = request.form['daterange']
+	print (daterange)
+	# filter_model.Date.add_date_range(daterange)
+	# lp_low = request.form['inputLastPriceLow']
+	# lp_high = request.form['inputLastPriceHigh']
 
-	filter_model.LastPriceFilter.screen(lp_low, lp_high)
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
 
-	success = model.User.check_login(username, password)
-	if success:
-		session['username'] = username
-		return dashboard()
-	else:
-		return render_template("login.html")
+	# success = model.User.check_login(username, password)
+	# if success:
+	# 	session['username'] = username
+	# 	return dashboard()
+	# else:
+	# 	return render_template("login.html")
+filter()
+
 
 # @app.route("/logged-in-home")
 # def logged_in_home():

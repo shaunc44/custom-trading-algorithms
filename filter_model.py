@@ -19,21 +19,24 @@ c = conn.cursor()
 
 
 #This goes in the forms file
-# #Set Date range somehow (1/1/2007 to 2/28/2017)
-# #Iterate through list of trading dates here??? to input into SQL statements
-# # start = "2007-01-02"
-# # end = "2017-03-28"
-# class Date:
-# 	def add_date_range(self, daterange):
-# 		self.daterange = daterange
-# 		print (daterange)
-# 		# start_date = 
-# 		# end_date =
-# 		# current_date =
-# 		# trading_dates = 
+#Iterate through list of trading dates here??? to input into SQL statements
+# start = "2007-01-02"
+# end = "2017-03-28"
+class Date:
+	def add_date_range(self, startdate, enddate):
+		self.startdate = startdate
+		self.enddate = enddate
+		print ("Models' Startdate = ", self.startdate)
+		# start_date = 
+		# end_date =
+		# current_date =
+		# trading_dates = 
 
 # d = Date()
 # d.add_date_range([today,tomorrow])
+
+# trading_dates = [] #get list of distinct trading_days from the price list based on input date range
+# current_date = #need to start with start_date and iterate through list of trading_days to the end_date
 
 
 #####################################################################

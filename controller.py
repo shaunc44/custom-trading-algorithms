@@ -2,7 +2,7 @@ from flask import (
 	Flask, render_template, redirect, 
 	url_for, request, session, json
 )
-import forms
+from forms import FilterForm as ff
 import filter_model
 # import buy_model
 
@@ -39,17 +39,17 @@ def logout():
 #add code here to enable secure logout
 
 
-@app.route("/check-login", methods=["POST"])
-def check_login():
-	username = request.form['username']
-	password = request.form['password']
+# @app.route("/check-login", methods=["POST"])
+# def check_login():
+# 	username = request.form['username']
+# 	password = request.form['password']
 
-	success = model.User.check_login(username, password)
-	if success:
-		session['username'] = username
-		return dashboard()
-	else:
-		return render_template("login.html")
+# 	success = model.User.check_login(username, password)
+# 	if success:
+# 		session['username'] = username
+# 		return dashboard()
+# 	else:
+# 		return render_template("login.html")
 
 
 @app.route("/dashboard")
@@ -62,11 +62,13 @@ def dashboard():
 
 @app.route("/filter", methods=["POST"])
 def filter():
-	print(request.form)
-	my_form = forms.FilterForm(request.form)
-	# daterange = request.form['daterange']
-	print(dir(my_form))
-	print(my_form.validate())
+	print("Request Form = ", request.form)
+	my_form = ff(request.form)
+	form = ff()
+	startdate = request.form['startdate']
+	# print(dir(my_form))
+	print("Validate Form = ", my_form.validate())
+	print("Startdate = ", startdate)
 	return json.jsonify(my_form.errors)
 	# filter_model.Date.add_date_range(daterange)
 	# lp_low = request.form['inputLastPriceLow']

@@ -1,16 +1,27 @@
 import datetime
+from dateutil.parser import parse
 import calendar
-from wtforms import Form, DateTimeField, StringField, IntegerField, FloatField, validators
+from wtforms import Form, DateTimeField, DateField, StringField, IntegerField, FloatField, validators
 
 
 class FilterForm(Form):
-	# date_range
-	startdate = DateTimeField('startdate', format='%Y-%m-%d')
-	enddate = DateTimeField('enddate', format='%Y-%m-%d')
+	# start_date
+	startdate = StringField('startdate')
+	# print ("Startdate = ", startdate)
+	# startdate = datetime.datetime.strptime('startdate', '%m/%d/%Y').strftime('%Y-%m-%d')
+	# startdate = parse(startdate)
+	# startdate = startdate.strftime('%Y-%m-%d')
+
+	# end_date
+	enddate = StringField('enddate')
+	# enddate = datetime.datetime.strptime('enddate', '%m/%d/%Y').strftime('%Y-%m-%d')
+	# enddate = parse(enddate)
+	# enddate = enddate.strftime('%Y-%m-%d')
+	# startdate = DateField('startdate', format='%m-%d-%Y')
+	# enddate = DateField('enddate', format='%m-%d-%Y')
 	# start_date = #parse date_range here
 	# end_date = #parse date_range here
-	# trading_dates = [] #get list of distinct trading_days from the price list based on input date range
-	# current_date = #need to start with start_date and iterate through list of trading_days to the end_date
+
 
 	# last_price
 	inputLastPriceLow = FloatField('inputLastPriceLow', [validators.NumberRange(min=0, max=999999)])

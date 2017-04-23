@@ -5,7 +5,8 @@ from wtforms import Form, DateTimeField, StringField, IntegerField, FloatField, 
 
 class FilterForm(Form):
 	# date_range
-	daterange = DateTimeField('daterange', format='%Y-%m-%d')
+	startdate = DateTimeField('startdate', format='%Y-%m-%d')
+	enddate = DateTimeField('enddate', format='%Y-%m-%d')
 	# start_date = #parse date_range here
 	# end_date = #parse date_range here
 	# trading_dates = [] #get list of distinct trading_days from the price list based on input date range

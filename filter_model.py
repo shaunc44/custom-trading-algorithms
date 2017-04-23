@@ -22,16 +22,14 @@ c = conn.cursor()
 #Iterate through list of trading dates here??? to input into SQL statements
 # start = "2007-01-02"
 # end = "2017-03-28"
-class Date:
-	# def __init__(self, startdate, enddate):
+class Date():
 	@classmethod
 	def add_date_range(cls, startdate, enddate):
-		# self.startdate = startdate
-		# self.enddate = enddate
 		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		enddate = dt.datetime.strptime(enddate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		# print ("Type = ", type(startdate))
 		# print ("Models' Startdate = ", startdate)
-
+		# print ("Models' Enddate = ", enddate)
 		# start_date = 
 		# end_date =
 		# current_date =
@@ -66,7 +64,7 @@ class Users:
 
 
 #How do i tell these filters to focus on a specific date and/or date range?
-class Filter:
+class Filter():
 	def run(self):
 		return self.screen()
 
@@ -76,29 +74,35 @@ class Filter:
 #select price.ticker from price where price.adj_close > 5 and price.date = '2017-03-28';
 #takes 0.21 sec to run
 class LastPriceFilter(Filter):
-	def __init__(self, lp_low, lp_high, date):
-		self.lp_low = lp_low
-		self.lp_high = lp_high
-		self.date = date
-		self.lp_ticker_list = []
-
-	def screen(self, tickers=None):
+	# def __init__(self, lp_low, lp_high, startdate):
+	# 	self.lp_low = lp_low
+	# 	self.lp_high = lp_high
+	# 	# self.date = date
+	# 	self.lp_ticker_list = []
+	@classmethod
+	def screen(cls, lp_low, lp_high, startdate):
+		print ("lp low = ", lp_low)
+		print ("lp high = ", lp_high)
+		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		print ("startdate = ", startdate)
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
 			FROM price 
 			WHERE price.adj_close > %s 
 			AND price.adj_close < %s 
 			AND price.date = %s;
-		''', (self.lp_low, self.lp_high, self.date)) #how to deal with no high or no low?
+		''', (lp_low, lp_high, startdate)) #how to deal with no high or no low?
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
-			self.lp_ticker_list.append(row[0])
-			# print (row[0])
+			lp_ticker_list.append(row[0])
+			print (row[0])
 
-		return self.lp_ticker_list
+		# print (lp_ticker_list)
+		# return lp_ticker_list
 
-lp = LastPriceFilter(5, 9999, '2017-03-22').run()
+# lp = LastPriceFilter(5, 9999, '2017-03-22').run()
+# lp = LastPriceFilter().run()
 # print (lp.run())
 # print (lp)
 
@@ -134,7 +138,7 @@ class CurrentRatioFilter(Filter):
 
 		return self.cr_ticker_list
 
-cr = CurrentRatioFilter(1, 9999, '2016-12-22', '2017-03-22').run()
+# cr = CurrentRatioFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (cr.run())
 
 
@@ -165,7 +169,7 @@ class PriceEarningsFilter(Filter):
 
 		return self.pe_ticker_list
 
-pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
+# pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
 # print (pe.run())
 
 
@@ -197,7 +201,7 @@ class EarningsPerShareFilter(Filter):
 
 		return self.eps_ticker_list
 
-eps = EarningsPerShareFilter(0, 99999, '2016-12-22', '2017-03-22').run()
+# eps = EarningsPerShareFilter(0, 99999, '2016-12-22', '2017-03-22').run()
 # print (eps.run())
 
 
@@ -228,7 +232,7 @@ class ReturnOnEquityFilter(Filter):
 
 		return self.roe_ticker_list
 
-roe = ReturnOnEquityFilter(2, 99999, '2016-12-22', '2017-03-22').run()
+# roe = ReturnOnEquityFilter(2, 99999, '2016-12-22', '2017-03-22').run()
 # print (roe.run())
 
 
@@ -260,7 +264,7 @@ class ReturnOnInvestedCapitalFilter(Filter):
 
 		return self.roic_ticker_list
 
-roic = ReturnOnInvestedCapitalFilter(1, 9999, '2016-12-22', '2017-03-22').run()
+# roic = ReturnOnInvestedCapitalFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (roic.run())
 
 
@@ -292,7 +296,7 @@ class DividendYieldFilter(Filter):
 
 		return self.dy_ticker_list
 
-dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
+# dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
 # print (dy.run())
 
 
@@ -324,20 +328,20 @@ class DebtToEquityFilter(Filter):
 
 		return self.de_ticker_list
 
-de = DebtToEquityFilter(0, 1, '2016-12-22', '2017-03-22').run()
+# de = DebtToEquityFilter(0, 1, '2016-12-22', '2017-03-22').run()
 # print (de.run())
 
 
 
 #convert to set so we can use intersection function
-lp = set(lp)
-cr = set(cr)
-pe = set(pe)
-eps = set(eps)
-roe = set(roe)
-roic = set(roic)
-dy = set(dy)
-de = set(de)
+# lp = set(lp)
+# cr = set(cr)
+# pe = set(pe)
+# eps = set(eps)
+# roe = set(roe)
+# roic = set(roic)
+# dy = set(dy)
+# de = set(de)
 
 
 class CreateBuyList():

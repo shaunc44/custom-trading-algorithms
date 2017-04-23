@@ -64,13 +64,17 @@ def dashboard():
 def filter():
 	print("Request Form = ", request.form)
 	my_form = ff(request.form)
-	form = ff()
+	# form = ff()
 	# print(dir(my_form))
 	print("Validate Form = ", my_form.validate())
 	# print("Startdate = ", request.form['startdate'])
 	startdate = request.form['startdate']
 	enddate = request.form['enddate']
 	fm.Date.add_date_range(startdate, enddate)
+
+	lp_low = request.form['inputLastPriceLow']
+	lp_high = request.form['inputLastPriceHigh']
+	fm.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
 	return json.jsonify(my_form.errors)
 	# filter_model.Date.add_date_range(daterange)

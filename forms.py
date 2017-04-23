@@ -1,4 +1,3 @@
-import datetime as dt
 # from dateutil.parser import parse
 import calendar
 from wtforms import Form, DateTimeField, DateField, StringField, IntegerField, FloatField, validators
@@ -7,21 +6,9 @@ from wtforms import Form, DateTimeField, DateField, StringField, IntegerField, F
 class FilterForm(Form):
 	# start_date
 	startdate = StringField('startdate')
-	# print ("Startdate = ", startdate)
-	# startdate = datetime.datetime.strptime('startdate', '%m/%d/%Y').strftime('%Y-%m-%d')
-	# startdate = parse(startdate)
-	# startdate = startdate.strftime('%Y-%m-%d')
 
 	# end_date
 	enddate = StringField('enddate')
-	# enddate = datetime.datetime.strptime('enddate', '%m/%d/%Y').strftime('%Y-%m-%d')
-	# enddate = parse(enddate)
-	# enddate = enddate.strftime('%Y-%m-%d')
-	# startdate = DateField('startdate', format='%m-%d-%Y')
-	# enddate = DateField('enddate', format='%m-%d-%Y')
-	# start_date = #parse date_range here
-	# end_date = #parse date_range here
-
 
 	# last_price
 	inputLastPriceLow = FloatField('inputLastPriceLow', [validators.NumberRange(min=0, max=999999)])

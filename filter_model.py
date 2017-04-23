@@ -1,6 +1,6 @@
 import flask
 import pymysql.cursors
-# import wrapper
+import datetime as dt
 import timeit
 
 
@@ -23,10 +23,15 @@ c = conn.cursor()
 # start = "2007-01-02"
 # end = "2017-03-28"
 class Date:
-	def add_date_range(self, startdate, enddate):
-		self.startdate = startdate
-		self.enddate = enddate
-		print ("Models' Startdate = ", self.startdate)
+	# def __init__(self, startdate, enddate):
+	@classmethod
+	def add_date_range(cls, startdate, enddate):
+		# self.startdate = startdate
+		# self.enddate = enddate
+		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		# print ("Type = ", type(startdate))
+		# print ("Models' Startdate = ", startdate)
+
 		# start_date = 
 		# end_date =
 		# current_date =

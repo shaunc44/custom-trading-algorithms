@@ -3,7 +3,7 @@ from flask import (
 	url_for, request, session, json
 )
 from forms import FilterForm as ff
-import filter_model
+import filter_model as fm
 # import buy_model
 
 
@@ -65,16 +65,19 @@ def filter():
 	print("Request Form = ", request.form)
 	my_form = ff(request.form)
 	form = ff()
-	startdate = request.form['startdate']
 	# print(dir(my_form))
 	print("Validate Form = ", my_form.validate())
-	print("Startdate = ", startdate)
+	# print("Startdate = ", request.form['startdate'])
+	startdate = request.form['startdate']
+	enddate = request.form['enddate']
+	fm.Date.add_date_range(startdate, enddate)
+
 	return json.jsonify(my_form.errors)
 	# filter_model.Date.add_date_range(daterange)
 	# lp_low = request.form['inputLastPriceLow']
 	# lp_high = request.form['inputLastPriceHigh']
 
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
+	# fm.LastPriceFilter.screen(lp_low, lp_high)
 
 	# success = model.User.check_login(username, password)
 	# if success:

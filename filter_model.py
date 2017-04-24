@@ -78,9 +78,9 @@ class LastPriceFilter(Filter):
 	# 	self.lp_low = lp_low
 	# 	self.lp_high = lp_high
 	# 	# self.date = date
-	# 	self.lp_ticker_list = []
 	@classmethod
 	def screen(cls, lp_low, lp_high, startdate):
+		lp_ticker_list = []
 		print ("lp low = ", lp_low)
 		print ("lp high = ", lp_high)
 		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
@@ -96,9 +96,9 @@ class LastPriceFilter(Filter):
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			lp_ticker_list.append(row[0])
-			print (row[0])
+			# print (row[0])
 
-		# print (lp_ticker_list)
+		print (lp_ticker_list)
 		# return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()

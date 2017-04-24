@@ -22,11 +22,11 @@ c = conn.cursor()
 #Iterate through list of trading dates here??? to input into SQL statements
 # start = "2007-01-02"
 # end = "2017-03-28"
-class Date():
-	@classmethod
-	def add_date_range(cls, startdate, enddate):
-		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		enddate = dt.datetime.strptime(enddate, '%m/%d/%Y').strftime('%Y-%m-%d')
+# class Date():
+# 	@classmethod
+# 	def add_date_range(cls, startdate, enddate):
+# 		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+# 		enddate = dt.datetime.strptime(enddate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		# print ("Type = ", type(startdate))
 		# print ("Models' Startdate = ", startdate)
 		# print ("Models' Enddate = ", enddate)
@@ -83,7 +83,8 @@ class LastPriceFilter(Filter):
 		lp_ticker_list = []
 		print ("lp low = ", lp_low)
 		print ("lp high = ", lp_high)
-		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		startdate = class_Date.startdate
+		# startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		print ("startdate = ", startdate)
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 

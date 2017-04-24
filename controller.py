@@ -2,8 +2,8 @@ from flask import (
 	Flask, render_template, redirect, 
 	url_for, request, session, json
 )
-from forms import FilterForm as ff
-import filter_model as fm
+from forms import FilterForm
+import filter_model
 # import buy_model
 
 
@@ -63,25 +63,30 @@ def dashboard():
 @app.route("/filter", methods=["POST"])
 def filter():
 	print("Request Form = ", request.form)
-	my_form = ff(request.form)
-	# form = ff()
+	my_form = FilterForm(request.form)
+	print ("My_Form = ", my_form)
+	# form = forms()
 	# print(dir(my_form))
 	print("Validate Form = ", my_form.validate())
 	# print("Startdate = ", request.form['startdate'])
-	startdate = request.form['startdate']
-	enddate = request.form['enddate']
-	fm.Date.add_date_range(startdate, enddate)
-
-	lp_low = request.form['inputLastPriceLow']
-	lp_high = request.form['inputLastPriceHigh']
-	fm.LastPriceFilter.screen(lp_low, lp_high, startdate)
-
+	# startdate = request.form['startdate']
+	# enddate = request.form['enddate']
+	# filter_model.Date.add_date_range(startdate, enddate)
 	return json.jsonify(my_form.errors)
+
+	# startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+	# enddate = dt.datetime.strptime(enddate, '%m/%d/%Y').strftime('%Y-%m-%d')
+
+	# lp_low = request.form['inputLastPriceLow']
+	# lp_high = request.form['inputLastPriceHigh']
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
+
 	# filter_model.Date.add_date_range(daterange)
 	# lp_low = request.form['inputLastPriceLow']
 	# lp_high = request.form['inputLastPriceHigh']
 
-	# fm.LastPriceFilter.screen(lp_low, lp_high)
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
 
 	# success = model.User.check_login(username, password)
 	# if success:
@@ -90,6 +95,8 @@ def filter():
 	# else:
 	# 	return render_template("login.html")
 # filter()
+
+
 
 
 # @app.route("/logged-in-home")

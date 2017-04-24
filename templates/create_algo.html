@@ -12,14 +12,14 @@
 				<ul class="flex-outer">
 					<li>
 						<label for="lastPrice">Last Price</label>
-						<input type="lastPriceLow" name="inputLastPriceLow" id="inputLastPriceLow" placeholder="Low">
-						<input type="lastPriceHigh" name="inputLastPriceHigh" id="inputLastPriceHigh" class="high" placeholder="High">
+						<input type="number" step="any" min="0.0" max="999999.0" name="inputLastPriceLow" id="inputLastPriceLow" class="defLowZero" placeholder="Low" value="0">
+						<input type="number" step="any" min="0.0" max="999999.0" name="inputLastPriceHigh" id="inputLastPriceHigh" class="defHigh high" placeholder="High" value="999999">
 					</li>
-					<li>
+<!-- 					<li>
 						<label for="currentRatio">Current Ratio</label>
-						<input type="currentRatioLow" name="inputCurrentRatioLow" id="inputCurrentRatioLow" placeholder="Low">
-						<input type="currentRatioHigh" name="inputCurrentRatioHigh" id="inputCurrentRatioHigh" class="high" placeholder="High">
-					</li>
+						<input type="currentRatioLow" name="inputCurrentRatioLow" id="inputCurrentRatioLow" class="defLowZero" placeholder="Low">
+						<input type="currentRatioHigh" name="inputCurrentRatioHigh" id="inputCurrentRatioHigh" class="defHigh high" placeholder="High">
+					</li> -->
 <!-- 					<li>
 						<label for="priceChange">52-Wk Price Chg</label>
 						<input type="priceChangeLow" name="inputPriceChangeLow" id="inputPriceChangeLow" placeholder="Low">
@@ -27,34 +27,34 @@
 					</li> -->
 					<li>
 						<label for="pe">PE Ratio</label>
-						<input type="peLow" name="inputPeLow" id="inputPeLow" placeholder="Low">
-						<input type="peHigh" name="inputPeHigh" id="inputPeHigh" class="high" placeholder="High">
+						<input type="number" name="inputPeLow" id="inputPeLow" class="def-low-nines" placeholder="Low" value="0">
+						<input type="number" name="inputPeHigh" id="inputPeHigh" class="defHigh high" placeholder="High" value="999999">
 					</li>
-					<li>
+<!-- 					<li>
 						<label for="eps">EPS</label>
-						<input type="epsLow" name="inputEpsLow" id="inputEpsLow" placeholder="Low">
-						<input type="epsHigh" name="inputEpsHigh" id="inputEpsHigh" class="high" placeholder="High">
+						<input type="epsLow" name="inputEpsLow" id="inputEpsLow" class="def-low-nines" placeholder="Low">
+						<input type="epsHigh" name="inputEpsHigh" id="inputEpsHigh" class="defHigh high" placeholder="High">
 					</li>
 					<li>
 						<label for="roe">ROE</label>
-						<input type="roeLow" name="inputRoeLow" id="inputRoeLow" placeholder="Low">
-						<input type="roeHigh" name="inputRoeHigh" id="inputRoeHigh" placeholder="High">
+						<input type="roeLow" name="inputRoeLow" id="inputRoeLow" class="def-low-hund" placeholder="Low">
+						<input type="roeHigh" name="inputRoeHigh" id="inputRoeHigh" class="defHigh" placeholder="High">
 					</li>
 					<li>
 						<label for="roic">ROIC</label>
-						<input type="roicLow" name="inputRoicLow" id="inputRoicLow" placeholder="Low">
-						<input type="roicHigh" name="inputRoicHigh" id="inputRoicHigh" placeholder="High">
-					</li>
+						<input type="roicLow" name="inputRoicLow" id="inputRoicLow" class="def-low-hund" placeholder="Low">
+						<input type="roicHigh" name="inputRoicHigh" id="inputRoicHigh" class="defHigh" placeholder="High">
+					</li> -->
 					<li>
 						<label for="divYield">Div Yield</label>
-						<input type="divYieldLow" name="inputDivYieldLow" id="inputDivYieldLow" placeholder="Low">
-						<input type="divYieldHigh" name="inputDivYieldHigh" id="inputDivYieldHigh" placeholder="High">
+						<input type="number" name="inputDivYieldLow" id="inputDivYieldLow" class="defLowZero" placeholder="Low" value="0">
+						<input type="number" name="inputDivYieldHigh" id="inputDivYieldHigh" class="defHigh" placeholder="High" value="999999">
 					</li>
-					<li>
+<!-- 					<li>
 						<label for="debtEquity">DE Ratio</label>
-						<input type="debtEquityLow" name="inputDebtEquityLow" id="inputDebtEquityLow" placeholder="Low">
-						<input type="debtEquityHigh" name="inputDebtEquityHigh" id="inputDebtEquityHigh" placeholder="High">
-					</li>
+						<input type="debtEquityLow" name="inputDebtEquityLow" id="inputDebtEquityLow" class="defLowZero" placeholder="Low">
+						<input type="debtEquityHigh" name="inputDebtEquityHigh" id="inputDebtEquityHigh" class="defHigh" placeholder="High">
+					</li> -->
 <!-- 					<li>
 						<label for="beta">Beta</label>
 						<input type="betaLow" name="inputBetaLow" id="inputBetaLow" placeholder="Low">
@@ -71,16 +71,16 @@
 						<input type="crossover" name="inputcrossover" id="inputcrossover" placeholder="Create check box here to turn on">
 						<input type="checkbox" value="None" id="checkBox" name="check" checked />
 					</li> -->
-					<li>
+<!-- 					<li>
 						<label for="volumeChange">Volume Change</label>
-						<input type="volumeChangeBuy" name="inputVolumeChangeBuy" id="inputVolumeChangeBuy" placeholder="Buy">
-						<input type="volumeChangeSell" name="inputVolumeChangeSell" id="inputVolumeChangeSell" class="Sell" placeholder="Sell">
+						<input type="volumeChangeBuy" name="inputVolumeChangeBuy" id="inputVolumeChangeBuy" class="defFalse" placeholder="Buy">
+						<input type="volumeChangeSell" name="inputVolumeChangeSell" id="inputVolumeChangeSell" class="defFalse Sell" placeholder="Sell" data-default="">
 					</li>
 					<li>
 						<label for="priceChange">Price Change</label>
-						<input type="priceChangeBuy" name="inputPriceChangeBuy" id="inputPriceChangeBuy" placeholder="Buy">
-						<input type="priceChangeSell" name="inputPriceChangeSell" id="inputPriceChangeSell" class="Sell" placeholder="Sell">
-					</li>
+						<input type="priceChangeBuy" name="inputPriceChangeBuy" id="inputPriceChangeBuy" class="defFalse" placeholder="Buy">
+						<input type="priceChangeSell" name="inputPriceChangeSell" id="inputPriceChangeSell" class="defFalse Sell" placeholder="Sell">
+					</li> -->
 <!-- 					<li>
 						<label for="divergence">Divergence</label>
 						<input type="divergenceBuy" name="inputDivergenceBuy" id="inputDivergenceBuy" placeholder="Buy">
@@ -93,12 +93,12 @@
 					</li>
  -->					<li>
 						<label for="rsi">RSI</label>
-						<input type="rsiBuy" name="inputRsiBuy" id="inputRsiBuy" placeholder="Buy">
-						<input type="rsiSell" name="inputRsiSell" id="inputRsiSell" placeholder="Sell">
+						<input type="number" name="inputRsiBuy" id="inputRsiBuy" class="defFalse" placeholder="Buy" value="0">
+						<input type="number" name="inputRsiSell" id="inputRsiSell" class="defFalse" placeholder="Sell" value="100">
 					</li>
 					<li>
 						<label for="stopLoss">Trailing Stop-Loss</label>
-						<input type="stoplossSell" name="inputStoplossSell" id="inputStoplossSell" placeholder="Enter a percentage">
+						<input type="number" name="inputStoplossSell" id="inputStoplossSell" class="defFalse" placeholder="Enter a percentage" value="10">
 					</li>
 <!-- 					<li>
 						<label for="divYield">Other Stuff Here</label>

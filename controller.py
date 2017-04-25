@@ -71,17 +71,22 @@ def filter():
 	# Last Price
 	lp_low = request.form['inputLastPriceLow']
 	lp_high = request.form['inputLastPriceHigh']
-	filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
 	# Price to Earnings
 	pe_low = request.form['inputPeLow']
 	pe_high = request.form['inputPeHigh']
-	filter_model.PriceEarningsFilter.screen(pe_low, pe_high, startdate)
+	# filter_model.PriceEarningsFilter.screen(pe_low, pe_high, startdate)
 
 	# Dividend Yield
 	dy_low = request.form['inputDivYieldLow']
 	dy_high = request.form['inputDivYieldHigh']
-	filter_model.DividendYieldFilter.screen(dy_low, dy_high, startdate)
+	# filter_model.DividendYieldFilter.screen(dy_low, dy_high, startdate)
+
+	# Iterate here over the buy list and portfolio list for each trading day ??????????????????
+	# Master Buy List
+	filter_model.CreateBuyList.create_buy_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+
 
 	print("\nRequest Form = ", request.form)
 	# print ("RSI Forms = ", my_form['inputRsiBuy'])

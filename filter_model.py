@@ -41,7 +41,6 @@ c = conn.cursor()
 # trading_dates = [] #get list of distinct trading_days from the price list based on input date range
 # current_date = #need to start with start_date and iterate through list of trading_days to the enddate
 
-
 #####################################################################
 ############################  USER CLASS  ###########################
 #####################################################################
@@ -81,12 +80,7 @@ class LastPriceFilter(Filter):
 	@classmethod
 	def screen(cls, lp_low, lp_high, startdate): #the date should iterate over the trading dates beginning with start date
 		lp_ticker_list = []
-		# print ("lp low = ", lp_low)
-		# print ("lp high = ", lp_high)
-		# startdate = class_Date.startdate
-		# print ("startdate = ", startdate, type(startdate))
 		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		# print ("startdate = ", startdate, type(startdate))
 
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
@@ -99,10 +93,9 @@ class LastPriceFilter(Filter):
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			lp_ticker_list.append(row[0])
-			# print (row[0])
 
 		print ("\nLast Price Ticker List = ", lp_ticker_list)
-		# return lp_ticker_list
+		return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
 # lp = LastPriceFilter().run()
@@ -174,14 +167,14 @@ class PriceEarningsFilter(Filter):
 			AND fundamental.value < %s 
 			AND fundamental.date > %s 
 			AND fundamental.date < %s;
-			''', (pe_low, pe_high, trailingdate_db, startdate_db))
+			''', (pe_low, pe_high, trailingdate_db, startdate_db)) #dates need to iterate forward with each daily screen
 
 		rows = c.fetchall()
 		for row in rows:
 			pe_ticker_list.append(row[0])
 
 		print ("\nPE Ticker List = ", pe_ticker_list)
-		# return pe_ticker_list
+		return pe_ticker_list
 
 # pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
 # print (pe.run())
@@ -315,10 +308,9 @@ class DividendYieldFilter(Filter):
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			dy_ticker_list.append(row[0])
-			# print (row[0])
 
 		print ("\nDiv Yield Ticker List = ", dy_ticker_list)
-		# return dy_ticker_list
+		return dy_ticker_list
 
 # dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
 # print (dy.run())
@@ -368,6 +360,41 @@ class DividendYieldFilter(Filter):
 # de = set(de)
 
 
+class CreateBuyList():
+	@classmethod
+	def create_buy_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
+		counter = 0
+		master_list = []
+
+		lp = LastPriceFilter.screen(lp_low, lp_high, startdate)
+		pe = PriceEarningsFilter.screen(pe_low, pe_high, startdate)
+		dy = DividendYieldFilter.screen(dy_low, dy_high, startdate)
+
+		lp = set(lp)
+		pe = set(pe)
+		dy = set(dy)
+
+		buy_list = lp.intersection(pe.intersection(dy))
+		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
+		buy_list = list(buy_list)
+		for symbol in buy_list:
+			master_list.append(symbol)
+			counter += 1
+			# print (i)
+		print ("\nTotal Buy Tickers = ", str(counter))
+		print ("\nBuy List = ", master_list)
+		# return master_list
+
+
+# filtered = CreateBuyList()
+# print (filtered.create_buy_list())
+
+
+stop = timeit.default_timer()
+print ("Seconds to run: ", (stop - start) )
+
+
+
 # class CreateBuyList():
 # 	def create_buy_list(self):
 # 		counter = 0
@@ -379,18 +406,16 @@ class DividendYieldFilter(Filter):
 # 			master_list.append(i)
 # 			counter += 1
 # 			# print (i)
-# 		# print ("Total Tickers = ", str(counter))
-# 		return master_list
+# 		print ("Total Tickers = ", str(counter))
+# 		print ("Buy List = ", master_list)
+# 		# return master_list
 
 
-# filtered = CreateBuyList()
-# print (filtered.create_buy_list())
+# # filtered = CreateBuyList()
+# # print (filtered.create_buy_list())
 
-
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
-
-
+# stop = timeit.default_timer()
+# print ("Seconds to run: ", (stop - start) )
 
 
 
@@ -458,77 +483,6 @@ print ("Seconds to run: ", (stop - start) )
 
 # my_filter = LastPriceFilter(6,7)
 # Screen(my_filter)
-
-
-# #Pull data from historical prices table
-
-
-
-# #####################################################################
-# ##########################  BUY/SELL CLASS  #########################
-# #####################################################################
-
-# class BuySell():
-# 	pass
-
-# 	@classmethod
-# 	def sma_50_200_crossover(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def volume_change(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def price_change(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def divergence(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def macd(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def rsi(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def trailing_stop_loss(cls, percent):
-# 		pass
-
-
-
-
-
-
-# class Model():
-
-# 	def initialize(context):
-# 		#bring in init params
-# 		pass
-
-# 	def make_screen(context):
-# 		#create dynamic stock selector
-# 		pass
-
-# 	def before_trading_start(context):
-# 		#collect securities that passed the screen
-# 		pass
-
-# 	def purchase_stocks(context):
-# 		pass
-
-# 	def sell_stocks(context):
-# 		pass
-
-# 	def calculate_return(context):
-# 		pass
-
-
-
 
 
 

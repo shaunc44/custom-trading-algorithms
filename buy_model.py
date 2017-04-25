@@ -3,6 +3,7 @@ import pymysql.cursors
 # import wrapper
 import timeit
 import filter_model
+import datetime as dt
 
 
 #Begin timer

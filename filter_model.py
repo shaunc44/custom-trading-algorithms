@@ -86,7 +86,7 @@ class LastPriceFilter(Filter):
 		# startdate = class_Date.startdate
 		# print ("startdate = ", startdate, type(startdate))
 		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		print ("startdate = ", startdate, type(startdate))
+		# print ("startdate = ", startdate, type(startdate))
 
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
@@ -101,7 +101,7 @@ class LastPriceFilter(Filter):
 			lp_ticker_list.append(row[0])
 			# print (row[0])
 
-		print ("Last Price Ticker List = ", lp_ticker_list)
+		print ("\nLast Price Ticker List = ", lp_ticker_list)
 		# return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
@@ -286,14 +286,23 @@ class PriceEarningsFilter(Filter):
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > 0.5 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 # #takes 0.61 sec to run
 class DividendYieldFilter(Filter):
-	def __init__(self, dy_low, dy_high, startdate, enddate):
-		self.dy_low = dy_low
-		self.dy_high = dy_high
-		self.startdate = startdate
-		self.enddate = enddate
-		self.dy_ticker_list = []
+	# def __init__(self, dy_low, dy_high, startdate, enddate):
+	# 	self.dy_low = dy_low
+	# 	self.dy_high = dy_high
+	# 	self.startdate = startdate
+	# 	self.enddate = enddate
+	# 	self.dy_ticker_list = []
+	@classmethod
+	def screen(cls, dy_low, dy_high, startdate):
+		dy_ticker_list = []
 
-	def screen(self):
+		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d') #date for sql statement
+		print ("Start Date = ", startdate_db)
+		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d') #convert startdate string to datetime format
+		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90) #subtract 90 days from startdate to get trailingdate
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') #convert trailingdate to string
+		print ("Trailing Date = ", trailingdate_db)
+
 		c.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
 			FROM fundamental PARTITION (pDIVYIELD) 
@@ -301,16 +310,17 @@ class DividendYieldFilter(Filter):
 			AND fundamental.value < %s 
 			AND fundamental.date > %s 
 			AND fundamental.date < %s;
-			''', (self.dy_low, self.dy_high, self.startdate, self.enddate))
+			''', (dy_low, dy_high, trailingdate_db, startdate_db))
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
-			self.dy_ticker_list.append(row[0])
+			dy_ticker_list.append(row[0])
 			# print (row[0])
 
-		return self.dy_ticker_list
+		print ("\nDiv Yield Ticker List = ", dy_ticker_list)
+		# return dy_ticker_list
 
-dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
+# dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
 # print (dy.run())
 
 

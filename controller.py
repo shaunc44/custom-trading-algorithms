@@ -71,7 +71,7 @@ def filter():
 	# Last Price
 	lp_low = request.form['inputLastPriceLow']
 	lp_high = request.form['inputLastPriceHigh']
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
+	filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
 	# Price to Earnings
 	pe_low = request.form['inputPeLow']
@@ -81,13 +81,13 @@ def filter():
 	# Dividend Yield
 	dy_low = request.form['inputDivYieldLow']
 	dy_high = request.form['inputDivYieldHigh']
+	filter_model.DividendYieldFilter.screen(dy_low, dy_high, startdate)
 
-
-	print("Request Form = ", request.form)
+	print("\nRequest Form = ", request.form)
 	# print ("RSI Forms = ", my_form['inputRsiBuy'])
 	# form = forms()
 	# print(dir(my_form))
-	print("Validate Form = ", my_form.validate())
+	print("\nValidate Form = ", my_form.validate())
 	# print("Startdate = ", request.form['startdate'])
 
 	# filter_model.Date.add_date_range(startdate, enddate)

@@ -88,6 +88,29 @@ symbol VARCHAR(128) NOT NULL
 
 cursor.execute('''
 SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS filtered;
+SET foreign_key_checks = 1;
+CREATE TABLE filtered ( 
+date VARCHAR(128) NOT NULL,
+ticker_id INTEGER NOT NULL
+);''')
+
+
+cursor.execute('''
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS porfolio;
+SET foreign_key_checks = 1;
+CREATE TABLE porfolio ( 
+ticker_id INTEGER NOT NULL,
+date_purchased VARCHAR(128) NOT NULL,
+value_purchased FLOAT NULL,
+date_sold VARCHAR(128) NOT NULL,
+value_sold FLOAT NULL
+);''')
+
+
+cursor.execute('''
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS fundamental;
 SET foreign_key_checks = 1;
 CREATE TABLE fundamental (

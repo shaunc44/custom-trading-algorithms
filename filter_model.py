@@ -364,7 +364,7 @@ class CreateBuyList():
 	@classmethod
 	def create_buy_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
 		counter = 0
-		master_list = []
+		master_filtered_list = []
 
 		lp = LastPriceFilter.screen(lp_low, lp_high, startdate)
 		pe = PriceEarningsFilter.screen(pe_low, pe_high, startdate)
@@ -374,17 +374,32 @@ class CreateBuyList():
 		pe = set(pe)
 		dy = set(dy)
 
+		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+
 		buy_list = lp.intersection(pe.intersection(dy))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
 		buy_list = list(buy_list)
 		for symbol in buy_list:
-			master_list.append(symbol)
+			master_filtered_list.append(symbol)
 			counter += 1
 			# print (i)
 		print ("\nTotal Buy Tickers = ", str(counter))
-		print ("\nBuy List = ", master_list)
+		print ("\nBuy List = ", master_filtered_list)
 		# return master_list
 
+		for ticker_id in master_filtered_list:
+			c.execute('''
+				INSERT INTO filtered (
+					date,
+					ticker_id)
+				VALUES (
+					%(startdate)s,
+					%(ticker_id)s
+				);''', 
+				(startdate_db, ticker_id)
+			)
+			conn.commit()
+		conn.close()
 
 # filtered = CreateBuyList()
 # print (filtered.create_buy_list())

@@ -193,6 +193,7 @@ li {
 	display: inline-block;
 	width: 25%;
 	margin-left: 7.5%;
+	color: lightgray;
 }
 
 /*input::placeholder {

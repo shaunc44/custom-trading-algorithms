@@ -11,6 +11,13 @@ body {
 	min-height: 100vh;
 }
 
+/*::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+:-moz-placeholder {
+	color: lightgray;
+}*/
+
 li {
 	color: #560997;
 }
@@ -187,6 +194,18 @@ li {
 	width: 25%;
 	margin-left: 7.5%;
 }
+
+/*input::placeholder {
+	color: lightgray;
+}
+
+input::placeholder-shown {
+	color: black;
+}*/
+
+/*#bootstrap-override .flex-outer input:focus {
+	color: black;
+}*/
 
 #bootstrap-override .flex-outer input .high {
 	display: inline-block;

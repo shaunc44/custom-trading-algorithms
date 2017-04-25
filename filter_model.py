@@ -31,7 +31,7 @@ c = conn.cursor()
 		# print ("Models' Startdate = ", startdate)
 		# print ("Models' Enddate = ", enddate)
 		# start_date = 
-		# end_date =
+		# enddate =
 		# current_date =
 		# trading_dates = 
 
@@ -39,7 +39,7 @@ c = conn.cursor()
 # d.add_date_range([today,tomorrow])
 
 # trading_dates = [] #get list of distinct trading_days from the price list based on input date range
-# current_date = #need to start with start_date and iterate through list of trading_days to the end_date
+# current_date = #need to start with start_date and iterate through list of trading_days to the enddate
 
 
 #####################################################################
@@ -79,27 +79,29 @@ class LastPriceFilter(Filter):
 	# 	self.lp_high = lp_high
 	# 	# self.date = date
 	@classmethod
-	def screen(cls, lp_low, lp_high, startdate):
+	def screen(cls, lp_low, lp_high, startdate): #the date should iterate over the trading dates beginning with start date
 		lp_ticker_list = []
-		print ("lp low = ", lp_low)
-		print ("lp high = ", lp_high)
-		startdate = class_Date.startdate
-		# startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		print ("startdate = ", startdate)
+		# print ("lp low = ", lp_low)
+		# print ("lp high = ", lp_high)
+		# startdate = class_Date.startdate
+		# print ("startdate = ", startdate, type(startdate))
+		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		print ("startdate = ", startdate, type(startdate))
+
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
 			FROM price 
 			WHERE price.adj_close > %s 
 			AND price.adj_close < %s 
 			AND price.date = %s;
-		''', (lp_low, lp_high, startdate)) #how to deal with no high or no low?
+		''', (lp_low, lp_high, startdate)) #the startdate needs to move forward one trading day until it reaches the enddate
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			lp_ticker_list.append(row[0])
 			# print (row[0])
 
-		print (lp_ticker_list)
+		print ("Last Price Ticker List = ", lp_ticker_list)
 		# return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
@@ -111,33 +113,33 @@ class LastPriceFilter(Filter):
 
 # #SELECT DISTINCT fundamental.ticker_id FROM fundamental PARTITION (pCURRENTRATIO) WHERE fundamental.value > 2.0 and fundamental.date > '2016-12-22' and fundamental.date < '2017-03-22';
 # #takes 0.56 sec to run
-class CurrentRatioFilter(Filter):
-	name = "current-ratio"
-	required = False
-	parameter_names = [""]
+# class CurrentRatioFilter(Filter):
+# 	name = "current-ratio"
+# 	required = False
+# 	parameter_names = [""]
 
-	def __init__(self, cr_low, cr_high, begin_date, end_date):
-		self.cr_low = cr_low
-		self.cr_high = cr_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.cr_ticker_list = []
+# 	def __init__(self, cr_low, cr_high, startdate, enddate):
+# 		self.cr_low = cr_low
+# 		self.cr_high = cr_high
+# 		self.startdate = startdate
+# 		self.enddate = enddate
+# 		self.cr_ticker_list = []
 
-	def screen(self):
-		c.execute('''
-			SELECT DISTINCT fundamental.ticker_id 
-			FROM fundamental PARTITION (pCURRENTRATIO) 
-			WHERE fundamental.value > %s 
-			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (self.cr_low, self.cr_high, self.begin_date, self.end_date))
+# 	def screen(self):
+# 		c.execute('''
+# 			SELECT DISTINCT fundamental.ticker_id 
+# 			FROM fundamental PARTITION (pCURRENTRATIO) 
+# 			WHERE fundamental.value > %s 
+# 			AND fundamental.value < %s 
+# 			AND fundamental.date > %s 
+# 			AND fundamental.date < %s;
+# 			''', (self.cr_low, self.cr_high, self.startdate, self.enddate))
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-		for row in rows:
-			self.cr_ticker_list.append(row[0])
+# 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+# 		for row in rows:
+# 			self.cr_ticker_list.append(row[0])
 
-		return self.cr_ticker_list
+# 		return self.cr_ticker_list
 
 # cr = CurrentRatioFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (cr.run())
@@ -147,28 +149,39 @@ class CurrentRatioFilter(Filter):
 # #SELECT fundamental.ticker_id FROM fundamental PARTITION (pPE1) WHERE fundamental.value > 1.0 AND fundamental.value < 20.0 and fundamental.date > '2017-03-22';
 # #takes 0.51 sec to run
 class PriceEarningsFilter(Filter):
-	def __init__(self, pe_low, pe_high, begin_date, end_date):
-		self.pe_low = pe_low
-		self.pe_high = pe_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.pe_ticker_list = []
+	# def __init__(self, pe_low, pe_high, startdate, enddate):
+	# 	self.pe_low = pe_low
+	# 	self.pe_high = pe_high
+	# 	self.startdate = startdate
+	# 	self.enddate = enddate
+	@classmethod
+	def screen(cls, pe_low, pe_high, startdate):
+		pe_ticker_list = []
 
-	def screen(self):
+		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d') #date for sql statement
+		print ("Start Date = ", startdate_db)
+		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d') #convert startdate string to datetime format
+		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90) #subtract 90 days from startdate to get trailingdate
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') #convert trailingdate to string
+		print ("Trailing Date = ", trailingdate_db)
+
+		# print (type(start_date_fmt))
+
 		c.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
 			FROM fundamental PARTITION (pPE1) 
 			WHERE fundamental.value > %s 
 			AND fundamental.value < %s 
-			AND fundamental.date > %s
+			AND fundamental.date > %s 
 			AND fundamental.date < %s;
-			''', (self.pe_low, self.pe_high, self.begin_date, self.end_date))
+			''', (pe_low, pe_high, trailingdate_db, startdate_db))
 
 		rows = c.fetchall()
 		for row in rows:
-			self.pe_ticker_list.append(row[0])
+			pe_ticker_list.append(row[0])
 
-		return self.pe_ticker_list
+		print ("\nPE Ticker List = ", pe_ticker_list)
+		# return pe_ticker_list
 
 # pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
 # print (pe.run())
@@ -177,30 +190,30 @@ class PriceEarningsFilter(Filter):
 
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pEPS) WHERE fundamental.value > 0.5 and fundamental.date = '2017-03-22';
 # #takes 1.18 sec to run
-class EarningsPerShareFilter(Filter):
-	def __init__(self, eps_low, eps_high, begin_date, end_date):
-		self.eps_low = eps_low
-		self.eps_high = eps_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.eps_ticker_list = []
+# class EarningsPerShareFilter(Filter):
+# 	def __init__(self, eps_low, eps_high, startdate, enddate):
+# 		self.eps_low = eps_low
+# 		self.eps_high = eps_high
+# 		self.startdate = startdate
+# 		self.enddate = enddate
+# 		self.eps_ticker_list = []
 
-	def screen(self):
-		c.execute('''
-			SELECT DISTINCT fundamental.ticker_id 
-			FROM fundamental PARTITION (pEPS) 
-			WHERE fundamental.value > %s 
-			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (self.eps_low, self.eps_high, self.begin_date, self.end_date))
+# 	def screen(self):
+# 		c.execute('''
+# 			SELECT DISTINCT fundamental.ticker_id 
+# 			FROM fundamental PARTITION (pEPS) 
+# 			WHERE fundamental.value > %s 
+# 			AND fundamental.value < %s 
+# 			AND fundamental.date > %s 
+# 			AND fundamental.date < %s;
+# 			''', (self.eps_low, self.eps_high, self.startdate, self.enddate))
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-		for row in rows:
-			self.eps_ticker_list.append(row[0])
-			# print (row[0])
+# 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+# 		for row in rows:
+# 			self.eps_ticker_list.append(row[0])
+# 			# print (row[0])
 
-		return self.eps_ticker_list
+# 		return self.eps_ticker_list
 
 # eps = EarningsPerShareFilter(0, 99999, '2016-12-22', '2017-03-22').run()
 # print (eps.run())
@@ -209,29 +222,29 @@ class EarningsPerShareFilter(Filter):
 
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pROE) WHERE fundamental.value > 10.0 and fundamental.date > '2016-05-22' and fundamental.date < '2016-08-22';
 # #takes 0.40 sec to run
-class ReturnOnEquityFilter(Filter):
-	def __init__(self, roe_low, roe_high, begin_date, end_date):
-		self.roe_low = roe_low
-		self.roe_high = roe_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.roe_ticker_list = []
+# class ReturnOnEquityFilter(Filter):
+# 	def __init__(self, roe_low, roe_high, startdate, enddate):
+# 		self.roe_low = roe_low
+# 		self.roe_high = roe_high
+# 		self.startdate = startdate
+# 		self.enddate = enddate
+# 		self.roe_ticker_list = []
 
-	def screen(self):
-		c.execute('''
-			SELECT DISTINCT fundamental.ticker_id 
-			FROM fundamental PARTITION (pROE) 
-			WHERE fundamental.value > %s 
-			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (self.roe_low, self.roe_high, self.begin_date, self.end_date))
+# 	def screen(self):
+# 		c.execute('''
+# 			SELECT DISTINCT fundamental.ticker_id 
+# 			FROM fundamental PARTITION (pROE) 
+# 			WHERE fundamental.value > %s 
+# 			AND fundamental.value < %s 
+# 			AND fundamental.date > %s 
+# 			AND fundamental.date < %s;
+# 			''', (self.roe_low, self.roe_high, self.startdate, self.enddate))
 
-		rows = c.fetchall()
-		for row in rows:
-			self.roe_ticker_list.append(row[0])
+# 		rows = c.fetchall()
+# 		for row in rows:
+# 			self.roe_ticker_list.append(row[0])
 
-		return self.roe_ticker_list
+# 		return self.roe_ticker_list
 
 # roe = ReturnOnEquityFilter(2, 99999, '2016-12-22', '2017-03-22').run()
 # print (roe.run())
@@ -240,30 +253,30 @@ class ReturnOnEquityFilter(Filter):
 
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pROIC) WHERE fundamental.value > 15.0 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 # #takes 0.36 sec to run
-class ReturnOnInvestedCapitalFilter(Filter):
-	def __init__(self, roic_low, roic_high, begin_date, end_date):
-		self.roic_low = roic_low
-		self.roic_high = roic_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.roic_ticker_list = []
+# class ReturnOnInvestedCapitalFilter(Filter):
+# 	def __init__(self, roic_low, roic_high, startdate, enddate):
+# 		self.roic_low = roic_low
+# 		self.roic_high = roic_high
+# 		self.startdate = startdate
+# 		self.enddate = enddate
+# 		self.roic_ticker_list = []
 
-	def screen(self):
-		c.execute('''
-			SELECT DISTINCT fundamental.ticker_id 
-			FROM fundamental PARTITION (pROIC) 
-			WHERE fundamental.value > %s 
-			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (self.roic_low, self.roic_high, self.begin_date, self.end_date))
+# 	def screen(self):
+# 		c.execute('''
+# 			SELECT DISTINCT fundamental.ticker_id 
+# 			FROM fundamental PARTITION (pROIC) 
+# 			WHERE fundamental.value > %s 
+# 			AND fundamental.value < %s 
+# 			AND fundamental.date > %s 
+# 			AND fundamental.date < %s;
+# 			''', (self.roic_low, self.roic_high, self.startdate, self.enddate))
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-		for row in rows:
-			self.roic_ticker_list.append(row[0])
-			# print (row[0])
+# 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+# 		for row in rows:
+# 			self.roic_ticker_list.append(row[0])
+# 			# print (row[0])
 
-		return self.roic_ticker_list
+# 		return self.roic_ticker_list
 
 # roic = ReturnOnInvestedCapitalFilter(1, 9999, '2016-12-22', '2017-03-22').run()
 # print (roic.run())
@@ -273,11 +286,11 @@ class ReturnOnInvestedCapitalFilter(Filter):
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > 0.5 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 # #takes 0.61 sec to run
 class DividendYieldFilter(Filter):
-	def __init__(self, dy_low, dy_high, begin_date, end_date):
+	def __init__(self, dy_low, dy_high, startdate, enddate):
 		self.dy_low = dy_low
 		self.dy_high = dy_high
-		self.begin_date = begin_date
-		self.end_date = end_date
+		self.startdate = startdate
+		self.enddate = enddate
 		self.dy_ticker_list = []
 
 	def screen(self):
@@ -288,7 +301,7 @@ class DividendYieldFilter(Filter):
 			AND fundamental.value < %s 
 			AND fundamental.date > %s 
 			AND fundamental.date < %s;
-			''', (self.dy_low, self.dy_high, self.begin_date, self.end_date))
+			''', (self.dy_low, self.dy_high, self.startdate, self.enddate))
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
@@ -297,37 +310,37 @@ class DividendYieldFilter(Filter):
 
 		return self.dy_ticker_list
 
-# dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
+dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
 # print (dy.run())
 
 
 
 #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDE) WHERE fundamental.value > 0.0 AND fundamental.value < 0.25 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 #takes 0.92 sec to run
-class DebtToEquityFilter(Filter):
-	def __init__(self, de_low, de_high, begin_date, end_date):
-		self.de_low = de_low
-		self.de_high = de_high
-		self.begin_date = begin_date
-		self.end_date = end_date
-		self.de_ticker_list = []
+# class DebtToEquityFilter(Filter):
+# 	def __init__(self, de_low, de_high, startdate, enddate):
+# 		self.de_low = de_low
+# 		self.de_high = de_high
+# 		self.startdate = startdate
+# 		self.enddate = enddate
+# 		self.de_ticker_list = []
 
-	def screen(self):
-		c.execute('''
-			SELECT DISTINCT fundamental.ticker_id 
-			FROM fundamental PARTITION (pDE) 
-			WHERE fundamental.value > %s 
-			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (self.de_low, self.de_high, self.begin_date, self.end_date))
+# 	def screen(self):
+# 		c.execute('''
+# 			SELECT DISTINCT fundamental.ticker_id 
+# 			FROM fundamental PARTITION (pDE) 
+# 			WHERE fundamental.value > %s 
+# 			AND fundamental.value < %s 
+# 			AND fundamental.date > %s 
+# 			AND fundamental.date < %s;
+# 			''', (self.de_low, self.de_high, self.startdate, self.enddate))
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-		for row in rows:
-			self.de_ticker_list.append(row[0])
-			# print (row[0])
+# 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+# 		for row in rows:
+# 			self.de_ticker_list.append(row[0])
+# 			# print (row[0])
 
-		return self.de_ticker_list
+# 		return self.de_ticker_list
 
 # de = DebtToEquityFilter(0, 1, '2016-12-22', '2017-03-22').run()
 # print (de.run())
@@ -336,28 +349,28 @@ class DebtToEquityFilter(Filter):
 
 #convert to set so we can use intersection function
 # lp = set(lp)
-# cr = set(cr)
+# # cr = set(cr)
 # pe = set(pe)
-# eps = set(eps)
-# roe = set(roe)
-# roic = set(roic)
+# # eps = set(eps)
+# # roe = set(roe)
+# # roic = set(roic)
 # dy = set(dy)
 # de = set(de)
 
 
-class CreateBuyList():
-	def create_buy_list(self):
-		counter = 0
-		master_list = []
-		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe))))
-		x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
-		x = list(x)
-		for i in x:
-			master_list.append(i)
-			counter += 1
-			# print (i)
-		# print ("Total Tickers = ", str(counter))
-		return master_list
+# class CreateBuyList():
+# 	def create_buy_list(self):
+# 		counter = 0
+# 		master_list = []
+# 		x = lp.intersection(pe.intersection(dy))
+# 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
+# 		x = list(x)
+# 		for i in x:
+# 			master_list.append(i)
+# 			counter += 1
+# 			# print (i)
+# 		# print ("Total Tickers = ", str(counter))
+# 		return master_list
 
 
 # filtered = CreateBuyList()

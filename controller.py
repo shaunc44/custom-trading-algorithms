@@ -62,39 +62,40 @@ def dashboard():
 
 @app.route("/filter", methods=["POST"])
 def filter():
-	print("Request Form = ", request.form)
 	my_form = FilterForm(request.form)
-	print ("My_Form = ", my_form)
+
+	# Start & End Dates
+	startdate = request.form['startdate']
+	enddate = request.form['enddate']
+
+	# Last Price
+	lp_low = request.form['inputLastPriceLow']
+	lp_high = request.form['inputLastPriceHigh']
+	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
+
+	# Price to Earnings
+	pe_low = request.form['inputPeLow']
+	pe_high = request.form['inputPeHigh']
+	filter_model.PriceEarningsFilter.screen(pe_low, pe_high, startdate)
+
+	# Dividend Yield
+	dy_low = request.form['inputDivYieldLow']
+	dy_high = request.form['inputDivYieldHigh']
+
+
+	print("Request Form = ", request.form)
+	# print ("RSI Forms = ", my_form['inputRsiBuy'])
 	# form = forms()
 	# print(dir(my_form))
 	print("Validate Form = ", my_form.validate())
 	# print("Startdate = ", request.form['startdate'])
-	# startdate = request.form['startdate']
-	# enddate = request.form['enddate']
+
 	# filter_model.Date.add_date_range(startdate, enddate)
-	return json.jsonify(my_form.errors)
-
-	# startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-	# enddate = dt.datetime.strptime(enddate, '%m/%d/%Y').strftime('%Y-%m-%d')
-
-	# lp_low = request.form['inputLastPriceLow']
-	# lp_high = request.form['inputLastPriceHigh']
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
 	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
-	# filter_model.Date.add_date_range(daterange)
-	# lp_low = request.form['inputLastPriceLow']
-	# lp_high = request.form['inputLastPriceHigh']
+	return json.jsonify(my_form.errors)
 
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high)
 
-	# success = model.User.check_login(username, password)
-	# if success:
-	# 	session['username'] = username
-	# 	return dashboard()
-	# else:
-	# 	return render_template("login.html")
-# filter()
 
 
 
@@ -105,9 +106,11 @@ def filter():
 # 	events = models.Events.all_events()
 # 	return render_template("logged-in-home.html", event=events)
 
+
 # @app.route("/register")
 # def register():
 # 	return render_template("register.html")
+
 
 # @app.route("/check-register", methods=["POST"])
 # def check_register():
@@ -120,6 +123,7 @@ def filter():
 # 		return dashboard()
 # 	else:
 # 		return render_template("register.html")
+
 
 # @app.route("/create-event")
 # def create_event():

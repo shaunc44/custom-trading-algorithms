@@ -393,8 +393,8 @@ class CreateBuyList():
 					date,
 					ticker_id)
 				VALUES (
-					%(startdate)s,
-					%(ticker_id)s
+					%s,
+					%s
 				);''', 
 				(startdate_db, ticker_id)
 			)

@@ -90,7 +90,7 @@ class LastPriceFilter(Filter):
 			AND price.date = %s;
 		''', (lp_low, lp_high, startdate)) #the startdate needs to move forward one trading day until it reaches the enddate
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+		rows = c.fetchall() 
 		for row in rows:
 			lp_ticker_list.append(row[0])
 
@@ -360,9 +360,9 @@ class DividendYieldFilter(Filter):
 # de = set(de)
 
 
-class CreateBuyList():
+class CreateFilteredList():
 	@classmethod
-	def create_buy_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
+	def create_filtered_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
 		counter = 0
 		master_filtered_list = []
 
@@ -376,15 +376,15 @@ class CreateBuyList():
 
 		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
-		buy_list = lp.intersection(pe.intersection(dy))
+		filtered_list = lp.intersection(pe.intersection(dy))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
-		buy_list = list(buy_list)
-		for symbol in buy_list:
+		filtered_list = list(filtered_list)
+		for symbol in filtered_list:
 			master_filtered_list.append(symbol)
 			counter += 1
 			# print (i)
-		print ("\nTotal Buy Tickers = ", str(counter))
-		print ("\nBuy List = ", master_filtered_list)
+		print ("\nTotal Filtered Tickers = ", str(counter))
+		print ("\nFiltered List = ", master_filtered_list)
 		# return master_list
 
 		for ticker_id in master_filtered_list:
@@ -402,7 +402,7 @@ class CreateBuyList():
 		conn.close()
 
 # filtered = CreateBuyList()
-# print (filtered.create_buy_list())
+# print (filtered.create_filtered_list())
 
 
 stop = timeit.default_timer()
@@ -440,64 +440,6 @@ print ("Seconds to run: ", (stop - start) )
 # # 		c.execute('''SELECT price.ticker FROM price WHERE ((price.adj_close - old_adj_close)/old_adj_close)*100) > %s AND ((price.adj_close - old_adj_close)/old_adj_close)*100) < %s;''', (low, high))
 # # 		return c.fetchall() #How do I get the adj_close from one year ago???????
 
-
-
-# @classmethod
-# 	def screen(cls, lp_hi, lp_low, cr_hi, cr_lo, ftwpc_hi, ftwpc_lo, param, param, param, param, param, param, param, param, param, param, param, param, ):
-#		pass
-
-# 	@classmethod
-# 	def last_price(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def last_price(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def current_ratio(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def price_change_52_wk(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def price_to_earnings(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def earnings_per_share(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def return_on_equity(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def return_on_investment(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def div_yield(cls, high, low):
-# 		pass
-
-# 	@classmethod
-# 	def debt_to_equity(cls, high, low):
-# 		pass
-
-#Pull data from fundamentals table
-# class Screen:
-# 	def __init__(self, *filters):
-# 		self._filters = filters
-
-	
-# 	def run(self):
-# 		for filter_ in self._filters:
-# 			filter.screen()
-
-# my_filter = LastPriceFilter(6,7)
-# Screen(my_filter)
 
 
 

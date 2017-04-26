@@ -60,7 +60,7 @@ def dashboard():
 	return render_template("dashboard.html", user=username, event=events)
 
 
-@app.route("/filter", methods=["POST"])
+@app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
 	my_form = FilterForm(request.form)
 
@@ -83,9 +83,13 @@ def filter():
 	dy_high = request.form['inputDivYieldHigh']
 	# filter_model.DividendYieldFilter.screen(dy_low, dy_high, startdate)
 
+	# RSI buy & sell signals
+	rsi_buy = request.form['inputRsiBuy']
+	rsi_sell = request.form['inputRsiSell']
+
 	# Iterate here over the buy list and portfolio list for each trading day ??????????????????
 	# Master Buy List
-	filter_model.CreateBuyList.create_buy_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+	filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 
 
 	print("\nRequest Form = ", request.form)

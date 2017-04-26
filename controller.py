@@ -4,7 +4,7 @@ from flask import (
 )
 from forms import FilterForm
 import filter_model
-# import buy_model
+import buy_model
 
 
 app = Flask(__name__)
@@ -91,6 +91,8 @@ def filter():
 	# Master Buy List
 	filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 
+
+	buy_model.CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
 
 	print("\nRequest Form = ", request.form)
 	# print ("RSI Forms = ", my_form['inputRsiBuy'])

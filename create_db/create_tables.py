@@ -92,7 +92,8 @@ DROP TABLE IF EXISTS filtered;
 SET foreign_key_checks = 1;
 CREATE TABLE filtered ( 
 date VARCHAR(128) NOT NULL,
-ticker_id INTEGER NOT NULL
+ticker_id INTEGER NOT NULL,
+UNIQUE KEY ticker_id (ticker_id)
 );''')
 
 

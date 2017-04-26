@@ -389,7 +389,7 @@ class CreateBuyList():
 
 		for ticker_id in master_filtered_list:
 			c.execute('''
-				INSERT INTO filtered (
+				INSERT IGNORE INTO filtered (
 					date,
 					ticker_id)
 				VALUES (

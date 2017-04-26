@@ -53,8 +53,8 @@ class CreatePurchasedList:
 			FROM filtered 
 			INNER JOIN price 
 			ON filtered.ticker_id = price.ticker_id 
-			AND price.rsi < %s, 
-			WHERE price.date = %s;
+			WHERE price.rsi < %s 
+			AND price.date = %s;
 		''', (rsi_buy, startdate_db))
 
 		rows = c.fetchall() 

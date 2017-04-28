@@ -4,7 +4,7 @@ from flask import (
 )
 from forms import FilterForm
 import filter_model
-# import buy_model
+import buy_model
 
 
 app = Flask(__name__)
@@ -87,15 +87,19 @@ def filter():
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
-	# Master Filtered List of Stock to Buy
+	# Create Master Filtered Table of Stocks to Buy
 	# filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 	add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 	add_filtered.create_filtered_list()
 
+	# Create Purchased List of Stocks
+	create_purchased = buy_model.CreatePurchasedList(rsi_buy, startdate)
+	purchased_results = create_purchased.create_purchased_list()
+
+
 	# Add Purchased Stocks to Portfolio
-	# add_model = buy_model.AddPurchasedToPortfolio(results)
-	
-	# add_model.add_purchased_to_portfolio(rsi_buy, startdate)
+	# add_purchased = buy_model.AddPurchasedToPortfolio(results)
+	# add_purchased.add_purchased_to_portfolio(rsi_buy, startdate)
 
 	# # Remove Purchased Stock from Filtered List
 	# buy_model.AddPurchasedToPortfolio.remove_purchased_from_filtered()
@@ -227,22 +231,3 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-# import flask #import login modules from flask
-# #look for flask skeleton
-# #import django
-# import model
-# import view
-
-
-
-# class Controller:
-# 	def __init__(self):
-# 		self.model = model.Model()
-# 		self.view = view.View()
-
-# 	def next_method(self):
-# 		pass

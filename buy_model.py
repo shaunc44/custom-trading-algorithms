@@ -19,7 +19,9 @@ conn = pymysql.connect(host='localhost',
 c = conn.cursor()
 
 
+
 class CreatePurchasedList:
+
 	@classmethod
 	def create_purchased_list(cls, rsi_buy, startdate): #change startdate to curr date?
 		purchased_list = []
@@ -43,18 +45,16 @@ class CreatePurchasedList:
 		return purchased_list
 
 
-class RemovePurchasedFromFiltered:
-	@classmethod
-	def remove_purchased_tickers_from_filtered(cls):
-		pass
-
 
 class AddPurchasedToPortfolio:
+
+
+	def __init__(self, results):
+		self.results = results
+
 	@classmethod
 	def add_purchased_to_portfolio(cls, rsi_buy, startdate):
-
 		purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
-
 		for row in purchased:
 			# print ("Purchased Date = ", row[0])
 			c.execute('''
@@ -75,6 +75,21 @@ class AddPurchasedToPortfolio:
 			)
 			conn.commit()
 		conn.close()
+
+		# remove_purchased_from_filtered(purchased)
+
+	@classmethod
+	def remove_purchased_from_filtered(cls, purchased):
+		print ("Purchased = ", purchased)
+		# purchased_to_remove = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+		for ticker_id in purchased:
+			c.execute('''
+				DELETE FROM filtered
+				WHERE filtered.ticker_id = ?
+				);''',(ticker_id)
+
+
+
 
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()

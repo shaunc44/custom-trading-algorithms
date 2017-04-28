@@ -87,12 +87,20 @@ def filter():
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
-	# Iterate here over the buy list and portfolio list for each trading day ??????????????????
-	# Master Buy List
-	filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+	# Master Filtered List of Stock to Buy
+	# filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+	add_filtered = filter_model.CreateFilteredList()
+	add_filtered.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+
+	# Add Purchased Stocks to Portfolio
+	# add_model = buy_model.AddPurchasedToPortfolio(results)
+	
+	# add_model.add_purchased_to_portfolio(rsi_buy, startdate)
+
+	# # Remove Purchased Stock from Filtered List
+	# buy_model.AddPurchasedToPortfolio.remove_purchased_from_filtered()
 
 
-	buy_model.AddPurchasedToPortfolio.add_purchased_to_portfolio(rsi_buy, startdate)
 
 	print("\nRequest Form = ", request.form)
 	# print ("RSI Forms = ", my_form['inputRsiBuy'])

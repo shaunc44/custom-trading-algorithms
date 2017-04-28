@@ -360,7 +360,7 @@ class DividendYieldFilter(Filter):
 # de = set(de)
 
 
-class CreateFilteredList():
+class CreateFilteredList:
 	@classmethod
 	def create_filtered_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
 		counter = 0

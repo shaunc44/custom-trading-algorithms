@@ -92,7 +92,7 @@ def filter():
 	filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 
 
-	buy_model.CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+	buy_model.AddPurchasedToPortfolio.add_purchased_to_portfolio(rsi_buy, startdate)
 
 	print("\nRequest Form = ", request.form)
 	# print ("RSI Forms = ", my_form['inputRsiBuy'])

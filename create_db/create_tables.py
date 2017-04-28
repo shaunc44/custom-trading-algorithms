@@ -99,14 +99,19 @@ UNIQUE KEY ticker_id (ticker_id)
 
 cursor.execute('''
 SET foreign_key_checks = 0;
-DROP TABLE IF EXISTS porfolio;
+DROP TABLE IF EXISTS portfolio;
 SET foreign_key_checks = 1;
-CREATE TABLE porfolio ( 
+CREATE TABLE portfolio ( 
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
-date_purchased VARCHAR(128) NOT NULL,
-value_purchased FLOAT NULL,
-date_sold VARCHAR(128) NOT NULL,
-value_sold FLOAT NULL
+buy_date VARCHAR(128) NOT NULL,
+buy_price FLOAT NULL,
+buy_value FLOAT NULL,
+shares FLOAT NULL,
+sell_date VARCHAR(128) NOT NULL,
+sell_price FLOAT NULL,
+sell_value FLOAT NULL,
+gain_loss FLOAT NULL
 );''')
 
 

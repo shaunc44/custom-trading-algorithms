@@ -104,11 +104,11 @@ SET foreign_key_checks = 1;
 CREATE TABLE portfolio ( 
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
-buy_date VARCHAR(128) NOT NULL,
+buy_date VARCHAR(128) NULL,
 buy_price FLOAT NULL,
 buy_value FLOAT NULL,
 shares FLOAT NULL,
-sell_date VARCHAR(128) NOT NULL,
+sell_date VARCHAR(128) NULL,
 sell_price FLOAT NULL,
 sell_value FLOAT NULL,
 gain_loss FLOAT NULL

@@ -94,12 +94,11 @@ def filter():
 
 	# Create Purchased List of Stocks
 	create_purchased = buy_model.CreatePurchasedList(rsi_buy, startdate)
-	purchased_results = create_purchased.create_purchased_list()
-
+	purchased = create_purchased.create_purchased_list()
 
 	# Add Purchased Stocks to Portfolio
-	# add_purchased = buy_model.AddPurchasedToPortfolio(results)
-	# add_purchased.add_purchased_to_portfolio(rsi_buy, startdate)
+	add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
+	add_purchased.add_purchased_to_portfolio()
 
 	# # Remove Purchased Stock from Filtered List
 	# buy_model.AddPurchasedToPortfolio.remove_purchased_from_filtered()

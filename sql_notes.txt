@@ -441,6 +441,10 @@ mysqldump -h localhost -u scox -p trading_algo | gzip -9 > backup-20170407-tradi
 `zcat $PATH/backup-%DATETIME%-%DATABASE_NAME%.sql.gz | mysql -h $HOSTNAME -u $EXISTING_USERNAME_NAME  -p $EXISTING_DATABASE_NAME`
 
 
+***************** SQL STATEMENTS TO USE WITH ALGO *****************
+select sum(buy_value) from portfolio;
+update portfolio set buy_value = 15000 where ticker_id = 707;
+
 
 
 

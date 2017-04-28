@@ -46,33 +46,28 @@ class CreatePurchasedList:
 
 
 
-# class AddPurchasedToPortfolio:
-# 	def __init__(self, results):
-# 		self.results = results
+class AddPurchasedToPortfolio:
+	def __init__(self, purchased):
+		self.purchased = purchased
 
-# 	@classmethod
-# 	def add_purchased_to_portfolio(cls, rsi_buy, startdate):
-# 		purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
-# 		for row in purchased:
-# 			# print ("Purchased Date = ", row[0])
-# 			c.execute('''
-# 				INSERT INTO portfolio (
-# 					ticker_id,
-# 					buy_date,
-# 					buy_price,
-# 					buy_value,
-# 					shares)
-# 				VALUES (
-# 					%s,
-# 					%s,
-# 					%s,
-# 					%s,
-# 					%s
-# 				);''', 
-# 				(row[0], row[1], row[2], calc1, calc2)
-# 			)
-# 			conn.commit()
-# 		conn.close()
+	def add_purchased_to_portfolio(self):
+		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+		for row in self.purchased:
+			# print ("Purchased Date = ", row[0])
+			c.execute('''
+				INSERT INTO portfolio (
+					ticker_id,
+					buy_date,
+					buy_price)
+				VALUES (
+					%s,
+					%s,
+					%s
+				);''', 
+				(row[0], row[1], row[2])
+			)
+			conn.commit()
+		conn.close()
 
 		# remove_purchased_from_filtered(purchased)
 
@@ -84,7 +79,7 @@ class CreatePurchasedList:
 	# 		c.execute('''
 	# 			DELETE FROM filtered
 	# 			WHERE filtered.ticker_id = ?
-	# 			);''',(ticker_id)
+	# 			);''', (ticker_id)
 
 
 

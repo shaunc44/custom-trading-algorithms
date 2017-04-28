@@ -4,7 +4,7 @@ from flask import (
 )
 from forms import FilterForm
 import filter_model
-import buy_model
+# import buy_model
 
 
 app = Flask(__name__)
@@ -89,8 +89,8 @@ def filter():
 
 	# Master Filtered List of Stock to Buy
 	# filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
-	add_filtered = filter_model.CreateFilteredList()
-	add_filtered.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+	add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
+	add_filtered.create_filtered_list()
 
 	# Add Purchased Stocks to Portfolio
 	# add_model = buy_model.AddPurchasedToPortfolio(results)

@@ -361,20 +361,28 @@ class DividendYieldFilter(Filter):
 
 
 class CreateFilteredList:
-	@classmethod
-	def create_filtered_list(cls, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
+	def __init__(self, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
+		self.lp_low = lp_low
+		self.lp_high = lp_high
+		self.pe_low = pe_low
+		self.pe_high = pe_high
+		self.dy_low = dy_low
+		self.dy_high = dy_high
+		self.startdate = startdate
+
+	def create_filtered_list(self):
 		counter = 0
 		master_filtered_list = []
 
-		lp = LastPriceFilter.screen(lp_low, lp_high, startdate)
-		pe = PriceEarningsFilter.screen(pe_low, pe_high, startdate)
-		dy = DividendYieldFilter.screen(dy_low, dy_high, startdate)
+		lp = LastPriceFilter.screen(self.lp_low, self.lp_high, self.startdate)
+		pe = PriceEarningsFilter.screen(self.pe_low, self.pe_high, self.startdate)
+		dy = DividendYieldFilter.screen(self.dy_low, self.dy_high, self.startdate)
 
 		lp = set(lp)
 		pe = set(pe)
 		dy = set(dy)
 
-		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		startdate_db = dt.datetime.strptime(self.startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 		filtered_list = lp.intersection(pe.intersection(dy))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
@@ -404,34 +412,8 @@ class CreateFilteredList:
 # filtered = CreateBuyList()
 # print (filtered.create_filtered_list())
 
-
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
-
-
-
-# class CreateBuyList():
-# 	def create_buy_list(self):
-# 		counter = 0
-# 		master_list = []
-# 		x = lp.intersection(pe.intersection(dy))
-# 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
-# 		x = list(x)
-# 		for i in x:
-# 			master_list.append(i)
-# 			counter += 1
-# 			# print (i)
-# 		print ("Total Tickers = ", str(counter))
-# 		print ("Buy List = ", master_list)
-# 		# return master_list
-
-
-# # filtered = CreateBuyList()
-# # print (filtered.create_buy_list())
-
-# stop = timeit.default_timer()
-# print ("Seconds to run: ", (stop - start) )
-
 
 
 

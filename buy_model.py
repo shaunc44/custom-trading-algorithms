@@ -52,9 +52,7 @@ class AddPurchasedToPortfolio:
 		self.purchased = purchased
 
 	def add_purchased_to_portfolio(self):
-		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
 		for row in self.purchased:
-			# print ("Purchased Date = ", row[0])
 			c.execute('''
 				SELECT IF (
 					(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000 OR 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
@@ -65,11 +63,13 @@ class AddPurchasedToPortfolio:
 				;''')
 
 			cash_avail = c.fetchone()
-			print ("Cash Avail = ", cash_avail[0])
-
+			# print ("Cash Avail = ", cash_avail[0])
 			c.execute('''
-				INSERT INTO portfolio (
-					ticker_id,
+				INSERT INTO portfolio 
+				IF (
+					portfolio.ticker_id IS NULL 
+					OR portfolio.sell_value IS NOT NULL,
+					(ticker_id,
 					buy_date,
 					buy_price,
 					buy_value)
@@ -78,16 +78,13 @@ class AddPurchasedToPortfolio:
 					%s,
 					%s,
 					%s
+				)
 				);
 				DELETE FROM portfolio 
 				WHERE buy_value = 0;
 				''', 
 				(row[0], row[1], row[2], cash_avail)
 			)
-
-			# c.execute('''
-			# 		delete from portfolio where buy_value = 0;
-			# 	;''')
 
 			conn.commit()
 		conn.close()

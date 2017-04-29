@@ -451,6 +451,9 @@ select (1000000 + sum(sell_value) - sum(buy_value)) as Cash_Available from portf
 SELECT IF (1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000, 20000, 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
 FROM portfolio;
 
+select * from portfolio where ticker_id = 301 and sell_price > 0;
+
+
 
 
 

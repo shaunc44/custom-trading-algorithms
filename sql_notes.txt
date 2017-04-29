@@ -443,10 +443,13 @@ mysqldump -h localhost -u scox -p trading_algo | gzip -9 > backup-20170407-tradi
 
 ***************** SQL STATEMENTS TO USE WITH ALGO *****************
 select sum(buy_value) from portfolio;
+
 update portfolio set buy_value = 15000 where ticker_id = 707;
 
+select (1000000 + sum(sell_value) - sum(buy_value)) as Cash_Available from portfolio;
 
-
+SELECT IF (1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000, 20000, 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
+FROM portfolio;
 
 
 

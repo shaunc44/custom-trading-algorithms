@@ -45,6 +45,7 @@ class CreatePurchasedList:
 		return purchased_list
 
 
+# DOES THE PURCHASED LIST RESET WITH EACH ITERATION ????
 
 class AddPurchasedToPortfolio:
 	def __init__(self, purchased):
@@ -54,17 +55,40 @@ class AddPurchasedToPortfolio:
 		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
 		for row in self.purchased:
 			# print ("Purchased Date = ", row[0])
+			cash_avail = c.execute('''
+				SELECT IF (
+					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000,
+					20000,
+					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
+				FROM portfolio
+				;''')
+
+			print ("Cash Avail = ", cash_avail)
+			# cash_avail = c.execute('''
+			# 	SELECT (
+			# 	CASE WHEN (
+			# 		(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)) > 20000)
+			# 	THEN 
+			# 		20000
+			# 	ELSE 
+			# 		(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
+			# 	END) 
+			# 	FROM portfolio
+			# 	;''')
+
 			c.execute('''
 				INSERT INTO portfolio (
 					ticker_id,
 					buy_date,
-					buy_price)
+					buy_price,
+					buy_value)
 				VALUES (
+					%s,
 					%s,
 					%s,
 					%s
 				);''', 
-				(row[0], row[1], row[2])
+				(row[0], row[1], row[2], cash_avail)
 			)
 			conn.commit()
 		conn.close()
@@ -76,10 +100,14 @@ class AddPurchasedToPortfolio:
 			c.execute('''
 				INSERT INTO portfolio (
 					buy_value)
-				SELECT IF (
-					%s
-				);''', 
-				(row[0], row[1], row[2])
+				SELECT CASE WHEN (
+					(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value)) > 20000)
+				THEN 
+					(20000)
+				ELSE 
+					(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value))
+				;''' 
+				# (row[0], row[1], row[2])
 			)
 			conn.commit()
 		conn.close()

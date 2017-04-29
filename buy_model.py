@@ -69,6 +69,21 @@ class AddPurchasedToPortfolio:
 			conn.commit()
 		conn.close()
 
+	def add_purchased_value_to_portfolio(self):
+		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+		for row in self.purchased:
+			# print ("Purchased Date = ", row[0])
+			c.execute('''
+				INSERT INTO portfolio (
+					buy_value)
+				SELECT IF (
+					%s
+				);''', 
+				(row[0], row[1], row[2])
+			)
+			conn.commit()
+		conn.close()
+
 		# remove_purchased_from_filtered(purchased)
 
 	# @classmethod

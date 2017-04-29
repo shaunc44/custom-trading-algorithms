@@ -55,15 +55,17 @@ class AddPurchasedToPortfolio:
 		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
 		for row in self.purchased:
 			# print ("Purchased Date = ", row[0])
-			cash_avail = c.execute('''
+			c.execute('''
 				SELECT IF (
-					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000,
-					20000,
-					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
+					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000, 
+					20000, 
+					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
+				)
 				FROM portfolio
 				;''')
 
-			print ("Cash Avail = ", cash_avail)
+			cash_avail = c.fetchone()
+			print ("Cash Avail = ", cash_avail[0])
 			# cash_avail = c.execute('''
 			# 	SELECT (
 			# 	CASE WHEN (

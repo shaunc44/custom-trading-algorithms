@@ -105,13 +105,13 @@ CREATE TABLE portfolio (
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 ticker_id INTEGER NOT NULL,
 buy_date VARCHAR(128) NULL,
-buy_price FLOAT NULL,
-buy_value FLOAT NULL,
-shares FLOAT NULL,
+buy_price FLOAT DEFAULT 0,
+buy_value FLOAT DEFAULT 0,
+shares FLOAT DEFAULT 0,
 sell_date VARCHAR(128) NULL,
-sell_price FLOAT NULL,
-sell_value FLOAT NULL,
-gain_loss FLOAT NULL
+sell_price FLOAT DEFAULT 0,
+sell_value FLOAT DEFAULT 0,
+gain_loss FLOAT DEFAULT 0
 );''')
 
 

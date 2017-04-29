@@ -65,18 +65,7 @@ class AddPurchasedToPortfolio:
 				;''')
 
 			cash_avail = c.fetchone()
-			print ("Cash Avail = ", cash_avail[0], type(cash_avail[0]))
-			# cash_avail = c.execute('''
-			# 	SELECT (
-			# 	CASE WHEN (
-			# 		(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)) > 20000)
-			# 	THEN 
-			# 		20000
-			# 	ELSE 
-			# 		(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value))
-			# 	END) 
-			# 	FROM portfolio
-			# 	;''')
+			print ("Cash Avail = ", cash_avail[0])
 
 			c.execute('''
 				INSERT INTO portfolio (
@@ -89,30 +78,38 @@ class AddPurchasedToPortfolio:
 					%s,
 					%s,
 					%s
-				);''', 
+				);
+				DELETE FROM portfolio 
+				WHERE buy_value = 0;
+				''', 
 				(row[0], row[1], row[2], cash_avail)
 			)
+
+			# c.execute('''
+			# 		delete from portfolio where buy_value = 0;
+			# 	;''')
+
 			conn.commit()
 		conn.close()
 
-	def add_purchased_value_to_portfolio(self):
-		# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
-		for row in self.purchased:
-			# print ("Purchased Date = ", row[0])
-			c.execute('''
-				INSERT INTO portfolio (
-					buy_value)
-				SELECT CASE WHEN (
-					(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value)) > 20000)
-				THEN 
-					(20000)
-				ELSE 
-					(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value))
-				;''' 
-				# (row[0], row[1], row[2])
-			)
-			conn.commit()
-		conn.close()
+	# def add_purchased_value_to_portfolio(self):
+	# 	# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+	# 	for row in self.purchased:
+	# 		# print ("Purchased Date = ", row[0])
+	# 		c.execute('''
+	# 			INSERT INTO portfolio (
+	# 				buy_value)
+	# 			SELECT CASE WHEN (
+	# 				(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value)) > 20000)
+	# 			THEN 
+	# 				(20000)
+	# 			ELSE 
+	# 				(1000000 - SUM(porfolio.buy_value) + SUM(porfolio.sell_value))
+	# 			;''' 
+	# 			# (row[0], row[1], row[2])
+	# 		)
+	# 		conn.commit()
+	# 	conn.close()
 
 		# remove_purchased_from_filtered(purchased)
 

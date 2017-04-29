@@ -57,7 +57,7 @@ class AddPurchasedToPortfolio:
 			# print ("Purchased Date = ", row[0])
 			c.execute('''
 				SELECT IF (
-					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000, 
+					(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000 OR 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
 					20000, 
 					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
 				)
@@ -65,7 +65,7 @@ class AddPurchasedToPortfolio:
 				;''')
 
 			cash_avail = c.fetchone()
-			print ("Cash Avail = ", cash_avail[0])
+			print ("Cash Avail = ", cash_avail[0], type(cash_avail[0]))
 			# cash_avail = c.execute('''
 			# 	SELECT (
 			# 	CASE WHEN (

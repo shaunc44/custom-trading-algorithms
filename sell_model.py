@@ -25,19 +25,19 @@ class SellStock:
 		self.startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 	def sell_stock(self): #how to change startdate to curr date?
-		# purchased_list = []
+		sell_list = []
 		c.execute('''
-			SELECT filtered.ticker_id, price.date, price.adj_close
-			FROM filtered 
+			SELECT portfolio.ticker_id, price.date, price.adj_close
+			FROM portfolio 
 			INNER JOIN price 
-			ON filtered.ticker_id = price.ticker_id 
-			WHERE price.rsi < %s 
+			ON portfolio.ticker_id = price.ticker_id 
+			WHERE price.rsi > %s 
 			AND price.date = %s;
 		''', (self.rsi_sell, self.startdate_db))
 
 		rows = c.fetchall() 
 		for row in rows:
-			purchased_list.append(row)
+			sell_list.append(row)
 
-		print ("\nPurchased Ticker List = ", purchased_list)
-		return purchased_list
+		print ("\nSell List = ", sell_list)
+		# return purchased_list

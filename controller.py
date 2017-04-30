@@ -5,6 +5,7 @@ from flask import (
 from forms import FilterForm
 import filter_model
 import buy_model
+import sell_model
 
 
 app = Flask(__name__)
@@ -65,7 +66,7 @@ def filter():
 	my_form = FilterForm(request.form)
 
 	# Start & End Dates
-	startdate = request.form['startdate']
+	startdate = request.form['startdate'] #increment dates here????????
 	enddate = request.form['enddate']
 
 	# Last Price
@@ -86,6 +87,8 @@ def filter():
 	# RSI buy & sell signals
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
+
+	#increment dates here with for loop????????
 
 	# Create Master Filtered Table of Stocks to Buy
 	add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)

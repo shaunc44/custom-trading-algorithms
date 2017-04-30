@@ -65,14 +65,18 @@ class AddPurchasedToPortfolio:
 			cash_avail = c.fetchone()
 			# print ("Cash Avail = ", cash_avail[0])
 			c.execute('''
-				INSERT INTO portfolio 
-				IF (
-					portfolio.ticker_id IS NULL 
-					OR portfolio.sell_value IS NOT NULL,
-					(ticker_id,
+				INSERT INTO portfolio (
+					ticker_id,
 					buy_date,
 					buy_price,
 					buy_value)
+				SELECT * FROM 
+				(SELECT ticker_id, buy_date, buy_price, buy_value) as tmp
+				WHERE NOT EXISTS (
+					SELECT ticker_id FROM portfolio
+					WHERE ticker_id = ticker_id
+					AND sell_value > 0
+				)
 				VALUES (
 					%s,
 					%s,
@@ -88,6 +92,17 @@ class AddPurchasedToPortfolio:
 
 			conn.commit()
 		conn.close()
+
+				# IF (SELECT EXISTS 
+				# 	(SELECT portfolio.ticker_id 
+				# 	FROM portfolio 
+				# 	WHERE portfolio.ticker_id = row[1]
+				# 	AND portfolio.sell_value = NULL
+				# 	)
+				# 	portfolio.ticker_id IS NULL 
+				# 	OR portfolio.sell_value IS NOT NULL,
+
+
 
 	# def add_purchased_value_to_portfolio(self):
 	# 	# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)

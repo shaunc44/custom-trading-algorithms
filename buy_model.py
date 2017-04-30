@@ -65,33 +65,29 @@ class AddPurchasedToPortfolio:
 			cash_avail = c.fetchone()
 			# print ("Cash Avail = ", cash_avail[0])
 			c.execute('''
-				INSERT INTO portfolio (
-					ticker_id,
-					buy_date,
-					buy_price,
+				INSERT IGNORE INTO portfolio (
+					ticker_id, 
+					buy_date, 
+					buy_price, 
 					buy_value)
-				SELECT * FROM 
-				(SELECT ticker_id, buy_date, buy_price, buy_value) as tmp
-				WHERE NOT EXISTS (
-					SELECT ticker_id FROM portfolio
-					WHERE ticker_id = ticker_id
-					AND sell_value > 0
-				)
 				VALUES (
-					%s,
-					%s,
-					%s,
-					%s
-				)
-				);
-				DELETE FROM portfolio 
-				WHERE buy_value = 0;
+					%s, 
+					%s, 
+					%s, 
+					%s);
+				DELETE FROM portfolio WHERE buy_value = 0;
 				''', 
 				(row[0], row[1], row[2], cash_avail)
 			)
-
 			conn.commit()
 		conn.close()
+
+				# WHERE NOT EXISTS (
+				# 	SELECT ticker_id FROM portfolio
+				# 	WHERE ticker_id = ticker_id
+				# 	AND sell_value > 0
+				# )
+
 
 				# IF (SELECT EXISTS 
 				# 	(SELECT portfolio.ticker_id 
@@ -102,6 +98,31 @@ class AddPurchasedToPortfolio:
 				# 	portfolio.ticker_id IS NULL 
 				# 	OR portfolio.sell_value IS NOT NULL,
 
+
+	# def add_purchased_to_portfolio(self):
+	# 	for row in self.purchased:
+	# 		c.execute('''
+	# 			SELECT IF (
+	# 				(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000 OR 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
+	# 				20000, 
+	# 				1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
+	# 			)
+	# 			FROM portfolio
+	# 			;''')
+
+	# 		cash_avail = c.fetchone()
+	# 		# print ("Cash Avail = ", cash_avail[0])
+	# 		c.execute('''
+	# 			INSERT INTO portfolio (ticker_id, buy_date, buy_price, buy_value)
+	# 			SELECT * FROM (SELECT ticker_id, buy_date, buy_price, buy_value) as tmp
+	# 			WHERE NOT EXISTS (SELECT ticker_id FROM portfolio WHERE ticker_id = row[0])
+	# 			VALUES (%s, %s, %s, %s);
+	# 			DELETE FROM portfolio WHERE buy_value = 0;
+	# 			''', 
+	# 			(row[0], row[1], row[2], cash_avail)
+	# 		)
+	# 		conn.commit()
+	# 	conn.close()
 
 
 	# def add_purchased_value_to_portfolio(self):

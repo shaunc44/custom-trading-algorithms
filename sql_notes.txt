@@ -453,7 +453,7 @@ FROM portfolio;
 
 select * from portfolio where ticker_id = 301 and sell_price > 0;
 
-
+select datediff(sell_date, buy_date) from portfolio;
 
 
 

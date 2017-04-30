@@ -88,7 +88,6 @@ def filter():
 	rsi_sell = request.form['inputRsiSell']
 
 	# Create Master Filtered Table of Stocks to Buy
-	# filter_model.CreateFilteredList.create_filtered_list(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 	add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
 	add_filtered.create_filtered_list()
 
@@ -100,9 +99,9 @@ def filter():
 	add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
 	add_purchased.add_purchased_to_portfolio()
 
-	# # Remove Purchased Stock from Filtered List
-	# buy_model.AddPurchasedToPortfolio.remove_purchased_from_filtered()
-
+	# Sell Stocks
+	sell_stock = sell_model.SellStock(rsi_buy, startdate)
+	sell_stock.sell_stock()
 
 
 	print("\nRequest Form = ", request.form)

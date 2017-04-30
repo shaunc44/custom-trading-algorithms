@@ -111,6 +111,7 @@ sell_date VARCHAR(128) DEFAULT 0,
 sell_price FLOAT DEFAULT 0,
 sell_value FLOAT DEFAULT 0,
 gain_loss FLOAT DEFAULT 0,
+days_held INTEGER DEFAULT 0,
 UNIQUE KEY unique_idx (ticker_id, sell_date)
 );''')
 

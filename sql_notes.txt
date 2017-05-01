@@ -429,6 +429,7 @@ END$$
 DELIMITER ;
 
 
+
 ***************************************************************************
 ***********************  BACKUP MYSQL DB WITH GZIP  ***********************
 ***************************************************************************
@@ -436,11 +437,13 @@ DELIMITER ;
 mysqldump -h localhost -u scox -p trading_algo | gzip -9 > backup-20170407-trading_algo.sql.gz
 
 
+
 ***************************************************************************
 **********************  RESTORE MYSQL DB WITH GZIP  ***********************
 ***************************************************************************
 
 `zcat $PATH/backup-%DATETIME%-%DATABASE_NAME%.sql.gz | mysql -h $HOSTNAME -u $EXISTING_USERNAME_NAME  -p $EXISTING_DATABASE_NAME`
+
 
 
 ***************************************************************************
@@ -460,6 +463,7 @@ select * from portfolio where ticker_id = 301 and sell_price > 0;
 
 select datediff(sell_date, buy_date) from portfolio;
 
+select count(gain_loss) from portfolio where gain_loss > 0;
+select count(gain_loss) from portfolio where gain_loss < 0;
 
-
-
+select avg(days_held) from portfolio where days_held > 0;

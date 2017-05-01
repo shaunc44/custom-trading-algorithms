@@ -35,13 +35,12 @@ class SellStock:
 			AND price.date = %s;
 			''', (self.rsi_sell, self.startdate_db)
 		)
-
 		stocks_to_sell = c.fetchall() 
 		print ("Stocks to Sell = ", stocks_to_sell)
 
 		for row in stocks_to_sell:
-			# print("Ticker_ID = ", row[0], "Sell_Date = ", row[1], "Sell_Price = ", row[2])
 			symbol = row[0]
+			# Add sell_date and sell_price to portfolio
 			c.execute('''
 				UPDATE portfolio 
 				SET portfolio.sell_date = %s,
@@ -51,35 +50,29 @@ class SellStock:
 				(row[1], row[2], row[0])
 			)
 
+			# Add sell_value and days_held to portfolio
 			c.execute('''
 				UPDATE portfolio
 				SET portfolio.sell_value = ((portfolio.sell_price / portfolio.buy_price) * portfolio.buy_value),
 					portfolio.days_held = DATEDIFF(portfolio.sell_date, portfolio.buy_date)
-				WHERE portfolio.ticker_id = %s;
+				WHERE portfolio.ticker_id = %s AND portfolio.sell_value = 0;
 				''',
 				(row[0])
 			)
 
-			# portfolio.days_held = portfolio.sell_date portfolio.sell_date
-			# portfolio.gain_loss = 
+			# Add gain_loss to portfolio
+			c.execute('''
+				UPDATE portfolio
+				SET portfolio.gain_loss = (portfolio.sell_value - portfolio.buy_value)
+				WHERE portfolio.ticker_id = %s AND portfolio.gain_loss = 0;
+				''',
+				(row[0])
+			)
+
 			conn.commit()
 		conn.close()
 
 
-
-
-	# def add_sell_stats(self):
-	# 	c.execute('''
-
-				
-
-
-	# 		;'''
-	# 	)
-
-		# 	sell_list.append(row)
-		# print ("\nSell List = ", sell_list)
-		# return purchased_list
 
 
 

@@ -6,6 +6,7 @@ from forms import FilterForm
 import filter_model
 import buy_model
 import sell_model
+import current_model
 
 
 app = Flask(__name__)
@@ -101,6 +102,10 @@ def filter():
 	# Add Purchased Stocks to Portfolio
 	add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
 	add_purchased.add_purchased_to_portfolio()
+
+	# Add Current Price & Value to Portfolio
+	add_current = current_model.AddCurrentDataToPortfolio(startdate)
+	add_current.add_current_data()
 
 	# Sell Stocks
 	sell_stock = sell_model.SellStock(rsi_sell, startdate)

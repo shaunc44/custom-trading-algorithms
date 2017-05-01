@@ -19,14 +19,23 @@ c = conn.cursor()
 
 
 
-class SellStock:
-	def __init__(self, rsi_sell, startdate):
-		self.rsi_sell = rsi_sell
+class AddCurrentDataToPortfolio:
+	def __init__(self, startdate):
+		# self.rsi_sell = rsi_sell
 		self.startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
-	def sell_stock(self): #how to change startdate to curr date?
-		sell_list = []
+	def add_current_data(self): #how to change startdate to curr date?
+		# sell_list = []
 		c.execute('''
+			UPDATE portfolio
+				INNER JOIN price 
+				ON portfolio.ticker_id = price.ticker_id
+			SET portfolio.current_price = %s,
+				portfolio.sell_price = %s
+			WHERE portfolio.ticker_id = %s AND portfolio.sell_price = 0;
+
+
+
 			SELECT portfolio.ticker_id, price.date, price.adj_close
 			FROM portfolio 
 			INNER JOIN price 

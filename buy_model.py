@@ -27,7 +27,6 @@ class CreatePurchasedList:
 
 	def create_purchased_list(self): #change startdate to curr date?
 		purchased_list = []
-		# startdate_db = dt.datetime.strptime(self.startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		c.execute('''
 			SELECT filtered.ticker_id, price.date, price.adj_close
 			FROM filtered 
@@ -42,7 +41,7 @@ class CreatePurchasedList:
 		for row in rows:
 			purchased_list.append(row)
 
-		print ("\nPurchased Ticker List = ", purchased_list)
+		print ("\nPossible To Purchase Ticker List = ", purchased_list)
 		return purchased_list
 
 
@@ -56,7 +55,7 @@ class AddPurchasedToPortfolio:
 		for row in self.purchased:
 			c.execute('''
 				SELECT IF (
-					(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 20000 OR 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
+					(1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) >= 20000 OR 1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
 					20000, 
 					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
 				)

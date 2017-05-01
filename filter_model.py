@@ -395,6 +395,14 @@ class CreateFilteredList:
 		print ("\nFiltered List = ", master_filtered_list)
 		# return master_list
 
+
+		# Delete previous filtered table
+		c.execute('''
+			DELETE FROM filtered;
+			'''
+		)
+
+		# Add filtered list to filtered table
 		for ticker_id in master_filtered_list:
 			c.execute('''
 				INSERT IGNORE INTO filtered (
@@ -412,8 +420,11 @@ class CreateFilteredList:
 # filtered = CreateBuyList()
 # print (filtered.create_filtered_list())
 
+
 stop = timeit.default_timer()
 print ("Seconds to run: ", (stop - start) )
+
+
 
 
 

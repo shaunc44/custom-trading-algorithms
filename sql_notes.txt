@@ -460,7 +460,7 @@ select (1000000 + sum(sell_value) - sum(buy_value)) as Cash_Available from portf
 
 
 ***************************** HOLDING BALANCE *****************************
-select sum(buy_value) - sum(sell_value) from portfolio;
+select sum(curr_value) - sum(sell_value) as HOLDING_BAL from portfolio;
 
 
 **************************** PORTFOLIO BALANCE ****************************

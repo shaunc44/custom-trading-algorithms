@@ -103,7 +103,7 @@ def filter():
 	add_purchased.add_purchased_to_portfolio()
 
 	# Sell Stocks
-	sell_stock = sell_model.SellStock(rsi_buy, startdate)
+	sell_stock = sell_model.SellStock(rsi_sell, startdate)
 	sell_stock.sell_stock()
 
 

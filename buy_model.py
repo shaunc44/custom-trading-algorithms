@@ -35,7 +35,8 @@ class CreatePurchasedList:
 			ON filtered.ticker_id = price.ticker_id 
 			WHERE price.rsi < %s 
 			AND price.date = %s;
-		''', (self.rsi_buy, self.startdate_db))
+			''', (self.rsi_buy, self.startdate_db)
+		)
 
 		rows = c.fetchall() 
 		for row in rows:
@@ -59,8 +60,8 @@ class AddPurchasedToPortfolio:
 					20000, 
 					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
 				)
-				FROM portfolio
-				;''')
+				FROM portfolio;'''
+			)
 
 			cash_avail = c.fetchone()
 			# print ("Cash Avail = ", cash_avail[0])

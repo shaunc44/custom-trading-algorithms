@@ -106,6 +106,7 @@ def filter():
 	# Add Current Price & Value to Portfolio
 	add_current = current_model.AddCurrentDataToPortfolio(startdate)
 	add_current.add_current_data()
+	add_current.remove_curr_val_for_sold()
 
 	# Sell Stocks
 	sell_stock = sell_model.SellStock(rsi_sell, startdate)

@@ -1,11 +1,11 @@
 import flask
 import pymysql.cursors
 import datetime as dt
-import timeit
+# import timeit
 
 
 #Begin timer
-start = timeit.default_timer()
+# start = timeit.default_timer()
 
 
 conn = pymysql.connect(host='localhost',
@@ -45,16 +45,16 @@ c = conn.cursor()
 ############################  USER CLASS  ###########################
 #####################################################################
 
-class Users:
-	pass
+# class Users:
+# 	pass
 
-	@classmethod
-	def check_login(cls, username, password):
-		pass
+# 	@classmethod
+# 	def check_login(cls, username, password):
+# 		pass
 
-	@classmethod
-	def add_new_user(cls, username, password):
-		pass
+# 	@classmethod
+# 	def add_new_user(cls, username, password):
+# 		pass
 
 
 #####################################################################
@@ -78,23 +78,22 @@ class LastPriceFilter(Filter):
 	# 	self.lp_high = lp_high
 	# 	# self.date = date
 	@classmethod
-	def screen(cls, lp_low, lp_high, startdate): #the date should iterate over the trading dates beginning with start date
+	def screen(cls, lp_low, lp_high, rundate): #the date should iterate over the trading dates beginning with start date
 		lp_ticker_list = []
-		startdate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-
+		# run_date = dt.datetime.strptime(rundate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		c.execute('''
 			SELECT DISTINCT price.ticker_id 
 			FROM price 
 			WHERE price.adj_close > %s 
 			AND price.adj_close < %s 
 			AND price.date = %s;
-		''', (lp_low, lp_high, startdate)) #the startdate needs to move forward one trading day until it reaches the enddate
+		''', (lp_low, lp_high, rundate)) #the startdate needs to move forward one trading day until it reaches the enddate
 
 		rows = c.fetchall() 
 		for row in rows:
 			lp_ticker_list.append(row[0])
 
-		# print ("\nLast Price Ticker List = ", lp_ticker_list)
+		print ("\nLast Price Ticker List = ", lp_ticker_list)
 		return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
@@ -142,38 +141,36 @@ class LastPriceFilter(Filter):
 # #SELECT fundamental.ticker_id FROM fundamental PARTITION (pPE1) WHERE fundamental.value > 1.0 AND fundamental.value < 20.0 and fundamental.date > '2017-03-22';
 # #takes 0.51 sec to run
 class PriceEarningsFilter(Filter):
-	# def __init__(self, pe_low, pe_high, startdate, enddate):
-	# 	self.pe_low = pe_low
-	# 	self.pe_high = pe_high
-	# 	self.startdate = startdate
-	# 	self.enddate = enddate
+
 	@classmethod
-	def screen(cls, pe_low, pe_high, startdate):
+	def screen(cls, pe_low, pe_high, rundate):
 		pe_ticker_list = []
-
-		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d') #date for sql statement
-		print ("Start Date = ", startdate_db)
-		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d') #convert startdate string to datetime format
-		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90) #subtract 90 days from startdate to get trailingdate
-		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') #convert trailingdate to string
+		# run_date_db = dt.datetime.strptime(rundate, '%m/%d/%Y').strftime('%Y-%m-%d') 
+		#date for sql statement
+		print ("Run Date = ", rundate)
+		run_date_fmt = dt.datetime.strptime(rundate, '%Y-%m-%d') 
+		#convert rundate string to datetime format
+		trailing_date_fmt = run_date_fmt - dt.timedelta(days=90) 
+		#subtract 90 days from rundate to get trailingdate
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') 
+		#convert trailingdate to string
 		print ("Trailing Date = ", trailingdate_db)
-
-		# print (type(start_date_fmt))
 
 		c.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
 			FROM fundamental PARTITION (pPE1) 
 			WHERE fundamental.value > %s 
 			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (pe_low, pe_high, trailingdate_db, startdate_db)) #dates need to iterate forward with each daily screen
+			AND fundamental.date >= %s 
+			AND fundamental.date <= %s;
+			''', (pe_low, pe_high, trailingdate_db, rundate)
+		)
 
 		rows = c.fetchall()
 		for row in rows:
 			pe_ticker_list.append(row[0])
 
-		# print ("\nPE Ticker List = ", pe_ticker_list)
+		print ("\nPE Ticker List = ", pe_ticker_list)
 		return pe_ticker_list
 
 # pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
@@ -281,19 +278,17 @@ class PriceEarningsFilter(Filter):
 class DividendYieldFilter(Filter):
 
 	@classmethod
-	def screen(cls, dy_low, dy_high, startdate):
+	def screen(cls, dy_low, dy_high, rundate):
 		dy_ticker_list = []
-
+		# run_date_db = dt.datetime.strptime(rundate, '%m/%d/%Y').strftime('%Y-%m-%d') 
 		#date for sql statement
-		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		print ("Start Date = ", startdate_db)
-		#convert startdate string to datetime format
-		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d')
-		#subtract 90 days from startdate to get trailingdate
-		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90)
+		print ("Run Date = ", rundate)
+		run_date_fmt = dt.datetime.strptime(rundate, '%Y-%m-%d') 
+		#convert rundate string to datetime format
+		trailing_date_fmt = run_date_fmt - dt.timedelta(days=90) 
+		#subtract 90 days from rundate to get trailingdate
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') 
 		#convert trailingdate to string
-		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d')
-
 		print ("Trailing Date = ", trailingdate_db)
 
 		c.execute('''
@@ -301,14 +296,15 @@ class DividendYieldFilter(Filter):
 			FROM fundamental PARTITION (pDIVYIELD) 
 			WHERE fundamental.value > %s 
 			AND fundamental.value < %s 
-			AND fundamental.date > %s 
-			AND fundamental.date < %s;
-			''', (dy_low, dy_high, trailingdate_db, startdate_db))
+			AND fundamental.date >= %s 
+			AND fundamental.date <= %s;
+			''', (dy_low, dy_high, trailingdate_db, rundate))
 
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			dy_ticker_list.append(row[0])
-		# print ("\nDiv Yield Ticker List = ", dy_ticker_list)
+
+		print ("\nDiv Yield Ticker List = ", dy_ticker_list)
 		return dy_ticker_list
 
 # dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
@@ -360,28 +356,28 @@ class DividendYieldFilter(Filter):
 
 
 class CreateFilteredList:
-	def __init__(self, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate):
+	def __init__(self, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate):
 		self.lp_low = lp_low
 		self.lp_high = lp_high
 		self.pe_low = pe_low
 		self.pe_high = pe_high
 		self.dy_low = dy_low
 		self.dy_high = dy_high
-		self.startdate = startdate
+		self.rundate = rundate
 
 	def create_filtered_list(self):
 		counter = 0
 		master_filtered_list = []
 
-		lp = LastPriceFilter.screen(self.lp_low, self.lp_high, self.startdate)
-		pe = PriceEarningsFilter.screen(self.pe_low, self.pe_high, self.startdate)
-		dy = DividendYieldFilter.screen(self.dy_low, self.dy_high, self.startdate)
+		lp = LastPriceFilter.screen(self.lp_low, self.lp_high, self.rundate)
+		pe = PriceEarningsFilter.screen(self.pe_low, self.pe_high, self.rundate)
+		dy = DividendYieldFilter.screen(self.dy_low, self.dy_high, self.rundate)
 
 		lp = set(lp)
 		pe = set(pe)
 		dy = set(dy)
 
-		startdate_db = dt.datetime.strptime(self.startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		# rundate_db = dt.datetime.strptime(self.rundate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 		filtered_list = lp.intersection(pe.intersection(dy))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
@@ -392,15 +388,12 @@ class CreateFilteredList:
 			# print (i)
 		print ("\nTotal Filtered Tickers = ", str(counter))
 		print ("\nFiltered List = ", master_filtered_list)
-		# return master_list
-
 
 		# Delete previous filtered table
 		c.execute('''
 			DELETE FROM filtered;
 			'''
 		)
-
 		# Add filtered list to filtered table
 		for ticker_id in master_filtered_list:
 			c.execute('''
@@ -411,7 +404,7 @@ class CreateFilteredList:
 					%s,
 					%s
 				);''', 
-				(startdate_db, ticker_id)
+				(self.rundate, ticker_id)
 			)
 			conn.commit()
 		conn.close()
@@ -420,8 +413,8 @@ class CreateFilteredList:
 # print (filtered.create_filtered_list())
 
 
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
+# stop = timeit.default_timer()
+# print ("Seconds to run: ", (stop - start) )
 
 
 

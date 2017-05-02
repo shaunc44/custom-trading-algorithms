@@ -71,7 +71,7 @@ def filter():
 
 	# Start & End Dates
 	startdate = request.form['startdate'] #increment dates here????????
-	startdate_run = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+	rundate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 	enddate = request.form['enddate']
 	enddate_run = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
@@ -92,14 +92,14 @@ def filter():
 	rsi_sell = request.form['inputRsiSell']
 
 
-	while startdate_run <= enddate_run: 
-
+	while rundate <= enddate_run: 
+		print ("Rundate1 = ", rundate)
 		# Create Master Filtered Table of Stocks to Buy
-		add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate_run)
+		add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate)
 		add_filtered.create_filtered_list()
 
 		# Create Purchased List of Stocks
-		create_purchased = buy_model.CreatePurchasedList(rsi_buy, startdate_run)
+		create_purchased = buy_model.CreatePurchasedList(rsi_buy, rundate)
 		purchased = create_purchased.create_purchased_list()
 
 		# Add Purchased Stocks to Portfolio
@@ -107,31 +107,33 @@ def filter():
 		add_purchased.add_purchased_to_portfolio()
 
 		# Add Current Price & Value to Portfolio
-		add_current = current_model.AddCurrentDataToPortfolio(startdate_run)
+		add_current = current_model.AddCurrentDataToPortfolio(rundate)
 		add_current.add_current_data()
 
 		# Sell Stocks
-		sell_stock = sell_model.SellStock(rsi_sell, startdate_run)
+		sell_stock = sell_model.SellStock(rsi_sell, rundate)
 		sell_stock.sell_stock()
 
 		# Remove current value for stocks sold
-		remove_curr_val = remove_curr_val_model.RemoveCurrentValue(startdate_run)
+		remove_curr_val = remove_curr_val_model.RemoveCurrentValue(rundate)
 		remove_curr_val.remove_curr_val_for_sold()
 
 
 		#convert startdate string to datetime format
-		startdate_run = dt.datetime.strptime(startdate_run, '%Y-%m-%d')
+		rundate = dt.datetime.strptime(rundate, '%Y-%m-%d')
+		print ("Rundate2 = ", rundate)
 		#add 1 day to startdate to get next date
-		startdate_run = startdate_run + dt.timedelta(days=1)
+		rundate = rundate + dt.timedelta(days=1)
+		print ("Rundate3 = ", rundate)
 		#convert date to string format
-		startdate_run = dt.datetime.strftime(startdate_run, '%Y-%m-%d')
+		rundate = dt.datetime.strftime(rundate, '%Y-%m-%d')
+		print ("Rundate4 = ", rundate)
 
 
+	print("\nRequest Form = ", request.form)
+	print("\nValidate Form = ", my_form.validate())
 
-		print("\nRequest Form = ", request.form)
-		print("\nValidate Form = ", my_form.validate())
-
-		return json.jsonify(my_form.errors)
+	return json.jsonify(my_form.errors)
 
 
 

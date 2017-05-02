@@ -2,11 +2,11 @@ import flask
 import pymysql.cursors
 import timeit
 # import filter_model
-import datetime as dt
+# import datetime as dt
 
 
 #Begin timer
-start = timeit.default_timer()
+# start = timeit.default_timer()
 
 
 conn = pymysql.connect(host='localhost',
@@ -20,11 +20,11 @@ c = conn.cursor()
 
 
 class SellStock:
-	def __init__(self, rsi_sell, startdate):
+	def __init__(self, rsi_sell, rundate):
 		self.rsi_sell = rsi_sell
-		self.startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		self.rundate_db = rundate
 
-	def sell_stock(self): #how to change startdate to curr date?
+	def sell_stock(self): #how to change rundate to curr date?
 		sell_list = []
 		c.execute('''
 			SELECT portfolio.ticker_id, price.date, price.adj_close
@@ -33,7 +33,7 @@ class SellStock:
 			ON portfolio.ticker_id = price.ticker_id 
 			WHERE price.rsi > %s 
 			AND price.date = %s;
-			''', (self.rsi_sell, self.startdate_db)
+			''', (self.rsi_sell, self.rundate_db)
 		)
 		stocks_to_sell = c.fetchall() 
 		print ("Possible Stocks to Sell = ", stocks_to_sell)

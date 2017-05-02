@@ -21,11 +21,11 @@ c = conn.cursor()
 
 
 class CreatePurchasedList:
-	def __init__(self, rsi_buy, startdate):
+	def __init__(self, rsi_buy, rundate):
 		self.rsi_buy = rsi_buy
-		self.startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+		self.rundate_db = rundate
 
-	def create_purchased_list(self): #change startdate to curr date?
+	def create_purchased_list(self): #change rundate to curr date?
 		purchased_list = []
 		c.execute('''
 			SELECT filtered.ticker_id, price.date, price.adj_close
@@ -34,7 +34,7 @@ class CreatePurchasedList:
 			ON filtered.ticker_id = price.ticker_id 
 			WHERE price.rsi < %s 
 			AND price.date = %s;
-			''', (self.rsi_buy, self.startdate_db)
+			''', (self.rsi_buy, self.rundate_db)
 		)
 
 		rows = c.fetchall() 
@@ -126,7 +126,7 @@ class AddPurchasedToPortfolio:
 
 
 	# def add_purchased_value_to_portfolio(self):
-	# 	# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, startdate)
+	# 	# purchased = CreatePurchasedList.create_purchased_list(rsi_buy, rundate)
 	# 	for row in self.purchased:
 	# 		# print ("Purchased Date = ", row[0])
 	# 		c.execute('''

@@ -19,8 +19,8 @@ c = conn.cursor()
 
 
 class RemoveCurrentValue:
-	def __init__(self, startdate):
-		self.startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+	def __init__(self, rundate):
+		self.rundate_db = rundate
 
 	# Remove curr value for stocks sold
 	def remove_curr_val_for_sold(self):

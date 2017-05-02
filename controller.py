@@ -4,11 +4,11 @@ from flask import (
 )
 from forms import FilterForm
 import datetime as dt
-import filter_model
-import buy_model
-import sell_model
-import current_model
-import remove_curr_val_model
+from .models import filter_model
+from .models import buy_model
+from .models import sell_model
+from .models import current_model
+from .models import remove_curr_val_model
 
 
 app = Flask(__name__)

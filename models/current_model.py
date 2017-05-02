@@ -1,7 +1,6 @@
 import flask
 import pymysql.cursors
 import timeit
-# import filter_model
 import datetime as dt
 
 

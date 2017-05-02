@@ -1,12 +1,7 @@
 import flask
 import pymysql.cursors
 import timeit
-# import filter_model
-# import datetime as dt
 
-
-#Begin timer
-# start = timeit.default_timer()
 
 
 conn = pymysql.connect(host='localhost',

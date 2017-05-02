@@ -3,6 +3,7 @@ from flask import (
 	url_for, request, session, json
 )
 from forms import FilterForm
+import datetime as dt
 import filter_model
 import buy_model
 import sell_model
@@ -63,71 +64,74 @@ def dashboard():
 	return render_template("dashboard.html", user=username, event=events)
 
 
+
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
 	my_form = FilterForm(request.form)
 
 	# Start & End Dates
 	startdate = request.form['startdate'] #increment dates here????????
+	startdate_run = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 	enddate = request.form['enddate']
+	enddate_run = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 	# Last Price
 	lp_low = request.form['inputLastPriceLow']
 	lp_high = request.form['inputLastPriceHigh']
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
 	# Price to Earnings
 	pe_low = request.form['inputPeLow']
 	pe_high = request.form['inputPeHigh']
-	# filter_model.PriceEarningsFilter.screen(pe_low, pe_high, startdate)
 
 	# Dividend Yield
 	dy_low = request.form['inputDivYieldLow']
 	dy_high = request.form['inputDivYieldHigh']
-	# filter_model.DividendYieldFilter.screen(dy_low, dy_high, startdate)
 
 	# RSI buy & sell signals
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
-	#increment dates here with for loop????????
 
-	# Create Master Filtered Table of Stocks to Buy
-	add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate)
-	add_filtered.create_filtered_list()
+	while startdate_run <= enddate_run: 
 
-	# Create Purchased List of Stocks
-	create_purchased = buy_model.CreatePurchasedList(rsi_buy, startdate)
-	purchased = create_purchased.create_purchased_list()
+		# Create Master Filtered Table of Stocks to Buy
+		add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, startdate_run)
+		add_filtered.create_filtered_list()
 
-	# Add Purchased Stocks to Portfolio
-	add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
-	add_purchased.add_purchased_to_portfolio()
+		# Create Purchased List of Stocks
+		create_purchased = buy_model.CreatePurchasedList(rsi_buy, startdate_run)
+		purchased = create_purchased.create_purchased_list()
 
-	# Add Current Price & Value to Portfolio
-	add_current = current_model.AddCurrentDataToPortfolio(startdate)
-	add_current.add_current_data()
+		# Add Purchased Stocks to Portfolio
+		add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
+		add_purchased.add_purchased_to_portfolio()
 
-	# Sell Stocks
-	sell_stock = sell_model.SellStock(rsi_sell, startdate)
-	sell_stock.sell_stock()
+		# Add Current Price & Value to Portfolio
+		add_current = current_model.AddCurrentDataToPortfolio(startdate_run)
+		add_current.add_current_data()
 
-	# Remove current value for stocks sold
-	remove_curr_val = remove_curr_val_model.RemoveCurrentValue(startdate)
-	remove_curr_val.remove_curr_val_for_sold()
+		# Sell Stocks
+		sell_stock = sell_model.SellStock(rsi_sell, startdate_run)
+		sell_stock.sell_stock()
+
+		# Remove current value for stocks sold
+		remove_curr_val = remove_curr_val_model.RemoveCurrentValue(startdate_run)
+		remove_curr_val.remove_curr_val_for_sold()
 
 
-	print("\nRequest Form = ", request.form)
-	# print ("RSI Forms = ", my_form['inputRsiBuy'])
-	# form = forms()
-	# print(dir(my_form))
-	print("\nValidate Form = ", my_form.validate())
-	# print("Startdate = ", request.form['startdate'])
+		#convert startdate string to datetime format
+		startdate_run = dt.datetime.strptime(startdate_run, '%Y-%m-%d')
+		#add 1 day to startdate to get next date
+		startdate_run = startdate_run + dt.timedelta(days=1)
+		#convert date to string format
+		startdate_run = dt.datetime.strftime(startdate_run, '%Y-%m-%d')
 
-	# filter_model.Date.add_date_range(startdate, enddate)
-	# filter_model.LastPriceFilter.screen(lp_low, lp_high, startdate)
 
-	return json.jsonify(my_form.errors)
+
+		print("\nRequest Form = ", request.form)
+		print("\nValidate Form = ", my_form.validate())
+
+		return json.jsonify(my_form.errors)
 
 
 

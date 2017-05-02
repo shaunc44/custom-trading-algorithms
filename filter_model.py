@@ -94,7 +94,7 @@ class LastPriceFilter(Filter):
 		for row in rows:
 			lp_ticker_list.append(row[0])
 
-		print ("\nLast Price Ticker List = ", lp_ticker_list)
+		# print ("\nLast Price Ticker List = ", lp_ticker_list)
 		return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
@@ -173,7 +173,7 @@ class PriceEarningsFilter(Filter):
 		for row in rows:
 			pe_ticker_list.append(row[0])
 
-		print ("\nPE Ticker List = ", pe_ticker_list)
+		# print ("\nPE Ticker List = ", pe_ticker_list)
 		return pe_ticker_list
 
 # pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
@@ -279,21 +279,21 @@ class PriceEarningsFilter(Filter):
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > 0.5 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 # #takes 0.61 sec to run
 class DividendYieldFilter(Filter):
-	# def __init__(self, dy_low, dy_high, startdate, enddate):
-	# 	self.dy_low = dy_low
-	# 	self.dy_high = dy_high
-	# 	self.startdate = startdate
-	# 	self.enddate = enddate
-	# 	self.dy_ticker_list = []
+
 	@classmethod
 	def screen(cls, dy_low, dy_high, startdate):
 		dy_ticker_list = []
 
-		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d') #date for sql statement
+		#date for sql statement
+		startdate_db = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		print ("Start Date = ", startdate_db)
-		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d') #convert startdate string to datetime format
-		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90) #subtract 90 days from startdate to get trailingdate
-		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') #convert trailingdate to string
+		#convert startdate string to datetime format
+		start_date_fmt = dt.datetime.strptime(startdate_db, '%Y-%m-%d')
+		#subtract 90 days from startdate to get trailingdate
+		trailing_date_fmt = start_date_fmt - dt.timedelta(days=90)
+		#convert trailingdate to string
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d')
+
 		print ("Trailing Date = ", trailingdate_db)
 
 		c.execute('''
@@ -308,8 +308,7 @@ class DividendYieldFilter(Filter):
 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			dy_ticker_list.append(row[0])
-
-		print ("\nDiv Yield Ticker List = ", dy_ticker_list)
+		# print ("\nDiv Yield Ticker List = ", dy_ticker_list)
 		return dy_ticker_list
 
 # dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()

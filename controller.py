@@ -4,18 +4,12 @@ from flask import (
 )
 from forms import FilterForm
 import datetime as dt
-from .models import filter_model
-from .models import buy_model
-from .models import sell_model
-from .models import current_model
-from .models import remove_curr_val_model
+from models import run_model
 
 
 app = Flask(__name__)
 
-
 app.config['SECRET_KEY'] = open('secret_key', 'rb').read() 
-
 
 # @app.route("/")
 # def home():
@@ -70,10 +64,10 @@ def filter():
 	my_form = FilterForm(request.form)
 
 	# Start & End Dates
-	startdate = request.form['startdate'] #increment dates here????????
-	rundate = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
-	enddate = request.form['enddate']
-	enddate_run = dt.datetime.strptime(startdate, '%m/%d/%Y').strftime('%Y-%m-%d')
+	startdate_input = request.form['startdate'] #increment dates here????????
+	rundate = dt.datetime.strptime(startdate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
+	enddate_input = request.form['enddate']
+	enddate = dt.datetime.strptime(enddate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 	# Last Price
 	lp_low = request.form['inputLastPriceLow']
@@ -91,44 +85,8 @@ def filter():
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
-
-	while rundate <= enddate_run: 
-		print ("Rundate1 = ", rundate)
-		# Create Master Filtered Table of Stocks to Buy
-		add_filtered = filter_model.CreateFilteredList(lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate)
-		add_filtered.create_filtered_list()
-
-		# Create Purchased List of Stocks
-		create_purchased = buy_model.CreatePurchasedList(rsi_buy, rundate)
-		purchased = create_purchased.create_purchased_list()
-
-		# Add Purchased Stocks to Portfolio
-		add_purchased = buy_model.AddPurchasedToPortfolio(purchased)
-		add_purchased.add_purchased_to_portfolio()
-
-		# Add Current Price & Value to Portfolio
-		add_current = current_model.AddCurrentDataToPortfolio(rundate)
-		add_current.add_current_data()
-
-		# Sell Stocks
-		sell_stock = sell_model.SellStock(rsi_sell, rundate)
-		sell_stock.sell_stock()
-
-		# Remove current value for stocks sold
-		remove_curr_val = remove_curr_val_model.RemoveCurrentValue(rundate)
-		remove_curr_val.remove_curr_val_for_sold()
-
-
-		#convert startdate string to datetime format
-		rundate = dt.datetime.strptime(rundate, '%Y-%m-%d')
-		print ("Rundate2 = ", rundate)
-		#add 1 day to startdate to get next date
-		rundate = rundate + dt.timedelta(days=1)
-		print ("Rundate3 = ", rundate)
-		#convert date to string format
-		rundate = dt.datetime.strftime(rundate, '%Y-%m-%d')
-		print ("Rundate4 = ", rundate)
-
+	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
+	run.run_loop()
 
 	print("\nRequest Form = ", request.form)
 	print("\nValidate Form = ", my_form.validate())

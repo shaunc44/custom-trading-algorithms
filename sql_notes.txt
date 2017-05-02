@@ -456,15 +456,15 @@ update portfolio set buy_value = 15000 where ticker_id = 707;
 
 
 ****************************** CASH BALANCE *******************************
-select (1000000 + sum(sell_value) - sum(buy_value)) as Cash_Available from portfolio;
+select (1000000 + sum(sell_value) - sum(buy_value)) as CASH_BAL from portfolio;
 
 
 ***************************** HOLDING BALANCE *****************************
-select sum(curr_value) - sum(sell_value) as HOLDING_BAL from portfolio;
+select sum(curr_value) as HOLDING_BAL from portfolio;
 
 
 **************************** PORTFOLIO BALANCE ****************************
-select (1000000 + sum(gain_loss)) as PORTFOLIO_BALANCE from portfolio;
+select (1000000 + sum(curr_value) + sum(sell_value) - sum(buy_value)) as Portfolio_Value from portfolio;
 
 
 **************************** WINNERS & LOSERS *****************************

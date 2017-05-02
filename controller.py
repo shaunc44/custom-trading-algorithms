@@ -7,6 +7,7 @@ import filter_model
 import buy_model
 import sell_model
 import current_model
+import remove_curr_val_model
 
 
 app = Flask(__name__)
@@ -106,11 +107,14 @@ def filter():
 	# Add Current Price & Value to Portfolio
 	add_current = current_model.AddCurrentDataToPortfolio(startdate)
 	add_current.add_current_data()
-	add_current.remove_curr_val_for_sold()
 
 	# Sell Stocks
 	sell_stock = sell_model.SellStock(rsi_sell, startdate)
 	sell_stock.sell_stock()
+
+	# Remove current value for stocks sold
+	remove_curr_val = remove_curr_val_model.RemoveCurrentValue(startdate)
+	remove_curr_val.remove_curr_val_for_sold()
 
 
 	print("\nRequest Form = ", request.form)

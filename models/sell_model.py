@@ -15,7 +15,8 @@ c = conn.cursor()
 
 
 class SellStock:
-	def __init__(self, rsi_sell, rundate):
+	def __init__(self, cursor, rsi_sell, rundate):
+		self.cursor = cursor
 		self.rsi_sell = rsi_sell
 		self.rundate_db = rundate
 

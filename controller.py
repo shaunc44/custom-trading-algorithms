@@ -11,10 +11,6 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = open('secret_key', 'rb').read() 
 
-# @app.route("/")
-# def home():
-# 	events = models.Events.all_events()
-# 	return render_template("index.html", event=events)
 
 @app.route("/", methods = ["GET"])
 def main():
@@ -37,26 +33,12 @@ def logout():
 #add code here to enable secure logout
 
 
-# @app.route("/check-login", methods=["POST"])
-# def check_login():
-# 	username = request.form['username']
-# 	password = request.form['password']
-
-# 	success = model.User.check_login(username, password)
-# 	if success:
-# 		session['username'] = username
-# 		return dashboard()
-# 	else:
-# 		return render_template("login.html")
-
-
 @app.route("/dashboard")
 def dashboard():
 	username = session['username']
 	user_id = models.User.get_id(username)
 	# events = models.Events.get_user_events(user_id)
 	return render_template("dashboard.html", user=username, event=events)
-
 
 
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
@@ -96,6 +78,29 @@ def filter():
 
 
 
+
+
+if __name__ == "__main__":
+	app.run(host="127.0.0.1", port=5000, debug=True)
+
+
+# @app.route("/")
+# def home():
+# 	events = models.Events.all_events()
+# 	return render_template("index.html", event=events)
+
+
+# @app.route("/check-login", methods=["POST"])
+# def check_login():
+# 	username = request.form['username']
+# 	password = request.form['password']
+
+# 	success = model.User.check_login(username, password)
+# 	if success:
+# 		session['username'] = username
+# 		return dashboard()
+# 	else:
+# 		return render_template("login.html")
 
 
 # @app.route("/logged-in-home")
@@ -198,11 +203,3 @@ def filter():
 # 	user_id = models.User.get_id(username)
 # 	result = models.Events.attend(title, user_id)
 # 	if result:
-		
-
-
-if __name__ == "__main__":
-	app.run(host="127.0.0.1", port=5000, debug=True)
-
-
-

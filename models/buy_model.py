@@ -1,7 +1,6 @@
 import flask
 import pymysql.cursors
 import timeit
-import filter_model
 import datetime as dt
 
 
@@ -13,7 +12,7 @@ conn = pymysql.connect(host='localhost',
 	user='scox',
 	password='scox',
 	db='trading_algo',
-	charset='utf8mb4',
+	charset='utf8mb4'
 	# cursorclass=pymysql.cursors.DictCursor
 	)
 c = conn.cursor()
@@ -21,7 +20,8 @@ c = conn.cursor()
 
 
 class CreatePurchasedList:
-	def __init__(self, rsi_buy, rundate):
+	def __init__(self, cursor, rsi_buy, rundate):
+		self.cursor = cursor
 		self.rsi_buy = rsi_buy
 		self.rundate_db = rundate
 
@@ -48,7 +48,8 @@ class CreatePurchasedList:
 # DOES THE PURCHASED LIST RESET WITH EACH ITERATION ????
 
 class AddPurchasedToPortfolio:
-	def __init__(self, purchased):
+	def __init__(self, cursor, purchased):
+		self.cursor = cursor
 		self.purchased = purchased
 
 	def add_purchased_to_portfolio(self):

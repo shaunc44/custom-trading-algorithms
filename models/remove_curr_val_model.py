@@ -15,7 +15,8 @@ c = conn.cursor()
 
 
 class RemoveCurrentValue:
-	def __init__(self, rundate):
+	def __init__(self, cursor, rundate):
+		self.cursor = cursor
 		self.rundate_db = rundate
 
 	# Remove curr value for stocks sold

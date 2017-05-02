@@ -12,14 +12,15 @@ conn = pymysql.connect(host='localhost',
 	user='scox',
 	password='scox',
 	db='trading_algo',
-	charset='utf8mb4',
+	charset='utf8mb4'
 	)
 c = conn.cursor()
 
 
 
 class AddCurrentDataToPortfolio:
-	def __init__(self, rundate):
+	def __init__(self, cursor, rundate):
+		self.cursor = cursor
 		self.rundate_db = rundate
 
 	def add_current_data(self): #how to change rundate to curr date?

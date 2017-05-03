@@ -21,6 +21,7 @@ class RunLoop:
 		self.rsi_buy = rsi_buy
 		self.rsi_sell =rsi_sell
 
+
 	def create_cursor(self):
 		if hasattr(self, "conn"):
 			return self.conn, self.conn.cursor()
@@ -35,11 +36,11 @@ class RunLoop:
 			)
 			return self.conn, self.conn.cursor()
 
+
 	def run_loop(self):
 		conn, cursor = self.create_cursor()
 
 		while self.rundate <= self.enddate: 
-			print ("Rundate1 = ", self.rundate)
 			# Create Master Filtered Table of Stocks to Buy
 			add_filtered = filter_model.CreateFilteredList(conn, cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.dy_low, self.dy_high, self.rundate)
 			add_filtered.create_filtered_list()
@@ -67,12 +68,10 @@ class RunLoop:
 
 			#convert startdate string to datetime format
 			self.rundate = dt.datetime.strptime(self.rundate, '%Y-%m-%d')
-			print ("Rundate2 = ", self.rundate)
 			#add 1 day to startdate to get next date
 			self.rundate = self.rundate + dt.timedelta(days=1)
-			print ("Rundate3 = ", self.rundate)
 			#convert date to string format
 			self.rundate = dt.datetime.strftime(self.rundate, '%Y-%m-%d')
-			print ("Rundate4 = ", self.rundate)
 
+		conn.close()
 

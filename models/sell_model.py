@@ -1,7 +1,6 @@
 import flask
 import pymysql.cursors
-import timeit
-
+# import timeit
 
 
 # conn = pymysql.connect(host='localhost',
@@ -11,7 +10,6 @@ import timeit
 # 	charset='utf8mb4',
 # 	)
 # c = conn.cursor()
-
 
 
 class SellStock:
@@ -33,7 +31,7 @@ class SellStock:
 			''', (self.rsi_sell, self.rundate_db)
 		)
 		stocks_to_sell = self.cursor.fetchall() 
-		print ("Possible Stocks to Sell = ", stocks_to_sell)
+		# print ("Possible Stocks to Sell = ", stocks_to_sell)
 
 		for row in stocks_to_sell:
 			symbol = row[0]

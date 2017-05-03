@@ -3,8 +3,9 @@ from flask import (
 	url_for, request, session, json
 )
 from forms import FilterForm
-import datetime as dt
 from models import run_model
+import datetime as dt
+import timeit
 
 
 app = Flask(__name__)
@@ -43,6 +44,9 @@ def dashboard():
 
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
+	# Begin timer
+	start = timeit.default_timer()
+
 	my_form = FilterForm(request.form)
 
 	# Start & End Dates
@@ -72,6 +76,9 @@ def filter():
 
 	print("\nRequest Form = ", request.form)
 	print("\nValidate Form = ", my_form.validate())
+
+	stop = timeit.default_timer()
+	print ("Seconds to run: ", (stop - start) )
 
 	return json.jsonify(my_form.errors)
 

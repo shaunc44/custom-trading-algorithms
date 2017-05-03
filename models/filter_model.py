@@ -94,7 +94,7 @@ class LastPriceFilter(Filter):
 		for row in rows:
 			lp_ticker_list.append(row[0])
 
-		print ("\nLast Price Ticker List = ", lp_ticker_list)
+		# print ("\nLast Price Ticker List = ", lp_ticker_list)
 		return lp_ticker_list
 
 # lp = LastPriceFilter(5, 9999, '2017-03-22').run()
@@ -161,7 +161,7 @@ class PriceEarningsFilter(Filter):
 		#subtract 90 days from rundate to get trailingdate
 		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') 
 		#convert trailingdate to string
-		print ("Trailing Date = ", trailingdate_db)
+		# print ("Trailing Date = ", trailingdate_db)
 
 		self.cursor.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
@@ -176,8 +176,7 @@ class PriceEarningsFilter(Filter):
 		rows = self.cursor.fetchall()
 		for row in rows:
 			pe_ticker_list.append(row[0])
-
-		print ("\nPE Ticker List = ", pe_ticker_list)
+		# print ("\nPE Ticker List = ", pe_ticker_list)
 		return pe_ticker_list
 
 # pe = PriceEarningsFilter(0.1, 500.0, '2016-12-22', '2017-03-22').run()
@@ -293,14 +292,14 @@ class DividendYieldFilter(Filter):
 	def screen(self):
 		dy_ticker_list = []
 
-		print ("Run Date = ", self.rundate)
+		# print ("Run Date = ", self.rundate)
 		run_date_fmt = dt.datetime.strptime(self.rundate, '%Y-%m-%d') 
 		#convert rundate string to datetime format
 		trailing_date_fmt = run_date_fmt - dt.timedelta(days=90) 
 		#subtract 90 days from rundate to get trailingdate
 		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') 
 		#convert trailingdate to string
-		print ("Trailing Date = ", trailingdate_db)
+		# print ("Trailing Date = ", trailingdate_db)
 
 		self.cursor.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
@@ -314,8 +313,7 @@ class DividendYieldFilter(Filter):
 		rows = self.cursor.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			dy_ticker_list.append(row[0])
-
-		print ("\nDiv Yield Ticker List = ", dy_ticker_list)
+		# print ("\nDiv Yield Ticker List = ", dy_ticker_list)
 		return dy_ticker_list
 
 # dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
@@ -400,8 +398,8 @@ class CreateFilteredList:
 			master_filtered_list.append(symbol)
 			counter += 1
 			# print (i)
-		print ("\nTotal Filtered Tickers = ", str(counter))
-		print ("\nFiltered List = ", master_filtered_list)
+		# print ("\nTotal Filtered Tickers = ", str(counter))
+		# print ("\nFiltered List = ", master_filtered_list)
 
 		# Delete previous filtered table
 		self.cursor.execute('''

@@ -37,8 +37,7 @@ class AddCurrentDataToPortfolio:
 		current = self.cursor.fetchall()
 
 		for row in current:
-			print ("Current = ", row)
-
+			# print ("Current = ", row)
 			self.cursor.execute('''
 				UPDATE IGNORE portfolio
 				SET portfolio.curr_price = %s

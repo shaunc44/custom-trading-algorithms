@@ -1,16 +1,5 @@
 import flask
 import pymysql.cursors
-import datetime as dt
-
-
-
-# conn = pymysql.connect(host='localhost',
-# 	user='scox',
-# 	password='scox',
-# 	db='trading_algo',
-# 	charset='utf8mb4',
-# 	)
-# c = conn.cursor()
 
 
 
@@ -27,4 +16,3 @@ class RemoveCurrentValue:
 			SET portfolio.curr_value = 0
 			WHERE (portfolio.sell_date > 0);''')
 		self.conn.commit()
-		# self.conn.close()

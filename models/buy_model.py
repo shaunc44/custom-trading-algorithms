@@ -38,8 +38,7 @@ class CreatePurchasedList:
 		rows = self.cursor.fetchall()
 		for row in rows:
 			purchased_list.append(row)
-
-		print ("\nPossible To Purchase Ticker List = ", purchased_list)
+		# print ("\nPossible To Purchase Ticker List = ", purchased_list)
 		return purchased_list
 
 

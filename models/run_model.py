@@ -66,6 +66,15 @@ class RunLoop:
 			remove_curr_val.remove_curr_val_for_sold()
 
 
+			cursor.execute('''
+				SELECT (1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) 
+					AS Algorithm 
+					FROM portfolio;
+				'''
+			)
+			print ("Algorithm Value: ", int(cursor.fetchone()[0]))
+
+
 			#convert startdate string to datetime format
 			self.rundate = dt.datetime.strptime(self.rundate, '%Y-%m-%d')
 			#add 1 day to startdate to get next date
@@ -74,4 +83,11 @@ class RunLoop:
 			self.rundate = dt.datetime.strftime(self.rundate, '%Y-%m-%d')
 
 		conn.close()
+
+
+
+
+
+
+
 

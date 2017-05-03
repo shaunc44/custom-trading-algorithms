@@ -468,8 +468,9 @@ select (1000000 + sum(curr_value) + sum(sell_value) - sum(buy_value)) as Portfol
 
 
 **************************** WINNERS & LOSERS *****************************
-select count(gain_loss) from portfolio where gain_loss > 0;
-select count(gain_loss) from portfolio where gain_loss < 0;
+select count(gain_loss) as WINNERS from portfolio where gain_loss > 0;
+select count(gain_loss) as LOSERS from portfolio where gain_loss < 0;
+select count(gain_loss) as HOLDINGS from portfolio where gain_loss = 0;
 
 
 *************************** AVG HOLDING PERIOD ****************************

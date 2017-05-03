@@ -7,15 +7,14 @@ import datetime as dt
 #Begin timer
 # start = timeit.default_timer()
 
-
-conn = pymysql.connect(host='localhost',
-	user='scox',
-	password='scox',
-	db='trading_algo',
-	charset='utf8mb4'
-	# cursorclass=pymysql.cursors.DictCursor
-	)
-c = conn.cursor()
+# conn = pymysql.connect(host='localhost',
+# 	user='scox',
+# 	password='scox',
+# 	db='trading_algo',
+# 	charset='utf8mb4'
+# 	# cursorclass=pymysql.cursors.DictCursor
+# 	)
+# c = conn.cursor()
 
 
 #This goes in the forms file
@@ -73,7 +72,8 @@ class Filter():
 #select price.ticker from price where price.adj_close > 5 and price.date = '2017-03-28';
 #takes 0.21 sec to run
 class LastPriceFilter(Filter):
-	def __init__(self, cursor, lp_low, lp_high, rundate):
+	def __init__(self, conn, cursor, lp_low, lp_high, rundate):
+		self.conn = conn
 		self.cursor = cursor
 		self.lp_low = lp_low
 		self.lp_high = lp_high
@@ -82,7 +82,7 @@ class LastPriceFilter(Filter):
 	def screen(self): #the date should iterate over the trading dates beginning with start date
 		lp_ticker_list = []
 		# run_date = dt.datetime.strptime(rundate, '%m/%d/%Y').strftime('%Y-%m-%d')
-		c.execute('''
+		self.cursor.execute('''
 			SELECT DISTINCT price.ticker_id 
 			FROM price 
 			WHERE price.adj_close > %s 
@@ -90,7 +90,7 @@ class LastPriceFilter(Filter):
 			AND price.date = %s;
 		''', (self.lp_low, self.lp_high, self.rundate)) #the startdate needs to move forward one trading day until it reaches the enddate
 
-		rows = c.fetchall() 
+		rows = self.cursor.fetchall() 
 		for row in rows:
 			lp_ticker_list.append(row[0])
 
@@ -142,7 +142,8 @@ class LastPriceFilter(Filter):
 # #SELECT fundamental.ticker_id FROM fundamental PARTITION (pPE1) WHERE fundamental.value > 1.0 AND fundamental.value < 20.0 and fundamental.date > '2017-03-22';
 # #takes 0.51 sec to run
 class PriceEarningsFilter(Filter):
-	def __init__(self, cursor, pe_low, pe_high, rundate):
+	def __init__(self, conn, cursor, pe_low, pe_high, rundate):
+		self.conn = conn
 		self.cursor = cursor
 		self.pe_low = pe_low
 		self.pe_high = pe_high
@@ -162,7 +163,7 @@ class PriceEarningsFilter(Filter):
 		#convert trailingdate to string
 		print ("Trailing Date = ", trailingdate_db)
 
-		c.execute('''
+		self.cursor.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
 			FROM fundamental PARTITION (pPE1) 
 			WHERE fundamental.value > %s 
@@ -172,7 +173,7 @@ class PriceEarningsFilter(Filter):
 			''', (self.pe_low, self.pe_high, trailingdate_db, self.rundate)
 		)
 
-		rows = c.fetchall()
+		rows = self.cursor.fetchall()
 		for row in rows:
 			pe_ticker_list.append(row[0])
 
@@ -282,7 +283,8 @@ class PriceEarningsFilter(Filter):
 # #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDIVYIELD) WHERE fundamental.value > 0.5 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 # #takes 0.61 sec to run
 class DividendYieldFilter(Filter):
-	def __init__(self, cursor, dy_low, dy_high, rundate):
+	def __init__(self, conn, cursor, dy_low, dy_high, rundate):
+		self.conn = conn
 		self.cursor = cursor
 		self.dy_low = dy_low
 		self.dy_high = dy_high
@@ -300,7 +302,7 @@ class DividendYieldFilter(Filter):
 		#convert trailingdate to string
 		print ("Trailing Date = ", trailingdate_db)
 
-		c.execute('''
+		self.cursor.execute('''
 			SELECT DISTINCT fundamental.ticker_id 
 			FROM fundamental PARTITION (pDIVYIELD) 
 			WHERE fundamental.value > %s 
@@ -309,7 +311,7 @@ class DividendYieldFilter(Filter):
 			AND fundamental.date <= %s;
 			''', (self.dy_low, self.dy_high, trailingdate_db, self.rundate))
 
-		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
+		rows = self.cursor.fetchall() #returns list of tuples ( should i run set() on this list now? )
 		for row in rows:
 			dy_ticker_list.append(row[0])
 
@@ -365,7 +367,8 @@ class DividendYieldFilter(Filter):
 
 
 class CreateFilteredList:
-	def __init__(self, cursor, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate):
+	def __init__(self, conn, cursor, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate):
+		self.conn = conn
 		self.cursor = cursor
 		self.lp_low = lp_low
 		self.lp_high = lp_high
@@ -379,17 +382,16 @@ class CreateFilteredList:
 		counter = 0
 		master_filtered_list = []
 
-		lp = LastPriceFilter(self.cursor, self.lp_low, self.lp_high, self.rundate)
+		lp = LastPriceFilter(self.conn, self.cursor, self.lp_low, self.lp_high, self.rundate)
 		lp = lp.screen()
-		pe = PriceEarningsFilter(self.cursor, self.pe_low, self.pe_high, self.rundate)
+		pe = PriceEarningsFilter(self.conn, self.cursor, self.pe_low, self.pe_high, self.rundate)
 		pe = pe.screen()
-		dy = DividendYieldFilter(self.cursor, self.dy_low, self.dy_high, self.rundate)
+		dy = DividendYieldFilter(self.conn, self.cursor, self.dy_low, self.dy_high, self.rundate)
 		dy = dy.screen()
 
 		lp = set(lp)
 		pe = set(pe)
 		dy = set(dy)
-		# rundate_db = dt.datetime.strptime(self.rundate, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 		filtered_list = lp.intersection(pe.intersection(dy))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
@@ -402,13 +404,13 @@ class CreateFilteredList:
 		print ("\nFiltered List = ", master_filtered_list)
 
 		# Delete previous filtered table
-		c.execute('''
+		self.cursor.execute('''
 			DELETE FROM filtered;
 			'''
 		)
 		# Add filtered list to filtered table
 		for ticker_id in master_filtered_list:
-			c.execute('''
+			self.cursor.execute('''
 				INSERT IGNORE INTO filtered (
 					date,
 					ticker_id)
@@ -418,8 +420,8 @@ class CreateFilteredList:
 				);''', 
 				(self.rundate, ticker_id)
 			)
-			conn.commit()
-		conn.close()
+			self.conn.commit()
+		# self.conn.close()
 
 # filtered = CreateBuyList()
 # print (filtered.create_filtered_list())

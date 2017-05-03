@@ -1,22 +1,20 @@
 import flask
 import pymysql.cursors
-import timeit
+# import timeit
 import datetime as dt
 
 
 #Begin timer
-start = timeit.default_timer()
+# start = timeit.default_timer()
 
-
-conn = pymysql.connect(host='localhost',
-	user='scox',
-	password='scox',
-	db='trading_algo',
-	charset='utf8mb4'
-	# cursorclass=pymysql.cursors.DictCursor
-	)
-c = conn.cursor()
-
+# conn = pymysql.connect(host='localhost',
+# 	user='scox',
+# 	password='scox',
+# 	db='trading_algo',
+# 	charset='utf8mb4'
+# 	# cursorclass=pymysql.cursors.DictCursor
+# 	)
+# c = conn.cursor()
 
 
 class CreatePurchasedList:
@@ -27,7 +25,7 @@ class CreatePurchasedList:
 
 	def create_purchased_list(self): #change rundate to curr date?
 		purchased_list = []
-		c.execute('''
+		self.cursor.execute('''
 			SELECT filtered.ticker_id, price.date, price.adj_close
 			FROM filtered 
 			INNER JOIN price 
@@ -37,7 +35,7 @@ class CreatePurchasedList:
 			''', (self.rsi_buy, self.rundate_db)
 		)
 
-		rows = c.fetchall() 
+		rows = self.cursor.fetchall()
 		for row in rows:
 			purchased_list.append(row)
 
@@ -48,13 +46,14 @@ class CreatePurchasedList:
 # DOES THE PURCHASED LIST RESET WITH EACH ITERATION ????
 
 class AddPurchasedToPortfolio:
-	def __init__(self, cursor, purchased):
+	def __init__(self, conn, cursor, purchased):
+		self.conn = conn
 		self.cursor = cursor
 		self.purchased = purchased
 
 	def add_purchased_to_portfolio(self):
 		for row in self.purchased:
-			c.execute('''
+			self.cursor.execute('''
 				SELECT IF (
 					(1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) >= 20000 OR 1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
 					20000, 
@@ -63,9 +62,9 @@ class AddPurchasedToPortfolio:
 				FROM portfolio;'''
 			)
 
-			cash_avail = c.fetchone()
+			cash_avail = self.cursor.fetchone()
 			# print ("Cash Avail = ", cash_avail[0])
-			c.execute('''
+			self.cursor.execute('''
 				INSERT IGNORE INTO portfolio (
 					ticker_id, 
 					buy_date, 
@@ -80,8 +79,8 @@ class AddPurchasedToPortfolio:
 				''', 
 				(row[0], row[1], row[2], cash_avail)
 			)
-			conn.commit()
-		conn.close()
+			self.conn.commit()
+		# self.conn.close()
 
 				# WHERE NOT EXISTS (
 				# 	SELECT ticker_id FROM portfolio
@@ -169,8 +168,8 @@ class AddPurchasedToPortfolio:
 # filtered = FilteredStocksForTrading()
 # print (filtered.create_master_list())
 
-stop = timeit.default_timer()
-print ("Seconds to run: ", (stop - start) )
+# stop = timeit.default_timer()
+# print ("Seconds to run: ", (stop - start) )
 
 
 

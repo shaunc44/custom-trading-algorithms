@@ -8,8 +8,6 @@ from . import remove_curr_val_model
 
 
 
-
-
 class RunLoop:
 	def __init__(self, rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell):
 		self.rundate = rundate
@@ -25,24 +23,25 @@ class RunLoop:
 
 	def create_cursor(self):
 		if hasattr(self, "conn"):
-			return self.conn.cursor()
+			return self.conn, self.conn.cursor()
 		else:
-			self.conn = pymysql.connect(host='localhost',
+			self.conn = pymysql.connect(
+				host='localhost',
 				user='scox',
 				password='scox',
 				db='trading_algo',
 				charset='utf8mb4',
-			# cursorclass=pymysql.cursors.DictCursor
+				# cursorclass=pymysql.cursors.DictCursor
 			)
-			return self.conn.cursor()
+			return self.conn, self.conn.cursor()
 
 	def run_loop(self):
-		cursor = self.create_cursor()
+		conn, cursor = self.create_cursor()
 
 		while self.rundate <= self.enddate: 
 			print ("Rundate1 = ", self.rundate)
 			# Create Master Filtered Table of Stocks to Buy
-			add_filtered = filter_model.CreateFilteredList(cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.dy_low, self.dy_high, self.rundate)
+			add_filtered = filter_model.CreateFilteredList(conn, cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.dy_low, self.dy_high, self.rundate)
 			add_filtered.create_filtered_list()
 
 			# Create Purchased List of Stocks
@@ -50,19 +49,19 @@ class RunLoop:
 			purchased = create_purchased.create_purchased_list()
 
 			# Add Purchased Stocks to Portfolio
-			add_purchased = buy_model.AddPurchasedToPortfolio(cursor, purchased)
+			add_purchased = buy_model.AddPurchasedToPortfolio(conn, cursor, purchased)
 			add_purchased.add_purchased_to_portfolio()
 
 			# Add Current Price & Value to Portfolio
-			add_current = current_model.AddCurrentDataToPortfolio(cursor, self.rundate)
+			add_current = current_model.AddCurrentDataToPortfolio(conn, cursor, self.rundate)
 			add_current.add_current_data()
 
 			# Sell Stocks
-			sell_stock = sell_model.SellStock(cursor, self.rsi_sell, self.rundate)
+			sell_stock = sell_model.SellStock(conn, cursor, self.rsi_sell, self.rundate)
 			sell_stock.sell_stock()
 
 			# Remove current value for stocks sold
-			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(cursor, self.rundate)
+			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(conn, cursor, self.rundate)
 			remove_curr_val.remove_curr_val_for_sold()
 
 

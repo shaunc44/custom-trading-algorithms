@@ -1,31 +1,31 @@
 import flask
 import pymysql.cursors
-import timeit
+# import timeit
 import datetime as dt
 
 
 #Begin timer
-start = timeit.default_timer()
+# start = timeit.default_timer()
 
 
-conn = pymysql.connect(host='localhost',
-	user='scox',
-	password='scox',
-	db='trading_algo',
-	charset='utf8mb4'
-	)
-c = conn.cursor()
-
+# conn = pymysql.connect(host='localhost',
+# 	user='scox',
+# 	password='scox',
+# 	db='trading_algo',
+# 	charset='utf8mb4'
+# 	)
+# c = conn.cursor()
 
 
 class AddCurrentDataToPortfolio:
-	def __init__(self, cursor, rundate):
+	def __init__(self, conn, cursor, rundate):
+		self.conn = conn
 		self.cursor = cursor
 		self.rundate_db = rundate
 
 	def add_current_data(self): #how to change rundate to curr date?
 		# sell_list = []
-		c.execute('''
+		self.cursor.execute('''
 			SELECT portfolio.ticker_id, price.date, price.adj_close
 			FROM portfolio 
 			INNER JOIN price 
@@ -34,12 +34,12 @@ class AddCurrentDataToPortfolio:
 			''', (self.rundate_db)
 		)
 
-		current = c.fetchall()
+		current = self.cursor.fetchall()
 
 		for row in current:
 			print ("Current = ", row)
 
-			c.execute('''
+			self.cursor.execute('''
 				UPDATE IGNORE portfolio
 				SET portfolio.curr_price = %s
 				WHERE (portfolio.ticker_id = %s) 
@@ -53,8 +53,8 @@ class AddCurrentDataToPortfolio:
 				''',
 				(row[2], row[0])
 			)
-			conn.commit()
-		conn.close()
+			self.conn.commit()
+		# self.conn.close()
 
 
 

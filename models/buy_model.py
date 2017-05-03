@@ -54,9 +54,11 @@ class AddPurchasedToPortfolio:
 		for row in self.purchased:
 			self.cursor.execute('''
 				SELECT IF (
-					(1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) >= 20000 OR 1000000 + SUM(portfolio.gain_loss) - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
+					(1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) >= 20000 OR 1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) IS NULL), 
 					20000, 
-					1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value)
+					IF (1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value) > 0, 
+						1000000 - SUM(portfolio.buy_value) + SUM(portfolio.sell_value),
+						0)
 				)
 				FROM portfolio;'''
 			)

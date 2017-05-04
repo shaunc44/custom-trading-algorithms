@@ -39,10 +39,17 @@ $(document).ready(function(){
 
 
 	var chartAjax = function (pk) {
+		var data = {
+			startdate: $("#startdate").val(),
+			enddate: $("#enddate").val()
+			};
+		console.log('startdate: ' + startdate)
+		
 		$.ajax({
-			url: "/tasks/" + pk,
-			method: "GET",
-			contentType: 'application/json',
+			"url": "/tasks/" + pk,
+			"method": "GET",
+			"data": data, 
+			"contentType": 'application/json',
 			success: function(data) {
 						console.log("Data = " + data);
 						// timeout(data);
@@ -54,12 +61,17 @@ $(document).ready(function(){
 	var timeout = function (pk) {
 					setTimeout(function() {
 						console.log("End Delay")
-						var startdate = $("#startdate").val();
-						var enddate = $("#enddate").val();
+						var data = {
+							'startdate': $("#startdate").val(),
+							'enddate': $("#enddate").val()
+							};
+						console.log('startdate: ' + $("#startdate").val())
+						
 						$.ajax({
-							url: "/tasks/" + pk,
-							method: "GET",
-							contentType: 'application/json',
+							"url": "/tasks/" + pk,
+							"method": "GET",
+							"data": data, 
+							"contentType": 'application/json',
 							success: function(data) {
 								console.log("Data = " + data);
 								// timeout(data);
@@ -70,7 +82,7 @@ $(document).ready(function(){
 								else {
 									result = JSON.parse(data)
 									console.log("Final Result = " + result)
-									datasetFunction(result['result'])
+									datasetFunction(result)
 								}
 
 							}
@@ -131,14 +143,14 @@ $(document).ready(function(){
 		var startdate = $("#startdate").val();
 		var enddate = $("#enddate").val();
 
-		console.log("enddate = " + enddate)
+		// console.log("enddate = " + enddate)
 
 		pk = initAjax(lp_low, lp_high, pe_low, pe_high, 
 			dy_low, dy_high, rsi_buy, rsi_sell, startdate, enddate)
 	})
 
 	var datasetFunction = function(ajaxData) {
-
+		var realData = [ajaxData['result'], ajaxData['S&P500']]
 		var seriesOptions = [],
 			realNames = ['ALGORITHM', 'S&P500']
 			seriesCounter = 0,
@@ -149,10 +161,10 @@ $(document).ready(function(){
 
 			$.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?', function (data) {
 
-				// console.log(data)
+				console.log(data)
 				seriesOptions[i] = {
 					name: realNames,
-					data: ajaxData
+					data: data
 				};
 				// As we're loading the data asynchronously, we don't know what order it will arrive. So we keep a counter and create the chart when all the data is loaded.
 				seriesCounter += 1;

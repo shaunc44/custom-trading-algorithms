@@ -51,11 +51,15 @@ def dashboard():
 @app.route("/tasks/<pk>", methods=["GET"])
 def get_tasks(pk):
 	print ("In Task Route")
+	enddate = request.args.get('enddate')
+	# data = json.loads(data)
+	startdate = request.args.get('startdate')
+	print(startdate)
 	task = tasks.celery_app.AsyncResult(pk)
 	print ("Task.State = ", task.status)
 	if task.state == 'SUCCESS':
-		sp500 = sp500_model()
-		return json.dumps({'result': task.get(timeout=None)})
+		sp500 = sp500_model.get_sp(startdate=startdate, enddate=enddate)
+		return json.dumps({'result': task.get(timeout=None), 'S&P500': sp500['adj_list']})
 	else:
 		return "Waiting"
 	# print ("Task Result = ", task.get(timeout=None))

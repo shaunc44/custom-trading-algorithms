@@ -5,9 +5,11 @@ import datetime
 from datetime import date, timedelta
 
 # ==============================1 year==========================================================
-def get_sp(startdate, enddate, step):
-	end_date = date.today()
-	start_date = day
+def get_sp(startdate, enddate, step=1):
+	# end_date = enddate
+	# start_date = startdate
+	start_date= datetime.datetime.strptime(startdate, '%m/%d/%Y')
+	end_date= datetime.datetime.strptime(enddate, '%m/%d/%Y')
 	sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
 	adj = sp['Adj Close']
 	first_price = adj.iloc[0]
@@ -31,6 +33,6 @@ def get_sp(startdate, enddate, step):
 	# final_date = date_name+date_list
 
 	# print ( dict(date_list=final_date, adj_list=sp_final) )
-	print ( dict(date_list=date_list, adj_list=short_list) )
+	return dict(adj_list=short_list)
 
 # get_sp(365, 1)

@@ -4,8 +4,13 @@ from flask import (
 )
 from forms import FilterForm
 from models import run_model
+from models import sp500_model
 import datetime as dt
 import timeit
+
+
+# Begin timer
+start = timeit.default_timer()
 
 
 app = Flask(__name__)
@@ -42,16 +47,18 @@ def dashboard():
 	return render_template("dashboard.html", user=username, event=events)
 
 
+# @app.route("/sp500", methods=["GET"]) #this route should go to graph part of page??
+# def sp500():
+
+
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
-	# Begin timer
-	start = timeit.default_timer()
-
 	my_form = FilterForm(request.form)
 
 	# Start & End Dates
 	startdate_input = request.form['startdate'] #increment dates here????????
-	rundate = dt.datetime.strptime(startdate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
+	dt_rundate = dt.datetime.strptime(startdate_input, '%m/%d/%Y')
+	rundate = dt_rundate.strftime('%Y-%m-%d')
 	enddate_input = request.form['enddate']
 	enddate = dt.datetime.strptime(enddate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
 
@@ -71,15 +78,53 @@ def filter():
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
+
+	sp500 = sp500_model.get_sp(dt_rundate, 1)
+
 	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
 	run.run_loop()
 
-	print("\nRequest Form = ", request.form)
-	print("\nValidate Form = ", my_form.validate())
+	emit(arr)
+# @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
+# def filter():
+# 	my_form = FilterForm(request.form)
+
+# 	# Start & End Dates
+# 	startdate_input = request.form['startdate'] #increment dates here????????
+# 	dt_rundate = dt.datetime.strptime(startdate_input, '%m/%d/%Y')
+# 	rundate = dt_rundate.strftime('%Y-%m-%d')
+# 	enddate_input = request.form['enddate']
+# 	enddate = dt.datetime.strptime(enddate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
+
+# 	# Last Price
+# 	lp_low = request.form['inputLastPriceLow']
+# 	lp_high = request.form['inputLastPriceHigh']
+
+# 	# Price to Earnings
+# 	pe_low = request.form['inputPeLow']
+# 	pe_high = request.form['inputPeHigh']
+
+# 	# Dividend Yield
+# 	dy_low = request.form['inputDivYieldLow']
+# 	dy_high = request.form['inputDivYieldHigh']
+
+# 	# RSI buy & sell signals
+# 	rsi_buy = request.form['inputRsiBuy']
+# 	rsi_sell = request.form['inputRsiSell']
+
+
+# 	sp500 = sp500_model.get_sp(dt_rundate, 1)
+
+# 	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
+# 	run.run_loop()
+
+	# print("\nRequest Form = ", request.form)
+	# print("\nValidate Form = ", my_form.validate())
 
 	stop = timeit.default_timer()
 	print ("Seconds to run: ", (stop - start) )
 
+	# return json.jsonify(my_form.errors)
 	return json.jsonify(my_form.errors)
 
 

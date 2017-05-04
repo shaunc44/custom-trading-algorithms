@@ -39,6 +39,7 @@ class RunLoop:
 
 	def run_loop(self):
 		conn, cursor = self.create_cursor()
+		arr=[]
 
 		while self.rundate <= self.enddate: 
 			# Create Master Filtered Table of Stocks to Buy
@@ -72,7 +73,9 @@ class RunLoop:
 					FROM portfolio;
 				'''
 			)
-			print ("Algorithm Value: ", int(cursor.fetchone()[0]))
+			# print ("Algorithm Value: ", int(cursor.fetchone()[0]))
+
+			arr.append(int(cursor.fetchone()[0]))
 
 
 			#convert startdate string to datetime format
@@ -84,6 +87,7 @@ class RunLoop:
 
 		conn.close()
 
+		return arr
 
 
 

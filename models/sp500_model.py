@@ -5,7 +5,7 @@ import datetime
 from datetime import date, timedelta
 
 # ==============================1 year==========================================================
-def get_sp(day, step):
+def get_sp(startdate, enddate, step):
 	end_date = date.today()
 	start_date = day
 	sp = web.DataReader('^GSPC','yahoo', start_date, end_date)

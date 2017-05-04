@@ -25,6 +25,7 @@ class AddCurrentDataToPortfolio:
 
 	def add_current_data(self): #how to change rundate to curr date?
 		# sell_list = []
+		# print ("Current Model Rundate = ", self.rundate_db)
 		self.cursor.execute('''
 			SELECT portfolio.ticker_id, price.date, price.adj_close
 			FROM portfolio 

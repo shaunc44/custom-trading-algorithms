@@ -11,7 +11,6 @@ import pymysql.cursors
 # 	)
 # c = conn.cursor()
 
-
 class SellStock:
 	def __init__(self, conn, cursor, rsi_sell, rundate):
 		self.conn = conn
@@ -21,6 +20,7 @@ class SellStock:
 
 	def sell_stock(self): #how to change rundate to curr date?
 		sell_list = []
+		# print ("Sell Model Rundate = ", self.rundate_db)
 		self.cursor.execute('''
 			SELECT portfolio.ticker_id, price.date, price.adj_close
 			FROM portfolio 

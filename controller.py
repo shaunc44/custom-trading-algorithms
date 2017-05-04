@@ -7,6 +7,7 @@ import tasks
 from models import sp500_model
 import datetime as dt
 import timeit
+import json
 
 
 app = Flask(__name__)
@@ -45,38 +46,53 @@ def dashboard():
 
 # @app.route("/sp500", methods=["GET"]) #this route should go to graph part of page??
 # def sp500():
+
+
 @app.route("/tasks/<pk>", methods=["GET"])
 def get_tasks(pk):
+	print ("In Task Route")
 	task = tasks.celery_app.AsyncResult(pk)
-	return task.state
+	print ("Task.State = ", task.status)
+	if task.state == 'SUCCESS':
+		sp500 = sp500_model()
+		return json.dumps({'result': task.get(timeout=None)})
+	else:
+		return "Waiting"
+	# print ("Task Result = ", task.get(timeout=None))
+	# print (dir(task))
+	# return task.state
 
 
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
-	my_form = FilterForm(request.form)
+	print ("Inside Filter")
+	data = request.data.decode()
+	data = json.loads(data)
+	print ("Data = ", data)
+	# my_form = FilterForm(request.form)
 
 	# Start & End Dates
-	startdate_input = request.form['startdate'] #increment dates here????????
+	startdate_input = data['startdate'] #increment dates here????????
 	dt_rundate = dt.datetime.strptime(startdate_input, '%m/%d/%Y')
 	rundate = dt_rundate.strftime('%Y-%m-%d')
-	enddate_input = request.form['enddate']
+	enddate_input = data['enddate']
 	enddate = dt.datetime.strptime(enddate_input, '%m/%d/%Y').strftime('%Y-%m-%d')
 
 	# Last Price
-	lp_low = request.form['inputLastPriceLow']
-	lp_high = request.form['inputLastPriceHigh']
+	lp_low = data['lp_low']
+	lp_high = data['lp_high']
 
 	# Price to Earnings
-	pe_low = request.form['inputPeLow']
-	pe_high = request.form['inputPeHigh']
+	pe_low = data['pe_low']
+	pe_high = data['pe_high']
 
 	# Dividend Yield
-	dy_low = request.form['inputDivYieldLow']
-	dy_high = request.form['inputDivYieldHigh']
+	dy_low = data['dy_low']
+	dy_high = data['dy_high']
 
 	# RSI buy & sell signals
-	rsi_buy = request.form['inputRsiBuy']
-	rsi_sell = request.form['inputRsiSell']
+	rsi_buy = data['rsi_buy']
+	rsi_sell = data['rsi_sell']
 
 	# Celery
 	task = tasks.algo_task.delay(
@@ -85,7 +101,8 @@ def filter():
 		dy_low, dy_high, 
 		rsi_buy, rsi_sell
 	)
-
+	print (task.task_id)
+	return task.task_id
 	# sp500 = sp500_model.get_sp(dt_rundate, 1)
 
 	# run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
@@ -93,11 +110,10 @@ def filter():
 
 	# emit(arr)
 
-
 	# stop = timeit.default_timer()
 	# print ("Seconds to run: ", (stop - start) )
 
-	return (task.task_id)
+	# return json.DUMPS('task.task_id')
 	# return json.jsonify(my_form.errors)
 	# return json.jsonify(my_form.errors)
 

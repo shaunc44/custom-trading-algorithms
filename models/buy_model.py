@@ -4,17 +4,6 @@ import pymysql.cursors
 import datetime as dt
 
 
-#Begin timer
-# start = timeit.default_timer()
-
-# conn = pymysql.connect(host='localhost',
-# 	user='scox',
-# 	password='scox',
-# 	db='trading_algo',
-# 	charset='utf8mb4'
-# 	# cursorclass=pymysql.cursors.DictCursor
-# 	)
-# c = conn.cursor()
 
 
 class CreatePurchasedList:
@@ -25,6 +14,7 @@ class CreatePurchasedList:
 
 	def create_purchased_list(self): #change rundate to curr date?
 		purchased_list = []
+		# print ("Buy Model Rundate = ", self.rundate_db)
 		self.cursor.execute('''
 			SELECT filtered.ticker_id, price.date, price.adj_close
 			FROM filtered 

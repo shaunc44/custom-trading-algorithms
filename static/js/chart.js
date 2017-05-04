@@ -48,7 +48,6 @@ function createChart() {
 
 
 // $.getJSON(url, 'q=' + data + "&env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json", callback);
-
 $.each(names, function (i, name) {
 
     // var url = 'http://query.yahooapis.com/v1/public/yql'; 

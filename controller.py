@@ -84,7 +84,10 @@ def filter():
 	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
 	run.run_loop()
 
-	emit(arr)
+	# emit(arr)
+
+
+
 # @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 # def filter():
 # 	my_form = FilterForm(request.form)

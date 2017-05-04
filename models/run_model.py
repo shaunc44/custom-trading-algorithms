@@ -38,8 +38,11 @@ class RunLoop:
 
 
 	def run_loop(self):
+		print ("inside run loop")
+
 		conn, cursor = self.create_cursor()
 		arr=[]
+
 
 		while self.rundate <= self.enddate: 
 			# Create Master Filtered Table of Stocks to Buy

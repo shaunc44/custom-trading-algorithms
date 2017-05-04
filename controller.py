@@ -3,14 +3,10 @@ from flask import (
 	url_for, request, session, json
 )
 from forms import FilterForm
-from models import run_model
+import tasks
 from models import sp500_model
 import datetime as dt
 import timeit
-
-
-# Begin timer
-start = timeit.default_timer()
 
 
 app = Flask(__name__)
@@ -49,6 +45,10 @@ def dashboard():
 
 # @app.route("/sp500", methods=["GET"]) #this route should go to graph part of page??
 # def sp500():
+@app.route("/tasks/<pk>", methods=["GET"])
+def get_tasks(pk):
+	task = tasks.celery_app.AsyncResult(pk)
+	return task.state
 
 
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
@@ -78,14 +78,32 @@ def filter():
 	rsi_buy = request.form['inputRsiBuy']
 	rsi_sell = request.form['inputRsiSell']
 
+	# Celery
+	task = tasks.algo_task.delay(
+		rundate, enddate, lp_low, 
+		lp_high, pe_low, pe_high, 
+		dy_low, dy_high, 
+		rsi_buy, rsi_sell
+	)
 
-	sp500 = sp500_model.get_sp(dt_rundate, 1)
+	# sp500 = sp500_model.get_sp(dt_rundate, 1)
 
-	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
-	run.run_loop()
+	# run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell)
+	# run.run_loop()
 
 	# emit(arr)
 
+
+	# stop = timeit.default_timer()
+	# print ("Seconds to run: ", (stop - start) )
+
+	return (task.task_id)
+	# return json.jsonify(my_form.errors)
+	# return json.jsonify(my_form.errors)
+
+
+if __name__ == "__main__":
+	app.run(host="127.0.0.1", port=5000, debug=True)
 
 
 # @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
@@ -124,18 +142,18 @@ def filter():
 	# print("\nRequest Form = ", request.form)
 	# print("\nValidate Form = ", my_form.validate())
 
-	stop = timeit.default_timer()
-	print ("Seconds to run: ", (stop - start) )
+# 	stop = timeit.default_timer()
+# 	print ("Seconds to run: ", (stop - start) )
 
-	# return json.jsonify(my_form.errors)
-	return json.jsonify(my_form.errors)
-
-
+# 	# return json.jsonify(my_form.errors)
+# 	return json.jsonify(my_form.errors)
 
 
 
-if __name__ == "__main__":
-	app.run(host="127.0.0.1", port=5000, debug=True)
+
+
+# if __name__ == "__main__":
+# 	app.run(host="127.0.0.1", port=5000, debug=True)
 
 
 # @app.route("/")

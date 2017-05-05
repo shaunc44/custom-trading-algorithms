@@ -150,8 +150,9 @@ $(document).ready(function(){
 
 	var datasetFunction = function(ajaxData) {
 		var realData = [ajaxData['result'], ajaxData['S&P500']]
+		console.log("AjaxData = " + ajaxData)
 		var seriesOptions = [],
-			realNames = ['ALGORITHM', 'S&P500']
+			realNames = ['result', 'S&P500']
 			seriesCounter = 0,
 			names = ['MSFT', 'AAPL']; /* Change names to reflect S&P 500 and Algorithm
 		/* Create the chart when all data is loaded @returns {undefined} */
@@ -160,10 +161,11 @@ $(document).ready(function(){
 
 			$.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?', function (data) {
 
-				console.log("Data = ", data)
+				console.log("Data = ")
+				console.log(data)
 				seriesOptions[i] = {
-					name: realNames,
-					data: realData
+					name: realNames[i],
+					data: realData[i]
 				};
 				// As we're loading the data asynchronously, we don't know what order it will arrive. So we keep a counter and create the chart when all the data is loaded.
 				seriesCounter += 1;

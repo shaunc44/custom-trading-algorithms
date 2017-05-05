@@ -84,6 +84,7 @@ class RunLoop:
 				'''
 			)
 
+			# Convert date to unix time
 			algo_date = dt.datetime.strptime(self.rundate, '%Y-%m-%d')
 			algo_date = time.mktime(algo_date.timetuple()) * 1000
 			# print ("Algo Date = ", algo_date)
@@ -92,7 +93,8 @@ class RunLoop:
 			algo_value = int(cursor.fetchone()[0])
 			print ("\n", algo_date, "Algorithm Value: ", algo_value)
 
-			arr.append(algo_value)
+			arr.append([algo_date, algo_value])
+			print ("Algo Array = ", arr)
 
 
 			#convert startdate string to datetime format

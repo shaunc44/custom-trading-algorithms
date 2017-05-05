@@ -2,7 +2,6 @@ $(document).ready(function(){
 	var createChart = function createChart(seriesOptions) {
 
 		Highcharts.stockChart('chart-container', {
-
 			rangeSelector: {
 				selected: 4
 			},
@@ -161,10 +160,10 @@ $(document).ready(function(){
 
 			$.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?', function (data) {
 
-				console.log(data)
+				console.log("Data = ", data)
 				seriesOptions[i] = {
 					name: realNames,
-					data: data
+					data: realData
 				};
 				// As we're loading the data asynchronously, we don't know what order it will arrive. So we keep a counter and create the chart when all the data is loaded.
 				seriesCounter += 1;

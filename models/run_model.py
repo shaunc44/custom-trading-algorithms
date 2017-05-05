@@ -44,7 +44,7 @@ class RunLoop:
 		conn, cursor = self.create_cursor()
 		arr=[]
 
-		counter = 0
+		# counter = 0
 		while self.rundate <= self.enddate: 
 			# print ("1")
 			# Create Master Filtered Table of Stocks to Buy
@@ -79,6 +79,7 @@ class RunLoop:
 
 			cursor.execute('''
 				SELECT (1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) 
+					AS Algorithm
 					FROM portfolio;
 				'''
 			)
@@ -89,18 +90,25 @@ class RunLoop:
 			# print ("Algo Date = ", algo_date)
 
 			# Insert date here ??
+			# if cursor.fetchone()[0] == None:
+			# 	algo_value = 1000000
+			# else:
+			# 	algo_value = int(cursor.fetchone()[0])
+
 			algo_value = int(cursor.fetchone()[0])
 
-			if counter == 0:
-				algo_return = (algo_value / 1000000) - 1
-			else:
-				algo_return = (algo_value / prev_algo_value) - 1
+			# if counter == 0:
+			# 	algo_return = (algo_value / 1000000) - 1
+			# else:
+			# 	algo_return = (algo_value / prev_algo_value) - 1
 
+			# prev_algo_value = algo_value
 
 			print ("\n", algo_date, "Algorithm Value: ", algo_value)
+			# print ("\n", algo_date, "Algorithm Return: ", algo_return)
 
 			arr.append([algo_date, algo_value])
-			print ("Algo Array = ", arr)
+			# print ("Algo Array = ", arr)
 
 
 			#convert startdate string to datetime format
@@ -110,7 +118,7 @@ class RunLoop:
 			#convert date to string format
 			self.rundate = dt.datetime.strftime(self.rundate, '%Y-%m-%d')
 
-			counter +=1
+			# counter +=1
 
 		conn.close()
 

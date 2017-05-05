@@ -149,10 +149,10 @@ $(document).ready(function(){
 	})
 
 	var datasetFunction = function(ajaxData) {
-		var realData = [ajaxData['result'], ajaxData['S&P500']]
+		var realData = [ajaxData['ALGORITHM'], ajaxData['S&P_500']]
 		console.log("AjaxData = " + ajaxData)
 		var seriesOptions = [],
-			realNames = ['result', 'S&P500']
+			realNames = ['ALGORITHM', 'S&P_500']
 			seriesCounter = 0,
 			names = ['MSFT', 'AAPL']; /* Change names to reflect S&P 500 and Algorithm
 		/* Create the chart when all data is loaded @returns {undefined} */

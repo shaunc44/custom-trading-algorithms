@@ -59,7 +59,7 @@ def get_tasks(pk):
 	print ("Task.State = ", task.status)
 	if task.state == 'SUCCESS':
 		sp500 = sp500_model.get_sp(startdate=startdate, enddate=enddate)
-		return json.dumps({'result': task.get(timeout=None), 'S&P500': sp500['adj_list']})
+		return json.dumps({'ALGORITHM': task.get(timeout=None), 'S&P_500': sp500['adj_list']})
 	else:
 		return "Waiting"
 	# print ("Task Result = ", task.get(timeout=None))

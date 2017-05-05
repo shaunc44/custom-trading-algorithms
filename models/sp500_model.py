@@ -19,10 +19,12 @@ def get_sp(startdate, enddate, step=1):
 	sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
 	adj = sp['Adj Close']
 	first_price = adj.iloc[0]
-	percent_returns = lambda x: (x/first_price-1)*100
-	returns = adj.apply(percent_returns)
-	returnss =returns[::step]
+	# percent_returns = lambda x: (x/first_price-1)*100
+	# returns = adj.apply(percent_returns)
+	# returnss =first_price[::step]
+	returnss =adj[::step]
 	returns_list = returnss.tolist()
+	# returns_list = first_price.tolist()
 	sp_short_list = []
 	for i in returns_list:
 		short = round(i,2)
@@ -36,16 +38,16 @@ def get_sp(startdate, enddate, step=1):
 	# print ("Final SP Date List ", final_date_list)
 
 	dt_list = [datetime.datetime.strptime(day, '%Y-%m-%d').date() for day in final_date_list]
-	print ("SP Date List = ", dt_list)
+	# print ("SP Date List = ", dt_list)
 
 	sp_date_list_unix = [time.mktime(my_date.timetuple()) * 1000 for my_date in dt_list]
-	print("Sp Date List unix = ", sp_date_list_unix)
+	# print("Sp Date List unix = ", sp_date_list_unix)
 
 	sp_vals = fill_list(sp_date_list_unix, sp_short_list, all_date_list)
-	print("SP Vals = ", sp_vals)
+	# print("SP Vals = ", sp_vals)
 
 	final_list = combined_list(sp_vals, all_date_list)
-	print("Final List ", final_list)
+	# print("Final List ", final_list)
 	# sp_name = ['S&P500']
 	# sp_final = sp_name+short_list
 	# date_name = ['Dates']
@@ -90,8 +92,8 @@ def fill_list(sp_dates, sp_vals, all_dates):
 			else:
 				sp_vals.insert(counter, sp_vals[counter-1])
 				sp_dates.insert(counter, all_dates[counter])
-	print ("All Date Len ", all_date_len)
-	print ("SP Date Len ", sp_date_len)
+	# print ("All Date Len ", all_date_len)
+	# print ("SP Date Len ", sp_date_len)
 	return sp_vals
 
 

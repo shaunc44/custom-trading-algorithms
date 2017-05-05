@@ -80,7 +80,7 @@ class LastPriceFilter(Filter):
 		self.rundate = rundate
 
 	def screen(self): #the date should iterate over the trading dates beginning with start date
-		print ("Filter Model Rundate = ", self.rundate)
+		# print ("Filter Model Rundate = ", self.rundate)
 		lp_ticker_list = []
 		# run_date = dt.datetime.strptime(rundate, '%m/%d/%Y').strftime('%Y-%m-%d')
 		self.cursor.execute('''
@@ -155,7 +155,7 @@ class PriceEarningsFilter(Filter):
 		pe_ticker_list = []
  
 		#date for sql statement
-		print ("Run Date = ", self.rundate)
+		# print ("Run Date = ", self.rundate)
 		run_date_fmt = dt.datetime.strptime(self.rundate, '%Y-%m-%d') 
 		#convert rundate string to datetime format
 		trailing_date_fmt = run_date_fmt - dt.timedelta(days=90) 

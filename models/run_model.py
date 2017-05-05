@@ -1,5 +1,6 @@
 import pymysql.cursors
 import datetime as dt
+import time
 from . import filter_model
 from . import buy_model
 from . import sell_model
@@ -83,8 +84,13 @@ class RunLoop:
 				'''
 			)
 
+			algo_date = dt.datetime.strptime(self.rundate, '%Y-%m-%d')
+			algo_date = time.mktime(algo_date.timetuple()) * 1000
+			# print ("Algo Date = ", algo_date)
+
+			# Insert date here ??
 			algo_value = int(cursor.fetchone()[0])
-			print ("Algorithm Value: ", algo_value)
+			print ("\n", algo_date, "Algorithm Value: ", algo_value)
 
 			arr.append(algo_value)
 

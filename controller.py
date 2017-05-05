@@ -54,7 +54,7 @@ def get_tasks(pk):
 	enddate = request.args.get('enddate')
 	# data = json.loads(data)
 	startdate = request.args.get('startdate')
-	print(startdate)
+	print("Startdate = ", startdate)
 	task = tasks.celery_app.AsyncResult(pk)
 	print ("Task.State = ", task.status)
 	if task.state == 'SUCCESS':
@@ -105,7 +105,7 @@ def filter():
 		dy_low, dy_high, 
 		rsi_buy, rsi_sell
 	)
-	print (task.task_id)
+	print ("TaskID = ", task.task_id)
 	return task.task_id
 	# sp500 = sp500_model.get_sp(dt_rundate, 1)
 

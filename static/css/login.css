@@ -115,6 +115,10 @@ li {
 /***********************   CREATE_ALGO.HTML   ***********************/
 /********************************************************************/
 
+#bootstrap-override .col-lg-6 {
+	margin-bottom: 2%;
+}
+
 #bootstrap-override .flex-outer {
 	list-style-type: none;
 	padding-left: 0;

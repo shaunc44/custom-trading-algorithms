@@ -292,7 +292,6 @@ class DividendYieldFilter(Filter):
 
 	def screen(self):
 		dy_ticker_list = []
-
 		# print ("Run Date = ", self.rundate)
 		run_date_fmt = dt.datetime.strptime(self.rundate, '%Y-%m-%d') 
 		#convert rundate string to datetime format
@@ -311,14 +310,13 @@ class DividendYieldFilter(Filter):
 			AND fundamental.date <= %s;
 			''', (self.dy_low, self.dy_high, trailingdate_db, self.rundate))
 
-		rows = self.cursor.fetchall() #returns list of tuples ( should i run set() on this list now? )
+		rows = self.cursor.fetchall()
 		for row in rows:
 			dy_ticker_list.append(row[0])
 		# print ("\nDiv Yield Ticker List = ", dy_ticker_list)
 		return dy_ticker_list
 
-# dy = DividendYieldFilter(0.01, 100.00, '2016-12-22', '2017-03-22').run()
-# print (dy.run())
+
 
 
 

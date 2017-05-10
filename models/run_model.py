@@ -10,7 +10,7 @@ from . import remove_curr_val_model
 
 
 class RunLoop:
-	def __init__(self, rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rsi_buy, rsi_sell):
+	def __init__(self, rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, de_low, de_high, rsi_buy, rsi_sell):
 		self.rundate = rundate
 		self.enddate = enddate
 		self.lp_low = lp_low
@@ -19,6 +19,8 @@ class RunLoop:
 		self.pe_high = pe_high
 		self.dy_low = dy_low
 		self.dy_high = dy_high
+		self.de_low = de_low
+		self.de_high = de_high
 		self.rsi_buy = rsi_buy
 		self.rsi_sell =rsi_sell
 
@@ -48,7 +50,7 @@ class RunLoop:
 		while self.rundate <= self.enddate: 
 			# print ("1")
 			# Create Master Filtered Table of Stocks to Buy
-			add_filtered = filter_model.CreateFilteredList(conn, cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.dy_low, self.dy_high, self.rundate)
+			add_filtered = filter_model.CreateFilteredList(conn, cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.dy_low, self.dy_high, self.de_low, self.de_high, self.rundate)
 			add_filtered.create_filtered_list()
 
 			# print ("2")

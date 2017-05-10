@@ -153,7 +153,6 @@ class PriceEarningsFilter(Filter):
 
 	def screen(self):
 		pe_ticker_list = []
- 
 		#date for sql statement
 		# print ("Run Date = ", self.rundate)
 		run_date_fmt = dt.datetime.strptime(self.rundate, '%Y-%m-%d') 
@@ -318,34 +317,38 @@ class DividendYieldFilter(Filter):
 
 
 
-
-
 #SELECT distinct fundamental.ticker_id FROM fundamental PARTITION (pDE) WHERE fundamental.value > 0.0 AND fundamental.value < 0.25 AND fundamental.date > '2016-05-22' AND fundamental.date < '2016-08-22';
 #takes 0.92 sec to run
-# class DebtToEquityFilter(Filter):
-# 	def __init__(self, de_low, de_high, startdate, enddate):
-# 		self.de_low = de_low
-# 		self.de_high = de_high
-# 		self.startdate = startdate
-# 		self.enddate = enddate
-# 		self.de_ticker_list = []
+class DebtToEquityFilter(Filter):
+	def __init__(self, conn, cursor, de_low, de_high, rundate):
+		self.conn = conn
+		self.cursor = cursor
+		self.de_low = de_low
+		self.de_high = de_high
+		self.rundate = rundate
 
-# 	def screen(self):
-# 		c.execute('''
-# 			SELECT DISTINCT fundamental.ticker_id 
-# 			FROM fundamental PARTITION (pDE) 
-# 			WHERE fundamental.value > %s 
-# 			AND fundamental.value < %s 
-# 			AND fundamental.date > %s 
-# 			AND fundamental.date < %s;
-# 			''', (self.de_low, self.de_high, self.startdate, self.enddate))
+	def screen(self):
+		de_ticker_list = []
+		run_date_fmt = dt.datetime.strptime(self.rundate, '%Y-%m-%d') 
+		#convert rundate string to datetime format
+		trailing_date_fmt = run_date_fmt - dt.timedelta(days=90) 
+		#subtract 90 days from rundate to get trailingdate
+		trailingdate_db = dt.datetime.strftime(trailing_date_fmt, '%Y-%m-%d') 
 
-# 		rows = c.fetchall() #returns list of tuples ( should i run set() on this list now? )
-# 		for row in rows:
-# 			self.de_ticker_list.append(row[0])
-# 			# print (row[0])
+		self.cursor.execute('''
+			SELECT DISTINCT fundamental.ticker_id 
+			FROM fundamental PARTITION (pDE) 
+			WHERE fundamental.value > %s 
+			AND fundamental.value < %s 
+			AND fundamental.date >= %s 
+			AND fundamental.date <= %s;
+			''', (self.de_low, self.de_high, trailingdate_db, self.rundate))
 
-# 		return self.de_ticker_list
+		rows = self.cursor.fetchall()
+		for row in rows:
+			de_ticker_list.append(row[0])
+		# print ("\nDiv Yield Ticker List = ", dy_ticker_list)
+		return de_ticker_list
 
 # de = DebtToEquityFilter(0, 1, '2016-12-22', '2017-03-22').run()
 # print (de.run())
@@ -364,7 +367,7 @@ class DividendYieldFilter(Filter):
 
 
 class CreateFilteredList:
-	def __init__(self, conn, cursor, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, rundate):
+	def __init__(self, conn, cursor, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, de_low, de_high, rundate):
 		self.conn = conn
 		self.cursor = cursor
 		self.lp_low = lp_low
@@ -373,6 +376,8 @@ class CreateFilteredList:
 		self.pe_high = pe_high
 		self.dy_low = dy_low
 		self.dy_high = dy_high
+		self.de_low = de_low
+		self.de_high = de_high
 		self.rundate = rundate
 
 	def create_filtered_list(self):
@@ -385,12 +390,15 @@ class CreateFilteredList:
 		pe = pe.screen()
 		dy = DividendYieldFilter(self.conn, self.cursor, self.dy_low, self.dy_high, self.rundate)
 		dy = dy.screen()
+		de = DebtToEquityFilter(self.conn, self.cursor, self.de_low, self.de_high, self.rundate)
+		de = de.screen()
 
 		lp = set(lp)
 		pe = set(pe)
 		dy = set(dy)
+		de = set(de)
 
-		filtered_list = lp.intersection(pe.intersection(dy))
+		filtered_list = lp.intersection(pe.intersection(dy.intersection(de)))
 		# x = lp.intersection(cr.intersection(pe.intersection(eps.intersection(roe.intersection(roic.intersection(dy.intersection(de)))))))
 		filtered_list = list(filtered_list)
 		for symbol in filtered_list:

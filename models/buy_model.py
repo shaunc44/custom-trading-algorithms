@@ -32,7 +32,6 @@ class CreatePurchasedList:
 		return purchased_list
 
 
-# DOES THE PURCHASED LIST RESET WITH EACH ITERATION ????
 
 class AddPurchasedToPortfolio:
 	def __init__(self, conn, cursor, purchased):
@@ -41,6 +40,7 @@ class AddPurchasedToPortfolio:
 		self.purchased = purchased
 
 	def add_purchased_to_portfolio(self):
+		# Determine purchase value
 		for row in self.purchased:
 			self.cursor.execute('''
 				SELECT IF (

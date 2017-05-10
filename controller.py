@@ -94,6 +94,10 @@ def filter():
 	dy_low = data['dy_low']
 	dy_high = data['dy_high']
 
+	# Dividend Yield
+	de_low = data['de_low']
+	de_high = data['de_high']
+
 	# RSI buy & sell signals
 	rsi_buy = data['rsi_buy']
 	rsi_sell = data['rsi_sell']
@@ -103,6 +107,7 @@ def filter():
 		rundate, enddate, lp_low, 
 		lp_high, pe_low, pe_high, 
 		dy_low, dy_high, 
+		de_low, de_high, 
 		rsi_buy, rsi_sell
 	)
 	print ("TaskID = ", task.task_id)

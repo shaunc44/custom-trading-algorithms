@@ -12,28 +12,28 @@ def get_sp(startdate, enddate, step=1):
 	print ("All Date List = ", all_date_list)
 
 
-	# end_date = enddate
-	# start_date = startdate
+	#Get S&P 500 prices from Yahoo
 	start_date= datetime.datetime.strptime(startdate, '%m/%d/%Y')
 	end_date= datetime.datetime.strptime(enddate, '%m/%d/%Y')
 	sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
 	adj = sp['Adj Close']
 	first_price = adj.iloc[0]
-	# percent_returns = lambda x: (x/first_price-1)*100
-	# returns = adj.apply(percent_returns)
-	# returnss =first_price[::step]
 	returnss =adj[::step]
 	returns_list = returnss.tolist()
 	# returns_list = first_price.tolist()
 	sp_short_list = []
+
 	for i in returns_list:
 		short = round(i,2)
 		sp_short_list.append(short)
+
 	datee = sp.index.values
 	date_list = []
+
 	for day in datee:
 		correct = str(day)[:10]
 		date_list.append(correct)
+
 	final_date_list = date_list[::step]
 	# print ("Final SP Date List ", final_date_list)
 
@@ -47,15 +47,9 @@ def get_sp(startdate, enddate, step=1):
 	# print("SP Vals = ", sp_vals)
 
 	final_list = combined_list(sp_vals, all_date_list)
-	# print("Final List ", final_list)
-	# sp_name = ['S&P500']
-	# sp_final = sp_name+short_list
-	# date_name = ['Dates']
-	# final_date = date_name+date_list
-	# print ( dict(date_list=final_date, adj_list=sp_final) )
+
 	return dict(adj_list=final_list)
 
-# get_sp(365, 1)
 
 
 def make_date_list(start_date, end_date):

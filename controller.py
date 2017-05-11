@@ -90,6 +90,10 @@ def filter():
 	pe_low = data['pe_low']
 	pe_high = data['pe_high']
 
+	# Return on Equity
+	roe_low = data['roe_low']
+	roe_high = data['roe_high']
+
 	# Dividend Yield
 	dy_low = data['dy_low']
 	dy_high = data['dy_high']
@@ -103,12 +107,13 @@ def filter():
 	rsi_sell = data['rsi_sell']
 
 	# Celery
-	task = tasks.algo_task.delay(
-		rundate, enddate, lp_low, 
-		lp_high, pe_low, pe_high, 
-		dy_low, dy_high, 
-		de_low, de_high, 
-		rsi_buy, rsi_sell
+	task = tasks.algo_task.delay(rundate, enddate, 
+							lp_low, lp_high, 
+							pe_low, pe_high, 
+							roe_low, roe_high, 
+							dy_low, dy_high, 
+							de_low, de_high, 
+							rsi_buy, rsi_sell
 	)
 	print ("TaskID = ", task.task_id)
 	return task.task_id

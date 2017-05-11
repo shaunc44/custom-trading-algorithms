@@ -14,9 +14,15 @@ celery_app = Celery('algo_tasker', backend='rpc://', broker='amqp://')
 
 
 @celery_app.task(trail=True)
-def algo_task(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, de_low, de_high, rsi_buy, rsi_sell):
+def algo_task(rundate, enddate, lp_low, lp_high, 
+				pe_low, pe_high, roe_low, roe_high, 
+				dy_low, dy_high, de_low, de_high, 
+				rsi_buy, rsi_sell):
 
-	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, pe_low, pe_high, dy_low, dy_high, de_low, de_high, rsi_buy, rsi_sell)
+	run = run_model.RunLoop(rundate, enddate, lp_low, lp_high, 
+							pe_low, pe_high, roe_low, roe_high, 
+							dy_low, dy_high, de_low, de_high, 
+							rsi_buy, rsi_sell)
 	algo_value = run.run_loop()
 
 	print ("Loop Finished")

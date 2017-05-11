@@ -93,6 +93,7 @@ $(document).ready(function(){
 	var initAjax = function (
 		lp_low, lp_high, 
 		pe_low, pe_high, 
+		roe_low, roe_high, 
 		dy_low, dy_high, 
 		de_low, de_high,
 		rsi_buy, rsi_sell,
@@ -103,6 +104,8 @@ $(document).ready(function(){
 			'lp_high': lp_high,
 			'pe_low': pe_low,
 			'pe_high': pe_high,
+			'roe_low': roe_low,
+			'roe_high': roe_high,
 			'dy_low': dy_low,
 			'dy_high': dy_high,
 			'de_low': de_low,
@@ -138,6 +141,8 @@ $(document).ready(function(){
 		var lp_high = $("#inputLastPriceHigh").val();
 		var pe_low = $("#inputPeLow").val();
 		var pe_high = $("#inputPeHigh").val();
+		var roe_low = $("#inputRoeLow").val();
+		var roe_high = $("#inputRoeHigh").val();
 		var dy_low = $("#inputDivYieldLow").val();
 		var dy_high = $("#inputDivYieldHigh").val();
 		var de_low = $("#inputDebtEquityLow").val();
@@ -150,7 +155,8 @@ $(document).ready(function(){
 		// console.log("enddate = " + enddate)
 
 		pk = initAjax(lp_low, lp_high, pe_low, pe_high, 
-			dy_low, dy_high, de_low, de_high, rsi_buy, rsi_sell, startdate, enddate)
+			roe_low, roe_high, dy_low, dy_high, 
+			de_low, de_high, rsi_buy, rsi_sell, startdate, enddate)
 	})
 
 	var datasetFunction = function(ajaxData) {

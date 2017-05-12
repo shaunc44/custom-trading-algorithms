@@ -86,7 +86,7 @@ class RunLoop:
 			# )
 			cursor.execute('''
 				SELECT IF (
-					(1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value) IS NULL), 
+					((1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) IS NULL), 
 					1000000, 
 					(1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value))
 				)

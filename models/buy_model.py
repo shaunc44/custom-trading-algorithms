@@ -14,7 +14,7 @@ class CreatePurchasedList:
 
 	def create_purchased_list(self): #change rundate to curr date?
 		purchased_list = []
-		# print ("Buy Model Rundate = ", self.rundate_db)
+		print ("Buy Model Date = ", self.rundate_db)
 		self.cursor.execute('''
 			SELECT filtered.ticker_id, price.date, price.adj_close
 			FROM filtered 

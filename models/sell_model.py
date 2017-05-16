@@ -30,6 +30,18 @@ class SellStock:
 			AND price.date = %s;
 			''', (self.rsi_sell, self.rundate_db)
 		)
+
+		# WORK ON STOP-LOSS FUNCTIONALITY
+		# self.cursor.execute('''
+		# 	SELECT portfolio.ticker_id, portfolio.buy_price, price.date, price.adj_close
+		# 	FROM portfolio 
+		# 	INNER JOIN price 
+		# 	ON portfolio.ticker_id = price.ticker_id 
+		# 	WHERE (price.rsi > %s OR (price.adj_close / portfolio.buy_price) <= ((1 - %s)/1) )
+		# 	AND price.date = %s;
+		# 	''', (self.rsi_sell, self.stop_loss, self.rundate_db)
+		# )
+
 		stocks_to_sell = self.cursor.fetchall() 
 		# print ("Possible Stocks to Sell = ", stocks_to_sell)
 

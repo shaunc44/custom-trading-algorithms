@@ -106,6 +106,9 @@ def filter():
 	rsi_buy = data['rsi_buy']
 	rsi_sell = data['rsi_sell']
 
+	# Stop loss sell signal
+	# stop_loss = data['stop_loss']
+
 	# Celery
 	task = tasks.algo_task.delay(rundate, enddate, 
 							lp_low, lp_high, 

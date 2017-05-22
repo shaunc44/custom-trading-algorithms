@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import pandas_datareader.data as web
+# from pandas_datareader import data, web
 import datetime
 from datetime import date, timedelta
 import time
@@ -15,8 +16,10 @@ def get_sp(startdate, enddate, step=1):
 	#Get S&P 500 prices from Yahoo
 	start_date= datetime.datetime.strptime(startdate, '%m/%d/%Y')
 	end_date= datetime.datetime.strptime(enddate, '%m/%d/%Y')
-	sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
-	adj = sp['Adj Close']
+	sp = web.DataReader("SPY",'google', start_date, end_date)
+	adj = sp['Close']
+	# sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
+	# adj = sp['Adj Close']
 	first_price = adj.iloc[0]
 	returnss =adj[::step]
 	returns_list = returnss.tolist()

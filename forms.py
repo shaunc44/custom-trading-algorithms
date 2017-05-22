@@ -62,7 +62,7 @@ class FilterForm(Form):
 	inputRsiSell = FloatField('inputRsiSell', [validators.NumberRange(min=0, max=100)], default=False)
 
 	# trailing_stop_loss
-	inputStoplossSell = FloatField('inputStoplossSell', [validators.NumberRange(min=0, max=100)], default=False)
+	inputStopLoss = FloatField('inputStopLoss', [validators.NumberRange(min=0, max=100)], default=False)
 
 
 

@@ -13,7 +13,7 @@ class RunLoop:
 	def __init__(self, rundate, enddate, lp_low, lp_high, 
 				pe_low, pe_high, roe_low, roe_high, 
 				dy_low, dy_high, de_low, de_high, 
-				rsi_buy, rsi_sell):
+				rsi_buy, rsi_sell, stop_loss):
 		self.rundate = rundate
 		self.enddate = enddate
 		self.lp_low = lp_low
@@ -27,7 +27,8 @@ class RunLoop:
 		self.de_low = de_low
 		self.de_high = de_high
 		self.rsi_buy = rsi_buy
-		self.rsi_sell =rsi_sell
+		self.rsi_sell = rsi_sell
+		self.stop_loss = stop_loss
 
 
 	def create_cursor(self):
@@ -54,7 +55,11 @@ class RunLoop:
 		# counter = 0
 		while self.rundate <= self.enddate: 
 			# Create Master Filtered Table of Stocks to Buy
-			add_filtered = filter_model.CreateFilteredList(conn, cursor, self.lp_low, self.lp_high, self.pe_low, self.pe_high, self.roe_low, self.roe_high, self.dy_low, self.dy_high, self.de_low, self.de_high, self.rundate)
+			add_filtered = filter_model.CreateFilteredList(conn, cursor, 
+								self.lp_low, self.lp_high, self.pe_low, 
+								self.pe_high, self.roe_low, self.roe_high, 
+								self.dy_low, self.dy_high, self.de_low, 
+								self.de_high, self.rundate)
 			add_filtered.create_filtered_list()
 
 			# Create Purchased List of Stocks
@@ -70,7 +75,8 @@ class RunLoop:
 			add_current.add_current_data()
 
 			# Sell Stocks
-			sell_stock = sell_model.SellStock(conn, cursor, self.rsi_sell, self.rundate)
+			sell_stock = sell_model.SellStock(conn, cursor, self.rsi_sell, 
+							self.stop_loss, self.rundate)
 			sell_stock.sell_stock()
 
 			# Remove current value for stocks sold

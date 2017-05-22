@@ -12,35 +12,37 @@ import pymysql.cursors
 # c = conn.cursor()
 
 class SellStock:
-	def __init__(self, conn, cursor, rsi_sell, rundate):
+	def __init__(self, conn, cursor, rsi_sell, stop_loss, rundate):
 		self.conn = conn
 		self.cursor = cursor
 		self.rsi_sell = rsi_sell
+		self.stop_loss = stop_loss
 		self.rundate_db = rundate
 
 	def sell_stock(self): #how to change rundate to curr date?
 		sell_list = []
 		# print ("Sell Model Rundate = ", self.rundate_db)
-		self.cursor.execute('''
-			SELECT portfolio.ticker_id, price.date, price.adj_close
-			FROM portfolio 
-			INNER JOIN price 
-			ON portfolio.ticker_id = price.ticker_id 
-			WHERE price.rsi > %s 
-			AND price.date = %s;
-			''', (self.rsi_sell, self.rundate_db)
-		)
-
-		# WORK ON STOP-LOSS FUNCTIONALITY
 		# self.cursor.execute('''
-		# 	SELECT portfolio.ticker_id, portfolio.buy_price, price.date, price.adj_close
+		# 	SELECT portfolio.ticker_id, price.date, price.adj_close
 		# 	FROM portfolio 
 		# 	INNER JOIN price 
 		# 	ON portfolio.ticker_id = price.ticker_id 
-		# 	WHERE (price.rsi > %s OR (price.adj_close / portfolio.buy_price) <= ((1 - %s)/1) )
+		# 	WHERE price.rsi > %s 
 		# 	AND price.date = %s;
-		# 	''', (self.rsi_sell, self.stop_loss, self.rundate_db)
+		# 	''', (self.rsi_sell, self.rundate_db)
 		# )
+
+		# WORK ON STOP-LOSS FUNCTIONALITY
+		# Need to compare adj_close to previous high ?????????
+		self.cursor.execute('''
+			SELECT portfolio.ticker_id, portfolio.buy_price, price.date, price.adj_close
+			FROM portfolio 
+			INNER JOIN price 
+			ON portfolio.ticker_id = price.ticker_id 
+			WHERE (price.rsi > %s OR (price.adj_close / portfolio.buy_price) <= ((100 - %s)/100) )
+			AND price.date = %s;
+			''', (self.rsi_sell, self.stop_loss, self.rundate_db)
+		)
 
 		stocks_to_sell = self.cursor.fetchall() 
 		# print ("Possible Stocks to Sell = ", stocks_to_sell)

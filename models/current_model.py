@@ -8,15 +8,6 @@ import datetime as dt
 # start = timeit.default_timer()
 
 
-# conn = pymysql.connect(host='localhost',
-# 	user='scox',
-# 	password='scox',
-# 	db='trading_algo',
-# 	charset='utf8mb4'
-# 	)
-# c = conn.cursor()
-
-
 class AddCurrentDataToPortfolio:
 	def __init__(self, conn, cursor, rundate):
 		self.conn = conn
@@ -39,6 +30,10 @@ class AddCurrentDataToPortfolio:
 
 		for row in current:
 			# print ("Current = ", row)
+			# Set current price for each portfolio holding
+			# Set current value to zero if holding has sold
+			# Set current value for each portfolio holding
+			# Set high price for each holding
 			self.cursor.execute('''
 				UPDATE IGNORE portfolio
 				SET portfolio.curr_price = %s
@@ -50,8 +45,11 @@ class AddCurrentDataToPortfolio:
 				UPDATE IGNORE portfolio
 				SET portfolio.curr_value = ((portfolio.curr_price / portfolio.buy_price) * portfolio.buy_value)
 				WHERE portfolio.sell_date = 0;
+				UPDATE IGNORE portfolio
+				SET portfolio.hi_price = %s
+				WHERE portfolio.curr_price >= portfolio.buy_price;
 				''',
-				(row[2], row[0])
+				(row[2], row[0], row[2])
 			)
 			self.conn.commit()
 		# self.conn.close()

@@ -63,15 +63,18 @@ class RunLoop:
 			add_filtered.create_filtered_list()
 
 			# Create Purchased List of Stocks
-			create_purchased = buy_model.CreatePurchasedList(cursor, self.rsi_buy, self.rundate)
+			create_purchased = buy_model.CreatePurchasedList(cursor, 
+								self.rsi_buy, self.rundate)
 			purchased = create_purchased.create_purchased_list()
 
 			# Add Purchased Stocks to Portfolio
-			add_purchased = buy_model.AddPurchasedToPortfolio(conn, cursor, purchased)
+			add_purchased = buy_model.AddPurchasedToPortfolio(conn, 
+								cursor, purchased)
 			add_purchased.add_purchased_to_portfolio()
 
 			# Add Current Price & Value to Portfolio
-			add_current = current_model.AddCurrentDataToPortfolio(conn, cursor, self.rundate)
+			add_current = current_model.AddCurrentDataToPortfolio(conn, 
+							cursor, self.rundate)
 			add_current.add_current_data()
 
 			# Sell Stocks
@@ -80,7 +83,8 @@ class RunLoop:
 			sell_stock.sell_stock()
 
 			# Remove current value for stocks sold
-			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(conn, cursor, self.rundate)
+			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(conn, 
+								cursor, self.rundate)
 			remove_curr_val.remove_curr_val_for_sold()
 
 

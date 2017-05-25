@@ -20,7 +20,7 @@ class SellStock:
 		self.rundate_db = rundate
 
 	def sell_stock(self): #how to change rundate to curr date?
-		sell_list = []
+		# sell_list = []
 		# print ("Sell Model Rundate = ", self.rundate_db)
 		# self.cursor.execute('''
 		# 	SELECT portfolio.ticker_id, price.date, price.adj_close
@@ -44,19 +44,20 @@ class SellStock:
 			''', (self.rsi_sell, self.stop_loss, self.rundate_db)
 		)
 
-		stocks_to_sell = self.cursor.fetchall() 
+		stocks_to_sell = self.cursor.fetchall()
 		# print ("Possible Stocks to Sell = ", stocks_to_sell)
 
 		for row in stocks_to_sell:
-			symbol = row[0]
+			# symbol = row[0]
 			# Add sell_date and sell_price to portfolio
 			self.cursor.execute('''
 				UPDATE portfolio 
 				SET portfolio.sell_date = %s,
 					portfolio.sell_price = %s
-				WHERE portfolio.ticker_id = %s AND portfolio.sell_price = 0;
+				WHERE (portfolio.ticker_id = %s 
+				AND portfolio.sell_price = 0);
 				''', 
-				(row[1], row[2], row[0])
+				(row[2], row[3], row[0])
 			)
 
 			# Add sell_value and days_held to portfolio

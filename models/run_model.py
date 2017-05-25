@@ -55,7 +55,7 @@ class RunLoop:
 		# counter = 0
 		while self.rundate <= self.enddate: 
 			# Create Master Filtered Table of Stocks to Buy
-			add_filtered = filter_model.CreateFilteredList(conn, cursor, 
+			add_filtered = filter_model.CreateFilteredList(conn, cursor,
 								self.lp_low, self.lp_high, self.pe_low, 
 								self.pe_high, self.roe_low, self.roe_high, 
 								self.dy_low, self.dy_high, self.de_low, 
@@ -78,22 +78,15 @@ class RunLoop:
 			add_current.add_current_data()
 
 			# Sell Stocks
-			sell_stock = sell_model.SellStock(conn, cursor, self.rsi_sell, 
-							self.stop_loss, self.rundate)
+			sell_stock = sell_model.SellStock(conn, cursor, 
+							self.rsi_sell, self.stop_loss, self.rundate)
 			sell_stock.sell_stock()
 
 			# Remove current value for stocks sold
-			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(conn, 
-								cursor, self.rundate)
+			remove_curr_val = remove_curr_val_model.RemoveCurrentValue(conn, cursor, self.rundate)
 			remove_curr_val.remove_curr_val_for_sold()
 
 
-			# cursor.execute('''
-			# 	SELECT (1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) 
-			# 		AS Algorithm
-			# 		FROM portfolio;
-			# 	'''
-			# )
 			cursor.execute('''
 				SELECT IF (
 					((1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) IS NULL), 
@@ -102,12 +95,6 @@ class RunLoop:
 				)
 				FROM portfolio;'''
 			)
-			# cursor.execute('''
-			# 	SELECT (1000000 + SUM(portfolio.curr_value) + SUM(portfolio.sell_value) - SUM(portfolio.buy_value)) 
-			# 		AS Algorithm
-			# 		FROM portfolio;
-			# 	'''
-			# )
 
 			algo_value = int(cursor.fetchone()[0])
 

@@ -47,58 +47,13 @@ class AddCurrentDataToPortfolio:
 				WHERE portfolio.sell_date = 0;
 				UPDATE IGNORE portfolio
 				SET portfolio.hi_price = %s
-				WHERE portfolio.curr_price >= portfolio.buy_price;
+				WHERE (portfolio.curr_price >= portfolio.buy_price)
+				AND (portfolio.ticker_id = %s);
 				''',
-				(row[2], row[0], row[2])
+				(row[2], row[0], row[2], row[0])
 			)
 			self.conn.commit()
 		# self.conn.close()
-
-
-
-
-
-
-		# stocks_to_sell = c.fetchall() 
-		# print ("Possible Stocks to Sell = ", stocks_to_sell)
-
-		# for row in stocks_to_sell:
-		# 	symbol = row[0]
-		# 	# Add sell_date and sell_price to portfolio
-		# 	c.execute('''
-		# 		UPDATE portfolio 
-		# 		SET portfolio.sell_date = %s,
-		# 			portfolio.sell_price = %s
-		# 		WHERE portfolio.ticker_id = %s AND portfolio.sell_price = 0;
-		# 		''', 
-		# 		(row[1], row[2], row[0])
-		# 	)
-
-		# 	# Add sell_value and days_held to portfolio
-		# 	c.execute('''
-		# 		UPDATE portfolio
-		# 		SET portfolio.sell_value = ((portfolio.sell_price / portfolio.buy_price) * portfolio.buy_value),
-		# 			portfolio.days_held = DATEDIFF(portfolio.sell_date, portfolio.buy_date)
-		# 		WHERE portfolio.ticker_id = %s AND portfolio.sell_value = 0;
-		# 		''',
-		# 		(row[0])
-		# 	)
-
-		# 	# Add gain_loss to portfolio
-		# 	c.execute('''
-		# 		UPDATE portfolio
-		# 		SET portfolio.gain_loss = (portfolio.sell_value - portfolio.buy_value)
-		# 		WHERE portfolio.ticker_id = %s AND portfolio.gain_loss = 0;
-		# # 		''',
-		# 		(row[0])
-		# 	)
-
-		# 	conn.commit()
-		# conn.close()
-
-
-
-
 
 
 

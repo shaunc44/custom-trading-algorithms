@@ -4,11 +4,11 @@
 
 3. Run source venv/bin/activate in both terminals
 
-4. In terminal 1: run ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9
+4. In terminal 1: run $ ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9
 
-5. In terminal 1: run celery worker -A tasks &
+5. In terminal 1: run $ celery worker -A tasks &
 
-6. In terminal 2: run python3 controller.py
+6. In terminal 2: run $ python3 controller.py
 
 
 To access DB:

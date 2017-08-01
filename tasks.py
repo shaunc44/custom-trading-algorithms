@@ -12,7 +12,6 @@ from celery import Celery
 celery_app = Celery('algo_tasker', backend='rpc://', broker='amqp://')
 
 
-
 @celery_app.task(trail=True)
 def algo_task(rundate, enddate, lp_low, lp_high, 
 				pe_low, pe_high, roe_low, roe_high, 

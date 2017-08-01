@@ -11,7 +11,7 @@ class RemoveCurrentValue:
 
 	# Remove curr value for stocks sold
 	def remove_curr_val_for_sold(self):
-		# print ("Remove Model Rundate = ", self.rundate)
+		print ("RemvCurrVal Model Rundate = ", self.rundate)
 		self.cursor.execute('''
 			UPDATE IGNORE portfolio
 			SET portfolio.curr_value = 0

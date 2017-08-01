@@ -54,7 +54,7 @@ def get_tasks(pk):
 	enddate = request.args.get('enddate')
 	# data = json.loads(data)
 	startdate = request.args.get('startdate')
-	print("Startdate = ", startdate)
+	# print("Startdate = ", startdate)
 	task = tasks.celery_app.AsyncResult(pk)
 	print ("Task.State = ", task.status)
 	if task.state == 'SUCCESS':
@@ -69,7 +69,7 @@ def get_tasks(pk):
 
 @app.route("/filter", methods=["POST"]) #this route should go to graph part of page??
 def filter():
-	print ("Inside Filter")
+	# print ("Inside Filter")
 	data = request.data.decode()
 	data = json.loads(data)
 	print ("Data = ", data)

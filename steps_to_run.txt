@@ -1,22 +1,22 @@
-SET UP PROGRAM
+SET UP PROGRAM  
 
-1. Open 2 terminals
-2. $ cd to custom algo folder in both terminals
-3. Run $ source venv/bin/activate in both terminals
-4. Test if RabbitMQ is running: $ rabbitmqctl status
-5. In terminal 1: run $ ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9
-6. Make sure VPN is turned off
-7. In terminal 1: run $ celery worker -A tasks &
-8. In terminal 2: run $ python3 controller.py
-9. Open Google Chrome at localhost:5000
+1. Open 2 terminals  
+2. $ cd to custom algo folder in both terminals  
+3. Run $ source venv/bin/activate in both terminals  
+4. Test if RabbitMQ is running: $ rabbitmqctl status  
+5. In terminal 1: run $ ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9  
+6. Make sure VPN is turned off  
+7. In terminal 1: run $ celery worker -A tasks &  
+8. In terminal 2: run $ python3 controller.py  
+9. Open Google Chrome at localhost:5000  
 
 
-ACCESS MYSQL DATABASE:
+ACCESS MYSQL DATABASE:  
 
-1. $ mysql -u scox -p
-2. enter pw (hint 4 chars)
-3. Access Trading DB:	mysql> use trading_algo
-4. Show tables:			mysql> show tables;
-5. Show portfolio:		mysql> select * from portfolio;
-6. Clear portfolio:		mysql> truncate table portfolio;
-7. To quit:				mysql> \q
+1. $ mysql -u scox -p  
+2. enter pw (hint 4 chars)  
+3. Access Trading DB:	mysql> use trading_algo  
+4. Show tables:			mysql> show tables;  
+5. Show portfolio:		mysql> select * from portfolio;  
+6. Clear portfolio:		mysql> truncate table portfolio;  
+7. To quit:				mysql> \q  

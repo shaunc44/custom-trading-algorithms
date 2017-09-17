@@ -21,7 +21,7 @@ def get_sp(startdate, enddate, step=1):
 	# sp = web.DataReader('^GSPC','yahoo', start_date, end_date)
 	# adj = sp['Adj Close']
 	first_price = adj.iloc[0]
-	returnss =adj[::step]
+	returnss = adj[::step]
 	returns_list = returnss.tolist()
 	# returns_list = first_price.tolist()
 	sp_short_list = []
@@ -49,9 +49,9 @@ def get_sp(startdate, enddate, step=1):
 	sp_vals = fill_list(sp_date_list_unix, sp_short_list, all_date_list)
 	# print("SP Vals = ", sp_vals)
 
-	final_list = combined_list(sp_vals, all_date_list)
+	fin_list = combined_list(sp_vals, all_date_list)
 
-	return dict(adj_list=final_list)
+	return dict(adj_list=fin_list)
 
 
 
@@ -96,10 +96,15 @@ def fill_list(sp_dates, sp_vals, all_dates):
 
 def combined_list(sp_vals, all_dates):
 	sp_val_len = len(sp_vals)
+	# sp_val_len = 251
+	# shouldn't it equal the length of values collected? or days ran?
+	# print ("\nSP_Val_Len =", sp_val_len, "\n")
 
 	final_list = []
+	# for i in range(0, 2):
 	for i in range(0, sp_val_len):
-		final_list.append([all_dates[i], sp_vals[i]])
+		print ("i: ", i)
+		final_list.append([ all_dates[i], sp_vals[i] ])
 	return final_list
 
 

@@ -5,3 +5,5 @@ __pycache__
 *.zip
 *.xlsx
 *.gz
+
+secret_key.py

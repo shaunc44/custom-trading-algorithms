@@ -101,7 +101,7 @@ def combined_list(sp_vals, all_dates):
 	# print ("\nSP_Val_Len =", sp_val_len, "\n")
 
 	final_list = []
-	# for i in range(0, 2):
+	# for i in range(0, 2): => to test 3 Trading Days
 	for i in range(0, sp_val_len):
 		print ("i: ", i)
 		final_list.append([ all_dates[i], sp_vals[i] ])

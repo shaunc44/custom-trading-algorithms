@@ -7,6 +7,8 @@ from . import sell_model
 from . import current_model
 from . import remove_curr_val_model
 
+from secret_key import Secret as sec
+
 
 
 class RunLoop:
@@ -35,13 +37,12 @@ class RunLoop:
 		if hasattr(self, "conn"):
 			return self.conn, self.conn.cursor()
 		else:
-			self.conn = pymysql.connect(
-				host='localhost',
-				user='scox',
-				password='scox',
-				db='trading_algo',
-				charset='utf8mb4',
-				# cursorclass=pymysql.cursors.DictCursor
+			self.conn = pymysql.connect(host =     'localhost',
+										user =     sec.db_user,
+										password = sec.db_password,
+										db =       'trading_algo',
+										charset =  'utf8mb4',
+										# cursorclass=pymysql.cursors.DictCursor
 			)
 			return self.conn, self.conn.cursor()
 

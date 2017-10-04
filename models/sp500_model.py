@@ -95,16 +95,22 @@ def fill_list(sp_dates, sp_vals, all_dates):
 
 
 def combined_list(sp_vals, all_dates):
-	sp_val_len = len(sp_vals)
+	sp_val_len = len(sp_vals) # this prints as ~250 for some reason *** need to fix
+	print ("\nSP_Val_Len =", sp_val_len, "\n")
+	# maybe use length of all_dates ?????????
 	# sp_val_len = 251
 	# shouldn't it equal the length of values collected? or days ran?
-	# print ("\nSP_Val_Len =", sp_val_len, "\n")
+
+	# dates_len = len(dates_len)
+	# print ("\nDates_Len =", dates_len, "\n")
+	# this doesn't work b/c it covers all dates after first date
 
 	final_list = []
 	# for i in range(0, 2): => to test 3 Trading Days
 	for i in range(0, sp_val_len):
 		print ("i: ", i)
 		final_list.append([ all_dates[i], sp_vals[i] ])
+
 	return final_list
 
 

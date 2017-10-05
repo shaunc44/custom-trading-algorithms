@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import pandas_datareader.data as web
-# from pandas_datareader import data, web
 import datetime
 from datetime import date, timedelta
 import time
@@ -94,9 +93,40 @@ def fill_list(sp_dates, sp_vals, all_dates):
 	return sp_vals
 
 
-def combined_list(sp_vals, all_dates):
-	sp_val_len = len(sp_vals) # this prints as ~250 for some reason *** need to fix
-	print ("\nSP_Val_Len =", sp_val_len, "\n")
+# Function to marry dates and corresponding S&P500 values for chart display
+def combined_list(sp500_vals, all_dates):
+	sp500_val_len = len(sp500_vals)
+	dates_len = len(all_dates)
+	final_sp500_value_list = []
+
+	for i in range(0, dates_len):
+		final_sp500_value_list.append([ all_dates[i], sp500_vals[i] ])
+
+	return final_sp500_value_list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	# print ("\nSP_Val_Len =", sp_val_len, "\n")
 	# maybe use length of all_dates ?????????
 	# sp_val_len = 251
 	# shouldn't it equal the length of values collected? or days ran?
@@ -104,27 +134,7 @@ def combined_list(sp_vals, all_dates):
 	# dates_len = len(dates_len)
 	# print ("\nDates_Len =", dates_len, "\n")
 	# this doesn't work b/c it covers all dates after first date
-
-	final_list = []
-	# for i in range(0, 2): => to test 3 Trading Days
-	for i in range(0, sp_val_len):
-		print ("i: ", i)
-		final_list.append([ all_dates[i], sp_vals[i] ])
-
-	return final_list
-
-
-
-
-
-
-
-
-
-
-
-
-
+	# print ("All Date List Len = ", len(all_dates))
 
 
 

@@ -1,0 +1,303 @@
+Reporting server status on {{2017,10,6},{14,3,48}}
+
+ ...
+Status of node rabbit@localhost ...
+[{pid,733},
+ {running_applications,
+     [{rabbitmq_management_visualiser,"RabbitMQ Visualiser","3.6.9"},
+      {rabbitmq_mqtt,"RabbitMQ MQTT Adapter","3.6.9"},
+      {rabbitmq_management,"RabbitMQ Management Console","3.6.9"},
+      {rabbitmq_management_agent,"RabbitMQ Management Agent","3.6.9"},
+      {rabbitmq_amqp1_0,"AMQP 1.0 support for RabbitMQ","3.6.9"},
+      {rabbitmq_web_dispatch,"RabbitMQ Web Dispatcher","3.6.9"},
+      {rabbitmq_stomp,"RabbitMQ STOMP plugin","3.6.9"},
+      {rabbit,"RabbitMQ","3.6.9"},
+      {os_mon,"CPO  CXC 138 46","2.4.2"},
+      {amqp_client,"RabbitMQ AMQP Client","3.6.9"},
+      {rabbit_common,
+          "Modules shared by rabbitmq-server and rabbitmq-erlang-client",
+          "3.6.9"},
+      {compiler,"ERTS  CXC 138 10","7.0.4"},
+      {xmerl,"XML parser","1.3.13"},
+      {cowboy,"Small, fast, modular HTTP server.","1.0.4"},
+      {ranch,"Socket acceptor pool for TCP protocols.","1.3.0"},
+      {ssl,"Erlang/OTP SSL application","8.1.1"},
+      {public_key,"Public key infrastructure","1.4"},
+      {cowlib,"Support library for manipulating Web protocols.","1.0.2"},
+      {inets,"INETS  CXC 138 49","6.3.6"},
+      {asn1,"The Erlang ASN1 compiler version 4.0.4","4.0.4"},
+      {crypto,"CRYPTO","3.7.3"},
+      {sasl,"SASL  CXC 138 11","3.0.3"},
+      {mnesia,"MNESIA  CXC 138 12","4.14.3"},
+      {syntax_tools,"Syntax tools","2.1.1"},
+      {stdlib,"ERTS  CXC 138 10","3.3"},
+      {kernel,"ERTS  CXC 138 10","5.2"}]},
+ {os,{unix,darwin}},
+ {erlang_version,
+     "Erlang/OTP 19 [erts-8.3] [source] [64-bit] [smp:4:4] [async-threads:64] [hipe] [kernel-poll:true] [dtrace]\n"},
+ {memory,
+     [{total,64061144},
+      {connection_readers,86832},
+      {connection_writers,22768},
+      {connection_channels,176832},
+      {connection_other,212656},
+      {queue_procs,202784},
+      {queue_slave_procs,0},
+      {plugins,2244912},
+      {other_proc,18835144},
+      {mnesia,73424},
+      {metrics,218320},
+      {mgmt_db,559704},
+      {msg_index,138680},
+      {other_ets,2818952},
+      {binary,1804000},
+      {code,25303180},
+      {atom,1041593},
+      {other_system,10536835}]},
+ {alarms,[]},
+ {listeners,
+     [{clustering,25672,"::"},
+      {amqp,5672,"127.0.0.1"},
+      {stomp,61613,"::"},
+      {http,15672,"::"},
+      {mqtt,1883,"::"}]},
+ {vm_memory_high_watermark,0.4},
+ {vm_memory_limit,2391506944},
+ {disk_free_limit,50000000},
+ {disk_free,15523397632},
+ {file_descriptors,
+     [{total_limit,156},{total_used,6},{sockets_limit,138},{sockets_used,3}]},
+ {processes,[{limit,1048576},{used,412}]},
+ {run_queue,0},
+ {uptime,2349},
+ {kernel,{net_ticktime,60}}]
+
+Cluster status of node rabbit@localhost ...
+[{nodes,[{disc,[rabbit@localhost]}]},
+ {running_nodes,[rabbit@localhost]},
+ {cluster_name,<<"rabbit@Shauns-MacBook-Air">>},
+ {partitions,[]},
+ {alarms,[{rabbit@localhost,[]}]}]
+
+Application environment of node rabbit@localhost ...
+[{amqp_client,[{prefer_ipv6,false},{ssl_options,[]}]},
+ {asn1,[]},
+ {compiler,[]},
+ {cowboy,[]},
+ {cowlib,[]},
+ {crypto,[]},
+ {inets,[]},
+ {kernel,
+     [{error_logger,tty},
+      {inet_default_connect_options,[{nodelay,true}]},
+      {inet_dist_listen_max,25672},
+      {inet_dist_listen_min,25672}]},
+ {mnesia,[{dir,"/usr/local/var/lib/rabbitmq/mnesia/rabbit@localhost"}]},
+ {os_mon,
+     [{start_cpu_sup,false},
+      {start_disksup,false},
+      {start_memsup,false},
+      {start_os_sup,false}]},
+ {public_key,[]},
+ {rabbit,
+     [{auth_backends,[rabbit_auth_backend_internal]},
+      {auth_mechanisms,['PLAIN','AMQPLAIN']},
+      {background_gc_enabled,false},
+      {background_gc_target_interval,60000},
+      {backing_queue_module,rabbit_priority_queue},
+      {channel_max,0},
+      {channel_operation_timeout,15000},
+      {cluster_keepalive_interval,10000},
+      {cluster_nodes,{[],disc}},
+      {cluster_partition_handling,ignore},
+      {collect_statistics,fine},
+      {collect_statistics_interval,5000},
+      {config_entry_decoder,
+          [{cipher,aes_cbc256},
+           {hash,sha512},
+           {iterations,1000},
+           {passphrase,undefined}]},
+      {credit_flow_default_credit,{400,200}},
+      {default_permissions,[<<".*">>,<<".*">>,<<".*">>]},
+      {default_user,<<"guest">>},
+      {default_user_tags,[administrator]},
+      {default_vhost,<<"/">>},
+      {delegate_count,16},
+      {disk_free_limit,50000000},
+      {enabled_plugins_file,"/usr/local/etc/rabbitmq/enabled_plugins"},
+      {error_logger,{file,"/usr/local/var/log/rabbitmq/rabbit@localhost.log"}},
+      {fhc_read_buffering,false},
+      {fhc_write_buffering,true},
+      {frame_max,131072},
+      {halt_on_upgrade_failure,true},
+      {handshake_timeout,10000},
+      {heartbeat,60},
+      {hipe_compile,false},
+      {hipe_modules,
+          [rabbit_reader,rabbit_channel,gen_server2,rabbit_exchange,
+           rabbit_command_assembler,rabbit_framing_amqp_0_9_1,rabbit_basic,
+           rabbit_event,lists,queue,priority_queue,rabbit_router,rabbit_trace,
+           rabbit_misc,rabbit_binary_parser,rabbit_exchange_type_direct,
+           rabbit_guid,rabbit_net,rabbit_amqqueue_process,
+           rabbit_variable_queue,rabbit_binary_generator,rabbit_writer,
+           delegate,gb_sets,lqueue,sets,orddict,rabbit_amqqueue,
+           rabbit_limiter,gb_trees,rabbit_queue_index,
+           rabbit_exchange_decorator,gen,dict,ordsets,file_handle_cache,
+           rabbit_msg_store,array,rabbit_msg_store_ets_index,rabbit_msg_file,
+           rabbit_exchange_type_fanout,rabbit_exchange_type_topic,mnesia,
+           mnesia_lib,rpc,mnesia_tm,qlc,sofs,proplists,credit_flow,pmon,
+           ssl_connection,tls_connection,ssl_record,tls_record,gen_fsm,ssl]},
+      {lazy_queue_explicit_gc_run_operation_threshold,1000},
+      {log_levels,[{connection,info}]},
+      {loopback_users,[<<"guest">>]},
+      {memory_monitor_interval,2500},
+      {mirroring_flow_control,true},
+      {mirroring_sync_batch_size,4096},
+      {mnesia_table_loading_retry_limit,10},
+      {mnesia_table_loading_retry_timeout,30000},
+      {msg_store_credit_disc_bound,{4000,800}},
+      {msg_store_file_size_limit,16777216},
+      {msg_store_index_module,rabbit_msg_store_ets_index},
+      {msg_store_io_batch_size,4096},
+      {num_ssl_acceptors,1},
+      {num_tcp_acceptors,10},
+      {password_hashing_module,rabbit_password_hashing_sha256},
+      {plugins_dir,"/usr/local/Cellar/rabbitmq/3.6.9/plugins"},
+      {plugins_expand_dir,
+          "/usr/local/var/lib/rabbitmq/mnesia/rabbit@localhost-plugins-expand"},
+      {queue_explicit_gc_run_operation_threshold,1000},
+      {queue_index_embed_msgs_below,4096},
+      {queue_index_max_journal_entries,32768},
+      {reverse_dns_lookups,false},
+      {sasl_error_logger,
+          {file,"/usr/local/var/log/rabbitmq/rabbit@localhost-sasl.log"}},
+      {server_properties,[]},
+      {ssl_allow_poodle_attack,false},
+      {ssl_apps,[asn1,crypto,public_key,ssl]},
+      {ssl_cert_login_from,distinguished_name},
+      {ssl_handshake_timeout,5000},
+      {ssl_listeners,[]},
+      {ssl_options,[]},
+      {tcp_listen_options,
+          [{backlog,128},
+           {nodelay,true},
+           {linger,{true,0}},
+           {exit_on_close,false}]},
+      {tcp_listeners,[{"127.0.0.1",5672}]},
+      {trace_vhosts,[]},
+      {vm_memory_high_watermark,0.4},
+      {vm_memory_high_watermark_paging_ratio,0.5}]},
+ {rabbit_common,[]},
+ {rabbitmq_amqp1_0,
+     [{default_user,"guest"},
+      {default_vhost,<<"/">>},
+      {protocol_strict_mode,false}]},
+ {rabbitmq_management,
+     [{cors_allow_origins,[]},
+      {cors_max_age,1800},
+      {http_log_dir,none},
+      {listener,[{port,15672}]},
+      {load_definitions,none},
+      {management_db_cache_multiplier,5},
+      {process_stats_gc_timeout,300000},
+      {stats_event_max_backlog,250}]},
+ {rabbitmq_management_agent,
+     [{rates_mode,basic},
+      {sample_retention_policies,
+          [{global,[{605,5},{3660,60},{29400,600},{86400,1800}]},
+           {basic,[{605,5},{3600,60}]},
+           {detailed,[{605,5}]}]}]},
+ {rabbitmq_management_visualiser,[]},
+ {rabbitmq_mqtt,
+     [{allow_anonymous,true},
+      {default_user,<<"guest">>},
+      {exchange,<<"amq.topic">>},
+      {num_ssl_acceptors,1},
+      {num_tcp_acceptors,10},
+      {prefetch,10},
+      {retained_message_store,rabbit_mqtt_retained_msg_store_dets},
+      {retained_message_store_dets_sync_interval,2000},
+      {ssl_cert_login,false},
+      {ssl_listeners,[]},
+      {subscription_ttl,86400000},
+      {tcp_listen_options,[{backlog,128},{nodelay,true}]},
+      {tcp_listeners,[1883]},
+      {vhost,<<"/">>}]},
+ {rabbitmq_stomp,
+     [{default_user,[{login,<<"guest">>},{passcode,<<"guest">>}]},
+      {default_vhost,<<"/">>},
+      {hide_server_info,false},
+      {implicit_connect,false},
+      {num_ssl_acceptors,1},
+      {num_tcp_acceptors,10},
+      {ssl_cert_login,false},
+      {ssl_listeners,[]},
+      {tcp_listen_options,[{backlog,128},{nodelay,true}]},
+      {tcp_listeners,[61613]},
+      {trailing_lf,true}]},
+ {rabbitmq_web_dispatch,[]},
+ {ranch,[]},
+ {sasl,[{errlog_type,error},{sasl_error_logger,false}]},
+ {ssl,[]},
+ {stdlib,[]},
+ {syntax_tools,[]},
+ {xmerl,[]}]
+
+Connections:
+pid	name	port	peer_port	host	peer_host	ssl	peer_cert_subject	peer_cert_issuer	peer_cert_validity	auth_mechanism	ssl_protocol	ssl_key_exchange	ssl_cipher	ssl_hash	protocol	user	vhost	timeout	frame_max	channel_max	client_properties	connected_at	recv_oct	recv_cnt	send_oct	send_cnt	send_pend	state	channels	reductions	garbage_collection
+<rabbit@localhost.1.687.0>	127.0.0.1:52128 -> 127.0.0.1:5672	5672	52128	127.0.0.1	127.0.0.1	false				AMQPLAIN					{0,9,1}	guest	/	60	131072	65535	[{"capabilities",[{"connection.blocked",true},{"consumer_cancel_notify",true},{"authentication_failure_close",true}]},{"product","py-amqp"},{"product_version","2.1.4"}]	1507297655298	1788	41	207030	512	0	running	3	101171	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,145}]
+<rabbit@localhost.1.694.0>	127.0.0.1:52129 -> 127.0.0.1:5672	5672	52129	127.0.0.1	127.0.0.1	false				AMQPLAIN					{0,9,1}	guest	/	0	131072	65535	[{"capabilities",[{"connection.blocked",true},{"consumer_cancel_notify",true},{"authentication_failure_close",true}]},{"product","py-amqp"},{"product_version","2.1.4"}]	1507297655311	200811	491	560	5	0	running	1	148188	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,33}]
+<rabbit@localhost.1.708.0>	127.0.0.1:52130 -> 127.0.0.1:5672	5672	52130	127.0.0.1	127.0.0.1	false				AMQPLAIN					{0,9,1}	guest	/	0	131072	65535	[{"capabilities",[{"connection.blocked",true},{"consumer_cancel_notify",true},{"authentication_failure_close",true}]},{"product","py-amqp"},{"product_version","2.1.4"}]	1507297655332	688	7	560	5	0	running	1	96106	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,78}]
+
+Channels:
+pid	name	connection	number	user	vhost	reductions	transactional	confirm	consumer_count	messages_unacknowledged	messages_unconfirmed	messages_uncommitted	acks_uncommitted	prefetch_count	global_prefetch_count	state	garbage_collection
+<rabbit@localhost.1.700.0>	127.0.0.1:52128 -> 127.0.0.1:5672 (1)	<rabbit@localhost.1.687.0>	1	guest	/	9669	false	false	1	0	0	0	0	0	16	running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,25}]
+<rabbit@localhost.1.714.0>	127.0.0.1:52130 -> 127.0.0.1:5672 (1)	<rabbit@localhost.1.708.0>	1	guest	/	5722	false	false	0	0	0	0	0	0	0	running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,16}]
+<rabbit@localhost.1.721.0>	127.0.0.1:52128 -> 127.0.0.1:5672 (2)	<rabbit@localhost.1.687.0>	2	guest	/	8166	false	false	1	0	0	0	0	0	0	running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,26}]
+<rabbit@localhost.1.730.0>	127.0.0.1:52129 -> 127.0.0.1:5672 (1)	<rabbit@localhost.1.694.0>	1	guest	/	246298	false	false	0	0	0	0	0	0	0	running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,204}]
+<rabbit@localhost.1.734.0>	127.0.0.1:52128 -> 127.0.0.1:5672 (3)	<rabbit@localhost.1.687.0>	3	guest	/	45524	false	false	1	0	0	0	0	0	0	running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,68}]
+
+Queues on /:
+pid	name	durable	auto_delete	arguments	owner_pid	exclusive	messages_ready	messages_unacknowledged	messages	reductions	policy	exclusive_consumer_pid	exclusive_consumer_tag	consumers	consumer_utilisation	memory	slave_pids	synchronised_slave_pids	recoverable_slaves	state	garbage_collection	messages_ram	messages_ready_ram	messages_unacknowledged_ram	messages_persistent	message_bytes	message_bytes_ready	message_bytes_unacknowledged	message_bytes_ram	message_bytes_persistent	head_message_timestamp	disk_reads	disk_writes	backing_queue_status	messages_paged_out	message_bytes_paged_out
+<rabbit@localhost.1.273.0>	celery	true	false	[]		false	0	0	0	20253				1	1.0	25392				running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,44}]	0	0	0	0	0	0	0	0	0		0	0	[{mode,default}, {q1,0}, {q2,0}, {delta,{delta,undefined,0,0,undefined}}, {q3,0}, {q4,0}, {len,0}, {target_ram_count,infinity}, {next_seq_id,0}, {avg_ingress_rate,0.0}, {avg_egress_rate,0.0}, {avg_ack_ingress_rate,0.0}, {avg_ack_egress_rate,0.0}]	0	0
+<rabbit@localhost.1.724.0>	celery@Shauns-Air.home.celery.pidbox	false	true	[{"x-message-ttl",300000},{"x-expires",10000}]		false	0	0	0	12307				1	1.0	34888				running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,30}]	0	0	0	0	0	0	0	0	0		0	0	[{mode,default}, {q1,0}, {q2,0}, {delta,{delta,undefined,0,0,undefined}}, {q3,0}, {q4,0}, {len,0}, {target_ram_count,infinity}, {next_seq_id,0}, {avg_ingress_rate,0.0}, {avg_egress_rate,0.0}, {avg_ack_ingress_rate,0.0}, {avg_ack_egress_rate,0.0}]	0	0
+<rabbit@localhost.1.737.0>	celeryev.a6ac59d6-a154-426b-9b4f-cd4bb7b52d55	false	true	[{"x-message-ttl",5000},{"x-expires",60000}]		false	0	0	0	151653				1	1.0	110000				running	[{max_heap_size,0}, {min_bin_vheap_size,46422}, {min_heap_size,233}, {fullsweep_after,65535}, {minor_gcs,114}]	0	0	0	0	0	0	0	0	0		0	0	[{mode,default}, {q1,0}, {q2,0}, {delta,{delta,undefined,0,0,undefined}}, {q3,0}, {q4,0}, {len,0}, {target_ram_count,infinity}, {next_seq_id,0}, {avg_ingress_rate,0.0}, {avg_egress_rate,0.0}, {avg_ack_ingress_rate,0.0}, {avg_ack_egress_rate,0.0}]	0	0
+
+Exchanges on /:
+name	type	durable	auto_delete	internal	arguments	policy
+	direct	true	false	false	[]	
+amq.direct	direct	true	false	false	[]	
+amq.fanout	fanout	true	false	false	[]	
+amq.headers	headers	true	false	false	[]	
+amq.match	headers	true	false	false	[]	
+amq.rabbitmq.log	topic	true	false	true	[]	
+amq.rabbitmq.trace	topic	true	false	true	[]	
+amq.topic	topic	true	false	false	[]	
+celery	direct	true	false	false	[]	
+celery.pidbox	fanout	false	false	false	[]	
+celeryev	topic	true	false	false	[]	
+reply.celery.pidbox	direct	false	false	false	[]	
+
+Bindings on /:
+source_name	source_kind	destination_name	destination_kind	routing_key	arguments	vhost
+	exchange	celery	queue	celery	[]	/
+	exchange	celery@Shauns-Air.home.celery.pidbox	queue	celery@Shauns-Air.home.celery.pidbox	[]	/
+	exchange	celeryev.a6ac59d6-a154-426b-9b4f-cd4bb7b52d55	queue	celeryev.a6ac59d6-a154-426b-9b4f-cd4bb7b52d55	[]	/
+celery	exchange	celery	queue	celery	[]	/
+celery.pidbox	exchange	celery@Shauns-Air.home.celery.pidbox	queue		[]	/
+celeryev	exchange	celeryev.a6ac59d6-a154-426b-9b4f-cd4bb7b52d55	queue	worker.#	[]	/
+
+Consumers on /:
+queue_name	channel_pid	consumer_tag	ack_required	prefetch_count	arguments
+celery	<rabbit@localhost.1.700.0>	None4	true	0	[]
+celery@Shauns-Air.home.celery.pidbox	<rabbit@localhost.1.721.0>	None2	false	0	[]
+celeryev.a6ac59d6-a154-426b-9b4f-cd4bb7b52d55	<rabbit@localhost.1.734.0>	None3	false	0	[]
+
+Permissions on /:
+user	configure	write	read
+guest	.*	.*	.*
+
+Policies on /:
+
+Parameters on /:
+

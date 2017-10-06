@@ -9,7 +9,8 @@ from models import run_model
 from celery import Celery
 
 
-celery_app = Celery('algo_tasker', backend='rpc://', broker='amqp://')
+# celery_app = Celery('algo_tasker', backend='rpc://', broker='amqp://')
+celery_app = Celery('algo_tasker', backend='rpc://', broker='amqp://localhost:5672')
 
 
 @celery_app.task(trail=True)
